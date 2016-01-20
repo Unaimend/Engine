@@ -3,6 +3,9 @@
 #include "ResourceManager.h"
 #include <unistd.h>
 #include "Texture.h"
+#include "Event.h"
+#include "Variant.h"
+#include <functional> //std::hash
 #define LINUX
 char gFilePath[100];
 
@@ -74,6 +77,19 @@ int main()
 #endif
  
 
+
+
+
+
+
+
+
+    /******************TEST AREA**********************************/
+    eng::Variant a{"Error: Dateipfad konnte nicht ermittelt werden"};
+    std::cout << a.mValue.mAsStringId << std::endl;
+
+    eng::Event test{ {"WAS DAS", "PETER"}, {eng::Variant{"HI"}, eng::Variant{"HIaws"}} };
+
     return 0;
 }
 
@@ -86,3 +102,8 @@ int main()
 *Changelog:
 *TODO:
 *************************************/
+
+
+
+
+

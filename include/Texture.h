@@ -8,6 +8,7 @@
 			Erstellt 
 			sf::Texture mTexture hinzugefuegt
 *TODO:
+			Hardgecodete Textur hinzufuegen
 *************************************/
 #pragma once
 #include <SFML/Graphics.hpp> //sf::Texture
@@ -21,10 +22,10 @@ namespace eng
 	class Texture
 	{
 	public:
-		/*
-		*Konstruktor fuer das initilisieren der Klasse.
+		/**********************************************
+		*Descr:	 Konstruktor fuer das initilisieren der Klasse.
 		*Param1: Pfad zur Textur
-		*/
+		***********************************************/
 		Texture(const filepath& path);
 	private: 
 		//Textur
