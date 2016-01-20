@@ -88,7 +88,7 @@ int main()
     eng::Variant a{"Error: Dateipfad konnte nicht ermittelt werden"};
     std::cout << a.mValue.mAsStringId << std::endl;
 
-    eng::Event test{ {"WAS DAS", "PETER"}, {eng::Variant{"HI"}, eng::Variant{"HIaws"}} };
+    eng::Event test{ {"WAS DAS", "PETER"}, {eng::Variant{"HI"}, eng::Variant{123}} };
 
     return 0;
 }
