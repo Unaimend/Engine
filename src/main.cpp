@@ -69,11 +69,11 @@ int main()
     lua_close(lua_state);
 
 #ifdef LINUX
-    std::cout << "YAYY" << std::endl;
+   std::cout << "Engine runs on Linux" << std::endl;
 #elif defined WINDOWS
-    std::cout << "IGIT" << std::endl;
+   // std::cout << "IGIT" << std::endl;
 #elif defined MAC
-    std::cout << "NAJA" << std::endl;
+    //std::cout << "NAJA" << std::endl;
 #endif
  
 
@@ -86,9 +86,13 @@ int main()
 
     /******************TEST AREA**********************************/
     eng::Variant a{"Error: Dateipfad konnte nicht ermittelt werden"};
-    std::cout << a.mValue.mAsStringId << std::endl;
+   // std::cout << a.mValue.mAsStringId << std::endl;
 
-    eng::Event test{ {"WAS DAS", "PETER"}, {eng::Variant{"HI"}, eng::Variant{123}} };
+    eng::Event onExplode
+    {   "onExplode",
+        {"radius", "damage", "explosiveType"}, 
+        { {eng::Variant::Type::INTEGER, 20},{eng::Variant::Type::DOUBLE, 2000},{"Grenade"} } 
+    };
 
     return 0;
 }

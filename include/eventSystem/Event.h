@@ -33,12 +33,13 @@ namespace eng
 	public:
 		/***********************************
 		*Descri:	Konstruktor fuer Events
-		*Param1:	Indetifier fuer die Argumente
+		*Param1:	Identifier fuer die Argumente
 		*Param2:	Werte der Argumente
 		*Return:
 		************************************/
-		Event(std::initializer_list<std::string> identifiers, std::initializer_list<Variant> args)
+		Event(std::string EventName, std::initializer_list<std::string> identifiers, std::initializer_list<Variant> args)
 		{
+			mEventName = std::hash<std::string>()(EventName);
 			if(identifiers.size() != args.size())
 			{
 				std::cout << "initializer_list do need to have the same size" << std::endl;
@@ -54,12 +55,14 @@ namespace eng
 
 			for(auto& it : mArgs)
 			{
-				std::cout << it.first << std::endl; 
+				std::cout << it.second << std::endl; 
+
 			}
 		}
 	private:
 	public:
 	private:
+		hash mEventName;
 		//Map fuer Event Argument
 		std::map<std::string, Variant> mArgs;
 	};
