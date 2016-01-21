@@ -7,7 +7,7 @@
 //TODO:
 //		Funktor durch Lambada austauschen
 //***************************************************************
-#include <templates.h>
+
 #include <memory>
 extern "C"
 {
@@ -26,58 +26,61 @@ namespace lua
 			mState(luaL_newstate()), mFilePath(filepath)
 		{
 			openLibs();
-			loadFile();
+			
 
 		}
-		LuaState(std::string&& filepath, int stacksize = 30)  :
-		mState(luaL_newstate()), mFilePath(filepath)
-		{
-			openLibs();
-			loadFile();
-		}
-
-
 		~LuaState()
 		{
 
 		}
 		void openLibs()
 		{
-			luaL_openlibs(mState);
+			luaopen_base(mState);             /* opens the basic library */
+     		luaopen_table(mState);            /* opens the table library */
+      		luaopen_io(mState);               /* opens the I/O library */
+     		luaopen_string(mState);           /* opens the string lib. */
+      		luaopen_math(mState);             /* opens the math lib. */
+			
 		}
-		void reCompileFile()
+		void runFile(const filepath& filepath)
 		{
-			loadFile();
-			lua_pcall(mState, 0, 0, 0);
+  		 luaL_dofile(mState, filepath.c_str());
+
 		}
-		void compileFile()
+		void runFile()
 		{
-			lua_pcall(mState, 0, 0, 0);
+  		 luaL_dofile(mState, mFilePath.c_str());
+
 		}
-		void getGlobal(const std::string& variable)
-		{
-			lua_getglobal(mState, variable.c_str());
-		}
-		void pushGlobal(int var)
+
+		void push(int var)
 		{
 			lua_pushinteger(mState, var);
 		}
-		void pushGlobal(float var)
+		void push(float var)
 		{
 			lua_pushnumber(mState, var);
 		}
-		void pushGlobal(bool var)
+		void push(bool var)
 		{
 			lua_pushboolean(mState, var);
 		}
-		void pushGlobal(const char* var)
+		void push(const char* var)
 		{
 			lua_pushstring(mState, var);
 		}
-		void pushGlobal(std::string var)
+		void push(std::string var)
 		{
 			lua_pushstring(mState, var.c_str());
 		}
+
+		template <typename T, typename... Ts>
+		void push(const T value, const Ts... values) {
+    	push(value);
+    	push(values...);
+}
+
+
 #ifdef FAST
 		
 		void callFunction(int paramcount, int returncount)
@@ -108,7 +111,7 @@ namespace lua
 			return lua_tointeger(mState, stackpos);
 		}
 		template<class T>
-		T getSingleReturn()
+		T getSingleValue()
 		{
 			if (lua_isinteger(mState, -1))
 			{
@@ -122,7 +125,7 @@ namespace lua
 			else
 			{
 				return lua_tonumber(mState, -1);
-				DBG("getSingleReturn : lua, richtig implementieren");
+				std::cout << ("getSingleReturn : lua, richtig implementieren\n");
 			}
 
 		}

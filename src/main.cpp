@@ -8,11 +8,24 @@
 #include <functional> //std::hash
 #include "globals.h"
 #include "utility.h"
-
 #include <chrono>
+#include "LuaState.h"
+
+
 #define LINUX
 char gFilePath[100];
 eng::EventQueue gEventQueue;
+
+
+
+ static int l_sin(lua_State *L) 
+    {
+     std::cout << "HALLO AUS LUA" << std::endl;
+      return 0;  /* number of results */
+    }
+
+
+
 int main()
 {   
     eng::Event* onWindowClicked = new eng::Event
@@ -40,7 +53,7 @@ int main()
 #endif
  sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
    
-   
+   /*
     while (window.isOpen())
     {
 
@@ -66,7 +79,7 @@ int main()
             //HIER WERDEN EVENTS UEBERGEBEN
         }
         auto end_time = std::chrono::high_resolution_clock::now();
-        std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << std::endl;
+       // std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << std::endl;
 
         gEventQueue.mEvents.clear();
         
@@ -78,6 +91,19 @@ int main()
         window.display();
 
     }
+        */
+
+
+    lua::LuaState mLuaState("hello.lua");
+    
+    mLuaState.push(1,2,"HI");
+   
+
+   
+
+    /*
+
+
      // create new Lua state
     lua_State *lua_state;
     lua_state = luaL_newstate();
@@ -101,6 +127,7 @@ int main()
 
     // close the Lua state
     lua_close(lua_state);
+    */
 
 #ifdef LINUX
    std::cout << "Engine runs on Linux" << std::endl;
