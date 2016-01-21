@@ -10,15 +10,15 @@
 *TODO:
 *************************************/
 
+#pragma once
+
 #include <stdint.h>
-#include "EngineTypes.h"
 #include <string>
+#include "EngineTypes.h"
+#include "EventQueue.h"
 //Gloable Variable fuer den Pfad zur ausfuehrbaren Datei
 extern char gFilePath[100];
 namespace eng
 {
-	size_t hash(const std::string& string1)
-	{
-		return std::hash<std::string>()(string1);
-	}
+	extern eng::EventQueue gEventQueue;
 }

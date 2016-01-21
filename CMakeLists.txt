@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.9)
 project (Engine)
-SET(CMAKE_CXX_FLAGS "-std=c++14")
+SET(CMAKE_CXX_FLAGS "-std=c++14 -O0")
 
 #Bring the headers, such as Student.h into the project
 include_directories(include/tinyXML)

@@ -7,6 +7,8 @@
 *                       Erstellt
 						20.01.2016
 						std::string mEventName hinzugefuegt um Events zu identifizieren
+						21.01.2016
+						utility.h included
 *TODO:			
 				Variant in EvenArgs Kapsel
 				Konstruktoren loeschen fuer EventArg, Event
@@ -24,13 +26,14 @@ Lua Api erstmal komplett ingnogieren
 */
 
 #pragma once
-#include "EngineTypes.h"
+
 #include "Variant.h"
 #include <map>
 #include <string>
 #include <initializer_list>
 #include <iostream>
-	
+#include "EngineTypes.h"
+#include "utility.h"
 namespace eng
 {
 	struct EventArg
@@ -49,7 +52,7 @@ namespace eng
 		************************************/
 		Event(std::string EventName, std::initializer_list<std::string> identifiers, std::initializer_list<Variant> args)
 		{
-			mEventName = std::hash<std::string>()(EventName);
+			mEventName = eng::util::toHash(EventName);
 			if(identifiers.size() != args.size())
 			{
 				std::cout << "initializer_list do need to have the same size" << std::endl;
@@ -63,17 +66,13 @@ namespace eng
 				mArgs[*it] = *it2;
 			}
 
-			for(auto& it : mArgs)
-			{
-				std::cout << it.second << std::endl; 
-
-			}
 		}
 	private:
+
 	public:
-	private:
+	
 		//Event Name als Hash
-		hash mEventName;
+		eng::hash mEventName;
 		//Map fuer Event Argument
 		std::map<std::string, Variant> mArgs;
 	};

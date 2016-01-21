@@ -15,12 +15,33 @@
 
 #include <vector>
 #include "Event.h"
-class EventQueue
+namespace eng
 {
-public:
-	EventQueue();
+	class EventQueue
+	{
+	public:
 
-public:
-	std::vector<
+		/***********************************
+		*Descri:	Konstruktor fuer die EventQueue
+		************************************/
+		EventQueue()
+		{
+			
+		}
 
+
+		/***********************************
+		*Descri:	Funktion zum hinzufuegen von Events
+		*Param1:	event welches geaddet werden soll
+		*Return:
+		************************************/
+		void addEvent(eng::Event* event)
+		{
+			mEvents.push_back(event);
+		}
+	public:
+		std::vector<eng::Event*> mEvents;
+		
+
+	};
 }

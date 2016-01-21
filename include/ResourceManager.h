@@ -102,7 +102,7 @@ public:
 	//Pfad zur Ressource
 	filepath mPathToRessource;
 	//Pfad zur Ressource als Hash
-	hash mFileHandle;
+	eng::hash mFileHandle;
 	//Pointer zu den Ressourcendaten
 	T* mDataPointer;
 	//Refcount zum Ueberpruefen ob das Objekt noch gebraucht wird.

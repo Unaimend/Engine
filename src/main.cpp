@@ -7,12 +7,29 @@
 #include "Variant.h"
 #include <functional> //std::hash
 #include "globals.h"
+#include "utility.h"
 
+#include <chrono>
 #define LINUX
 char gFilePath[100];
-
+eng::EventQueue gEventQueue;
 int main()
 {   
+
+
+    eng::Event onExplode
+    {   "onExplode",
+        {"radius", "damage", "explosiveType"}, 
+        { {eng::Variant::Type::INTEGER, 20},{eng::Variant::Type::DOUBLE, 2000},{"Grenade"} } 
+    };
+
+    eng::Event onExplode2
+        {   "onExplode",
+            {"radius"}, 
+            { {eng::Variant::Type::INTEGER, 22} } 
+        };
+
+
  
 #ifdef LINUX
     if(readlink("/proc/self/exe", gFilePath, 100) == -1)
@@ -32,20 +49,48 @@ int main()
  sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 
    
-  /*  while (window.isOpen())
+    while (window.isOpen())
     {
         sf::Event event;
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
                 window.close();
+            }
         }
 
+        auto start_time = std::chrono::high_resolution_clock::now();
+
+
+         for(int i = 0; i < 500; ++i)
+         {
+            gEventQueue.addEvent(&onExplode);
+             
+         }
+        
+     for(int i = 0; i < 500; ++i)
+         {
+            size_t& temp =gEventQueue.mEvents[i]->mEventName;
+            temp == eng::util::toHash("onExplode");
+            temp == eng::util::toHash("onExplo23de");
+            temp == eng::util::toHash("43");
+            temp == eng::util::toHash("onExp55lode");
+            temp == eng::util::toHash("onExp43lode");
+         }
+       
+
+        auto end_time = std::chrono::high_resolution_clock::now();
+
+        std::cout << ":"<<std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << std::endl;
+
+
+        gEventQueue.mEvents.clear();
         window.clear();
 
         window.display();
     }
-*/
+
      // create new Lua state
     lua_State *lua_state;
     lua_state = luaL_newstate();
@@ -90,12 +135,7 @@ int main()
     eng::Variant a{"Error: Dateipfad konnte nicht ermittelt werden"};
     // std::cout << a.mValue.mAsStringId << std::endl;
 
-    eng::Event onExplode
-    {   "onExplode",
-        {"radius", "damage", "explosiveType"}, 
-        { {eng::Variant::Type::INTEGER, 20},{eng::Variant::Type::DOUBLE, 2000},{"Grenade"} } 
-    };
-
+    
     
     return 0;
 }
