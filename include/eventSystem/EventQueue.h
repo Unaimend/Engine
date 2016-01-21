@@ -1,7 +1,7 @@
 /************************************
 *Author:        Thomas Dost
 *Datum:         16.01.2016
-*Beschr.        Klasse fuer die globale EngineEventQueue
+*Beschr.        Klasse fuer die globale Engine EventQueue
 *Changelog:
                         16.01.2016
 *                       Erstellt
@@ -13,3 +13,14 @@
 
 #pragma once
 
+#include <vector>
+#include "Event.h"
+class EventQueue
+{
+public:
+	EventQueue();
+
+public:
+	std::vector<
+
+}
