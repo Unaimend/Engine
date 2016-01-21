@@ -15,20 +15,12 @@ char gFilePath[100];
 eng::EventQueue gEventQueue;
 int main()
 {   
-
-
-    eng::Event onExplode
-    {   "onExplode",
-        {"radius", "damage", "explosiveType"}, 
-        { {eng::Variant::Type::INTEGER, 20},{eng::Variant::Type::DOUBLE, 2000},{"Grenade"} } 
+    eng::Event* onWindowClicked = new eng::Event
+    {   "onWindowClicked",
+        {"Text"}, 
+        { {eng::Variant::Type::INTEGER, 55} } 
     };
-
-    eng::Event onExplode2
-        {   "onExplode",
-            {"radius"}, 
-            { {eng::Variant::Type::INTEGER, 22} } 
-        };
-
+  
 
  
 #ifdef LINUX
@@ -47,10 +39,11 @@ int main()
     
 #endif
  sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-
+   
    
     while (window.isOpen())
     {
+
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -58,61 +51,33 @@ int main()
             {
                 window.close();
             }
+            if (event.type == sf::Event::Resized)
+            {
+                 gEventQueue.addEvent(onWindowClicked);
+            }
         }
-
         auto start_time = std::chrono::high_resolution_clock::now();
-
-
-         for(int i = 0; i < 500; ++i)
-         {
-            gEventQueue.addEvent(&onExplode);
-             
-         }
-        
-     for(int i = 0; i < 500; ++i)
-         {
-            size_t& temp =gEventQueue.mEvents[i]->mEventName;
-
-            if(temp == eng::util::toHash("onExplodwade"))
+        for(const auto& it : gEventQueue.mEvents)
+        {
+            if(it->mEventName == eng::util::toHash("onWindowClicked"))
             {
-                    ;
+                std::cout << it->mArgs["Text"].mValue.mAsInteger << std::endl;
             }
-            else if (temp == eng::util::toHash("onExplo435de"))
-            {
-                ;
-            }
-            else if (temp == eng::util::toHash("onExplowad435de"))
-            {
-                ;
-            }
-            else if (temp == eng::util::toHash("onExpeflo435de"))
-            {
-                ;
-            }
-            else if (temp == eng::util::toHash("onEwadsxplo435de"))
-            {
-                ;
-            }
-            else
-            {
-                ;
-            }
-
-           
-         }
-       
-
+            //HIER WERDEN EVENTS UEBERGEBEN
+        }
         auto end_time = std::chrono::high_resolution_clock::now();
-
-        std::cout << ":"<<std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << std::endl;
-
+        std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << std::endl;
 
         gEventQueue.mEvents.clear();
+        
+
+
+   
         window.clear();
 
         window.display();
-    }
 
+    }
      // create new Lua state
     lua_State *lua_state;
     lua_state = luaL_newstate();
@@ -157,8 +122,63 @@ int main()
     eng::Variant a{"Error: Dateipfad konnte nicht ermittelt werden"};
     // std::cout << a.mValue.mAsStringId << std::endl;
 
+     eng::Event* onExplode = new eng::Event
+    {   "onExplode",
+        {"radius", "damage", "explosiveType"}, 
+        { {eng::Variant::Type::INTEGER, 20},{eng::Variant::Type::DOUBLE, 2000},{"Grenade"} } 
+    };
+
+ /*   eng::Event onExplode2
+        {   "onExplode",
+            {"radius"}, 
+            { {eng::Variant::Type::INTEGER, 22} } 
+        };
+
     
-    
+          for(int i = 0; i < 100; ++i)
+          {
+            
+             
+          }
+        
+     for(int i = 0; i < 100; ++i)
+         {
+            size_t& temp =gEventQueue.mEvents[i]->mEventName;
+
+            if(temp == 123243243)
+            {
+                    ;
+            }
+            else if (temp == 43532432)
+            {
+                ;
+            }
+            else if (temp == 324234324324)
+            {
+                ;
+            }
+            else if (temp == 234325)
+            {
+                ;
+            }
+            else if (temp == 124432542532)
+            {
+                ;
+            }
+            else
+            {
+                ;
+            }
+
+           
+         }
+       
+
+*/
+       
+
+
+
     return 0;
 }
 

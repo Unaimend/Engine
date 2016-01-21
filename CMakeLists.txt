@@ -7,6 +7,7 @@ include_directories(include/tinyXML)
 include_directories(include/SFML)
 include_directories(include/lua)
 include_directories(include/eventSystem)
+include_directories(include/luaApi)
 include_directories(include)
 
 
@@ -17,7 +18,7 @@ link_directories( ~/dev/cpp/sfml/Engine/lib/lua)
 
 
 #However, the file(GLOB...) allows for wildcard additions:
-file(GLOB SOURCES "src/*.cpp" "src/eventSystem/*.cpp")
+file(GLOB SOURCES "src/*.cpp" "src/eventSystem/*.cpp" "src/luaApi/*.cpp")
 add_executable(Engine ${SOURCES})
 
 target_link_libraries(Engine ${PROJECT_LINK_LIBS} )
