@@ -5,8 +5,6 @@
 *Changelog:
 			22.12.205
 *			int8 gFilePath hinzugefuegt
-			21.01.2016
-			size_t hash() hinzugefuget
 *TODO:
 *************************************/
 

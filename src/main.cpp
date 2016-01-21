@@ -72,11 +72,33 @@ int main()
      for(int i = 0; i < 500; ++i)
          {
             size_t& temp =gEventQueue.mEvents[i]->mEventName;
-            temp == eng::util::toHash("onExplode");
-            temp == eng::util::toHash("onExplo23de");
-            temp == eng::util::toHash("43");
-            temp == eng::util::toHash("onExp55lode");
-            temp == eng::util::toHash("onExp43lode");
+
+            if(temp == eng::util::toHash("onExplodwade"))
+            {
+                    ;
+            }
+            else if (temp == eng::util::toHash("onExplo435de"))
+            {
+                ;
+            }
+            else if (temp == eng::util::toHash("onExplowad435de"))
+            {
+                ;
+            }
+            else if (temp == eng::util::toHash("onExpeflo435de"))
+            {
+                ;
+            }
+            else if (temp == eng::util::toHash("onEwadsxplo435de"))
+            {
+                ;
+            }
+            else
+            {
+                ;
+            }
+
+           
          }
        
 
