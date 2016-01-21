@@ -1,17 +1,27 @@
 /************************************
 *Author:        Thomas Dost
 *Datum:         16.01.2016
-*Beschr.        Klasse fuer standard Events
+*Beschr.        Klasse fuer Standard Events
 *Changelog:
                         16.01.2016
 *                       Erstellt
+						20.01.2016
+						std::string mEventName hinzugefuegt um Events zu identifizieren
 *TODO:			
 				Variant in EvenArgs Kapsel
 				Konstruktoren loeschen fuer EventArg, Event
 				Kommentieren
-
+				Lua Event Api
 *************************************/
 
+
+
+/*
+Ich schmeise Event in die Queue z.b der EntityManager schaut naach dem Event onPlayerKill(exp, target)
+wenn er es findet gibt er dem spieler dia anzahl exp und entfern target.
+Erstmall in C++ spaeter mit Hilfer der Lua Api exposen, damit man Events dynamisch erstellen kann(zur Laufzeit, von 3. benutzern.)
+Lua Api erstmal komplett ingnogieren
+*/
 
 #pragma once
 #include "EngineTypes.h"
@@ -62,6 +72,7 @@ namespace eng
 	private:
 	public:
 	private:
+		//Event Name als Hash
 		hash mEventName;
 		//Map fuer Event Argument
 		std::map<std::string, Variant> mArgs;

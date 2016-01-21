@@ -6,6 +6,8 @@
 #include "Event.h"
 #include "Variant.h"
 #include <functional> //std::hash
+#include "globals.h"
+
 #define LINUX
 char gFilePath[100];
 
@@ -20,7 +22,7 @@ int main()
     }
     else
     {
-        std::cout << "Pfad zwaur Datei:" << gFilePath << std::endl;
+        std::cout << "Pfad zur Datei:" << gFilePath << std::endl;
     }
 #elif defined WINDOWS
         
@@ -86,7 +88,7 @@ int main()
 
     /******************TEST AREA**********************************/
     eng::Variant a{"Error: Dateipfad konnte nicht ermittelt werden"};
-   // std::cout << a.mValue.mAsStringId << std::endl;
+    // std::cout << a.mValue.mAsStringId << std::endl;
 
     eng::Event onExplode
     {   "onExplode",
@@ -94,6 +96,7 @@ int main()
         { {eng::Variant::Type::INTEGER, 20},{eng::Variant::Type::DOUBLE, 2000},{"Grenade"} } 
     };
 
+    
     return 0;
 }
 

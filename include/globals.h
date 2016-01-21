@@ -5,10 +5,20 @@
 *Changelog:
 			22.12.205
 *			int8 gFilePath hinzugefuegt
+			21.01.2016
+			size_t hash() hinzugefuget
 *TODO:
 *************************************/
 
 #include <stdint.h>
 #include "EngineTypes.h"
+#include <string>
 //Gloable Variable fuer den Pfad zur ausfuehrbaren Datei
-extern int8 gFilePath[100];
+extern char gFilePath[100];
+namespace eng
+{
+	size_t hash(const std::string& string1)
+	{
+		return std::hash<std::string>()(string1);
+	}
+}
