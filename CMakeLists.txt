@@ -9,6 +9,7 @@ include_directories(include/lua)
 include_directories(include/eventSystem)
 include_directories(include/luaApi)
 include_directories(include)
+include_directories(include/graphicsWrapper)
 
 
 #For the shared library:
