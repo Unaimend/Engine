@@ -10,6 +10,9 @@
 #include "utility.h"
 #include <chrono>
 #include "LuaState.h"
+#include "Rectangle.h"
+
+#include "Vector.h"
 
 
 #define LINUX
