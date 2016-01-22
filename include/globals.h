@@ -14,9 +14,13 @@
 #include <string>
 #include "EngineTypes.h"
 #include "EventQueue.h"
+#include "LuaState.h"
 //Gloable Variable fuer den Pfad zur ausfuehrbaren Datei
 extern char gFilePath[100];
 namespace eng
 {
+	using namespace lua;
+
+	extern LuaState gLuaState;
 	extern eng::EventQueue gEventQueue;
 }

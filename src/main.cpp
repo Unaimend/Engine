@@ -15,7 +15,7 @@
 #define LINUX
 char gFilePath[100];
 eng::EventQueue gEventQueue;
-
+lua::LuaState gLuaState("hello.lua");
 
 
  static int l_sin(lua_State *L) 
@@ -53,7 +53,7 @@ int main()
 #endif
  sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
    
-   /*
+   
     while (window.isOpen())
     {
 
@@ -64,7 +64,7 @@ int main()
             {
                 window.close();
             }
-            if (event.type == sf::Event::Resized)
+            if (event.type == sf::Event::Resized) 
             {
                  gEventQueue.addEvent(onWindowClicked);
             }
@@ -79,7 +79,7 @@ int main()
             //HIER WERDEN EVENTS UEBERGEBEN
         }
         auto end_time = std::chrono::high_resolution_clock::now();
-       // std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << std::endl;
+        //std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << std::endl;
 
         gEventQueue.mEvents.clear();
         
@@ -91,13 +91,14 @@ int main()
         window.display();
 
     }
-        */
+        
 
 
-    lua::LuaState mLuaState("hello.lua");
-    
-    mLuaState.push(1,2,"HI");
    
+    
+    gLuaState.push(1,2,3);
+    gLuaState.runFile();
+
 
    
 

@@ -3,5 +3,4 @@ width = 300
 
 
 
-cout();
-mysin();
+print("HI");
