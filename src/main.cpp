@@ -99,7 +99,7 @@ int main()
 
    
     
-    gLuaState.push(1,2,3);
+    gLuaState.push(1,2,3, "HI");
     gLuaState.runFile();
 
 

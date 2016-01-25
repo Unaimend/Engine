@@ -3,7 +3,8 @@
 //Author: Thomas Dost
 //Version: 1.0.0
 //Changelog	: Erstellt
-//			:
+//			25.01.2016
+//			T read() hinzugefuegt
 //TODO:
 //		Funktor durch Lambada austauschen
 //***************************************************************
@@ -75,12 +76,40 @@ namespace lua
 		}
 
 		template <typename T, typename... Ts>
-		void push(const T value, const Ts... values) {
+		void push(const T value, const Ts... values) 
+		{
     	push(value);
     	push(values...);
-}
+		}
+
+		
+		template<typename T>
+		T read(const int index) const
+		{
+			std::cout << "Template Specialization for this Type doesnt exist." << std::endl;
+		}
+		/*
+	
+		template<>
+		float read(const int index) const
+		{
+			return lua_tonumber(mState, index);
+		}
+
+		template<>
+		int32 read(const int index) const
+		{
+			return lua_tointeger(mState, index);
+		}
+
+		template<>
+		const char* read(const int index) const
+		{
+			return lua_tostring(mState, index);
+		}
 
 
+	*/
 #ifdef FAST
 		
 		void callFunction(int paramcount, int returncount)
@@ -88,7 +117,7 @@ namespace lua
 			lua_pcall(mState, paramcount, returncount, 0);
 		}
 #else 
-		inline void addParams()
+		/*inline void addParams()
 		{
 			
 		}
@@ -99,6 +128,7 @@ namespace lua
 			++mFuncParaCount;
 			addParams(rest...);
 		}
+		*/
 		void callFunction(int returncount = 1)
 		{
 			lua_pcall(mState, mFuncParaCount, returncount, 0);
@@ -177,7 +207,27 @@ namespace lua
 			}
 		}
 	};
+
+	template<>
+	float lua::LuaState::read(const int index) const
+	{
+		lua_tonumber(mState, index);
+	}
+
+	template<>
+	int32 lua::LuaState::read(const int index) const
+	{
+		lua_tointeger(mState, index);
+	}
+
+	template<>
+	const char* lua::LuaState::read(const int index) const
+	{
+		lua_tostring(mState, index);
+	}
 }
+
+
 
 //inline void DBG()
 //{
