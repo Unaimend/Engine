@@ -13,7 +13,7 @@
 #include "../include/graphicWrapper/Rectangle.h"
 
 #include "../include/graphicWrapper/Vector.h"
-#define LINUX
+#define MAC
 char gFilePath[100];
 eng::EventQueue gEventQueue;
 lua::LuaState gLuaState("hello.lua");
@@ -27,8 +27,10 @@ lua::LuaState gLuaState("hello.lua");
 
 
 
-int main()
-{   
+int main(int argc, char** argv)
+{
+    
+    
     eng::Event* onWindowClicked = new eng::Event
     {   "onWindowClicked",
         {"Text"}, 
@@ -50,6 +52,8 @@ int main()
 #elif defined WINDOWS
         
 #elif defined MAC
+    strcpy(gFilePath, "/Users/thomasdost/Documents/dev/Engine");
+    std::cout << "Pfad zur Datei:" << gFilePath << std::endl;
     
 #endif
  sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
