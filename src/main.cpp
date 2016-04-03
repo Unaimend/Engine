@@ -1,20 +1,18 @@
-#include "lua.hpp"
+#include "../include/lua/lua.hpp"
 #include <iostream>
-#include "ResourceManager.h"
+#include "../include/ResourceManager.h"
 #include <unistd.h>
-#include "Texture.h"
-#include "Event.h"
-#include "Variant.h"
+#include "../include/Texture.h"
+#include "../include/eventSystem/Event.h"
+#include "../include/Variant.h"
 #include <functional> //std::hash
-#include "globals.h"
-#include "utility.h"
+#include "../include/globals.h"
+#include "../include/utility.h"
 #include <chrono>
-#include "LuaState.h"
-#include "Rectangle.h"
+#include "../include/LuaApi/LuaState.h"
+#include "../include/graphicWrapper/Rectangle.h"
 
-#include "Vector.h"
-
-
+#include "../include/graphicWrapper/Vector.h"
 #define LINUX
 char gFilePath[100];
 eng::EventQueue gEventQueue;

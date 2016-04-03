@@ -27,13 +27,13 @@ Lua Api erstmal komplett ingnogieren
 
 #pragma once
 
-#include "Variant.h"
+#include "../Variant.h"
 #include <map>
 #include <string>
 #include <initializer_list>
 #include <iostream>
-#include "EngineTypes.h"
-#include "utility.h"
+#include "../EngineTypes.h"
+#include "../utility.h"
 namespace eng
 {
 	struct EventArg
