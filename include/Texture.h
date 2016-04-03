@@ -15,8 +15,6 @@
 #include <iostream>
 #include "EngineTypes.h"	//Typedefs
 
-
-
 namespace eng
 {
 	class Texture

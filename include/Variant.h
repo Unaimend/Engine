@@ -25,6 +25,7 @@
 #include <iostream>
 #include "EngineTypes.h"
 #include "utility.h"
+
 namespace eng
 {
 	struct Variant

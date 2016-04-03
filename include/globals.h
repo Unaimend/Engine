@@ -17,6 +17,7 @@
 #include "luaApi/LuaState.h"
 //Gloable Variable fuer den Pfad zur ausfuehrbaren Datei
 extern char gFilePath[100];
+
 namespace eng
 {
 	using namespace lua;
