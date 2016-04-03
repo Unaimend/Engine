@@ -56,7 +56,7 @@ int main(int argc, char** argv)
     std::cout << "Pfad zur Datei:" << gFilePath << std::endl;
     
 #endif
- sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+ sf::RenderWindow window(sf::VideoMode(1440, 900), "SFML works!");
    
    
     while (window.isOpen())
