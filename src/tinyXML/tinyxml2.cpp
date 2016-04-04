@@ -21,10 +21,10 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
-#include "tinyxml2.h"
+#include "../../include/tinyXML/tinyxml2.h"
 
 #include <new>		// yes, this one new style header, is in the Android SDK.
-#if defined(ANDROID_NDK) || defined(__QNXNTO__)
+#if defined(ANDROID_NDK) || defined(__BORLANDC__) || defined(__QNXNTO__)
 #   include <stddef.h>
 #   include <stdarg.h>
 #else
@@ -471,7 +471,7 @@ const char* XMLUtil::GetCharacterRef( const char* p, char* value, int* length )
                 else {
                     return 0;
                 }
-                TIXMLASSERT( digit >= 0 && digit < 16);
+                TIXMLASSERT( digit < 16 );
                 TIXMLASSERT( digit == 0 || mult <= UINT_MAX / digit );
                 const unsigned int digitScaled = mult * digit;
                 TIXMLASSERT( ucs <= ULONG_MAX - digitScaled );
@@ -501,7 +501,7 @@ const char* XMLUtil::GetCharacterRef( const char* p, char* value, int* length )
             while ( *q != '#' ) {
                 if ( *q >= '0' && *q <= '9' ) {
                     const unsigned int digit = *q - '0';
-                    TIXMLASSERT( digit >= 0 && digit < 10);
+                    TIXMLASSERT( digit < 10 );
                     TIXMLASSERT( digit == 0 || mult <= UINT_MAX / digit );
                     const unsigned int digitScaled = mult * digit;
                     TIXMLASSERT( ucs <= ULONG_MAX - digitScaled );
@@ -776,6 +776,7 @@ void XMLNode::DeleteChild( XMLNode* node )
     TIXMLASSERT( node );
     TIXMLASSERT( node->_document == _document );
     TIXMLASSERT( node->_parent == this );
+    Unlink( node );
     DeleteNode( node );
 }
 
@@ -1953,6 +1954,7 @@ XMLError XMLDocument::LoadFile( FILE* fp )
         SetError( XML_ERROR_FILE_READ_ERROR, 0, 0 );
         return _errorID;
     }
+    TIXMLASSERT( filelength >= 0 );
 
     if ( !LongFitsIntoSizeTMinusOne<>::Fits( filelength ) ) {
         // Cannot handle files which won't fit in buffer together with null terminator
