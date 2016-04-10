@@ -8,13 +8,21 @@
             Conversion Konstruktor fuer XmlElement hinzugefuegt
             Funktion aus tinyxml2 zu eigener Klasse hinzugefuegt
             --operator und ++ operator hinzugefuegt
-            getText hinzugefuegt
+            getValue hinzugefuegt
             isNull hinzugefuegt
+            Code auskommentiert
+            getNodeName hinzugefuegt.
+ 
  *TODO:
             Warum funktioniert der Parse Check nicht?
-            XmlNode zugriff returnt bool oder etaws passenderes aka KEINE exception
             Methoden der tinyxml XMLElement Klasse implementieren
                 http://www.grinninglizard.com/tinyxml2docs/classtinyxml2_1_1_x_m_l_element.html
+            Sichbarkeit anpassen
+            Ueberlegen ob alle Klassen eine toXML Funktion erhalten mit
+            der man sehr einfach den Inhalt dieser Klassen in einer Datei abspeichern kann,
+            und ob man die dazu passende Ladefunktion hinzufuegen sollte.
+            PreviousElement failt falls mNode nullptr ist
+            wie soll das behandelt werden?gar nichts tun? oder Fehlermeldung? Gute Behandlung ausdenken!
  *************************************/
 #pragma once
 #include <string>
@@ -30,9 +38,12 @@ namespace eng
     class Xml
     {
     public:
+        /**********************************************
+         *Descr:   Konstruktor um ein Xml Dokument zu laden
+         ***********************************************/
         Xml(filepath filepath)
         {
-            
+            //Checkt ob das Dokument geladen werden konnte
             if(mDoc.LoadFile(filepath.c_str()) == XML_NO_ERROR)
             {
 //                if(mDoc.Parse(filepath.c_str()) == XML_NO_ERROR)
@@ -50,8 +61,12 @@ namespace eng
             {
                 std::cerr << "Die Datei:" << filepath << " konnte nicht GELADEN werden" << std::endl;
             }
-            
         }
+        
+        
+        /**********************************************
+         *Descr:    Gibt das ganze Xml Dokument aus
+         ***********************************************/
         void print()
         {
             mDoc.Print();
@@ -59,9 +74,8 @@ namespace eng
         
     public:
         XMLDocument mDoc;
-        
-    
     };
+    
     
     class XmlElement
     {
@@ -71,38 +85,118 @@ namespace eng
             mNode = &rhs;
         }
         
+        
+        /**********************************************
+         *Descr:    Conversion Constructor fuer XMLElement Ptr die von allen tinyxml2 funktionen zurueckgegeben werden,
+                    die mit XMLElelemt arbeiten
+         *Param1:   Pointer auf ein XMLElement
+         ***********************************************/
         XmlElement(XMLElement* rhs)
         {
             mNode = rhs;
         }
         
-        std::string getText()
+        
+        /**********************************************
+         *Descr:    Wert einer XML Node setzen
+         *Param1:   Wert der gesetzt werden soll;
+         ***********************************************/
+        void setValue(const std::string& value)
+        {
+            mNode->SetText(value.c_str());
+        }
+        void setValue(const double value)
+        {
+            setValue(std::to_string(value));
+        }
+        void setValue(const float value)
+        {
+            setValue(std::to_string(value));
+        }
+        void setValue(const int8 value)
+        {
+             setValue(std::to_string(value));
+        }
+        void setValue(const uint32 value)
+        {
+             setValue(std::to_string(value));
+        }
+        
+        
+        /**********************************************
+         *Descr:    Funktion um auf Elementinhalt zu zugreifen
+         *Ret:      Falls mNode == nullptr -> leerer String, sonst Inhalt des Elements
+         ***********************************************/
+        std::string getValue() const
         {
             if(mNode != nullptr)
             {
                 return mNode->GetText();
             }
+            return "";
         }
         
+        
+        /**********************************************
+         *Descr:    Funktion um auf Namen einer Node zu aendern
+         ***********************************************/
+        void setName(const std::string& name)
+        {
+            if(mNode != nullptr)
+            {
+                mNode->SetName(name.c_str());
+            }
+            
+        }
+        
+        
+        /**********************************************
+         *Descr:    Funktion um auf Nodename zu zugreifen
+         *Ret:      Falls mNode == nullptr -> leerer String, sonst Name der Node auf die gezeigt wird
+         ***********************************************/
+        std::string getNodeName() const
+        {
+            if(mNode != nullptr)
+            {
+                return mNode->Value();
+            }
+            return "";
+        }
+        
+        
+        /**********************************************
+         *Descr:    Setzt den mNode auf das naechste Xml Element auf gleicher Ebene.
+         *Ret:      Das naechste Element auf gleicher Ebene, falls keine Element vorhanden ist wird mNode zu einen nullptr
+         ***********************************************/
         XmlElement& operator++()
         {
             mNode = mNode->NextSiblingElement();
             return *this;
         }
         
+        
+        /**********************************************
+         *Descr:    Setzt den mNode auf das vorherige Xml Element auf gleicher Ebene.
+         *Ret:      Das voherige Element auf gleicher Ebene, falls keine Element vorhanden ist wird mNode zu einen nullptr
+         ***********************************************/
         XmlElement& operator--()
         {
             mNode = mNode->PreviousSiblingElement();
             return *this;
         }
         
-        bool isNull()
+        
+        /**********************************************
+         *Descr:    Checkt ob mNode auf ein Xml Element zeigt
+         *Ret:      True falls auf ein Element gezeigt wird, sonst false.
+         ***********************************************/
+        bool isNotNull() const
         {
             if(mNode == nullptr)
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
     public:
         XMLElement* mNode;
