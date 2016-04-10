@@ -5,6 +5,7 @@
 *Changelog:
 			22.12.205
 *			Typedef fuer int8_t hinzugefuegt
+*           Typedef fuer uint32_t hinzugefuegt.
 *TODO:
 *************************************/
 
@@ -15,6 +16,7 @@
 
 typedef int_fast8_t int8;
 typedef int_fast32_t int32;
+typedef uint_fast32_t uint32;
 typedef int_fast64_t int64;
 typedef std::string filepath;
 namespace eng
