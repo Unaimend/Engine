@@ -11,12 +11,62 @@
 #include <chrono>
 #include "../include/LuaApi/LuaState.h"
 #include "../include/graphicWrapper/Rectangle.h"
-
 #include "../include/graphicWrapper/Vector.h"
+#include "../include/tinyXML/tinyxml2.h"
+#include "../include/xmlWrapper/Xml.h"
 #define MAC
+
+#include <stdlib.h>                             /* For function exit() */
+#include <stdio.h>
+
+void bail(lua_State *L, char *msg){
+    fprintf(stderr, "\nFATAL ERROR:\n  %s: %s\n\n",
+            msg, lua_tostring(L, -1));
+    exit(1);
+}
+//
+//namespace eng
+//{
+//    using namespace tinyxml2;
+//    class Xml
+//    {
+//    public:
+//        Xml(char* filepath)
+//        {
+//            if(mDoc.LoadFile(filepath) != XML_NO_ERROR)
+//            {
+////                if(mDoc.Parse(filepath) != XML_NO_ERROR)
+////                {
+////                    
+////                }
+////                else
+////                {
+////                    std::cerr << "Die Datei:" << filepath << "konnte nicht GEPARSED werden" << std::endl;
+////                    std::cerr << mDoc.GetErrorStr1() << std::endl;
+////                    std::cerr << mDoc.GetErrorStr2() << std::endl;
+////                }
+//            }
+//            else
+//            {
+//                std::cerr << "Die Datei:" << filepath << "konnte nicht GELADEN werden" << std::endl;
+//            }
+//            
+//        }
+////        void print()
+////        {
+////            mDoc.Print();
+////        }
+//        
+//    private:
+//        XMLDocument mDoc;
+//        
+//        
+//    };
+//}
+
 char gFilePath[100];
 eng::EventQueue gEventQueue;
-lua::LuaState gLuaState("hello.lua");
+lua::LuaState gLuaState("/Users/thomasdost/Documents/dev/Engine/data/main.lua");
 
 
  static int l_sin(lua_State *L) 
@@ -29,7 +79,6 @@ lua::LuaState gLuaState("hello.lua");
 
 int main(int argc, char** argv)
 {
-    
     
     eng::Event* onWindowClicked = new eng::Event
     {   "onWindowClicked",
@@ -56,12 +105,56 @@ int main(int argc, char** argv)
     std::cout << "Pfad zur Datei:" << gFilePath << std::endl;
     
 #endif
- sf::RenderWindow window(sf::VideoMode(1440, 900), "SFML works!");
    
+    //char* t = "/Users/thomasdost/Documents/dev/Engine/data/options.xml";
    
+    eng::Xml xml{"/Users/thomasdost/Documents/dev/Engine/data/options.xml"};
+    
+   //t//inyxml2::XMLElement* title = xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "resX" );
+    //title = title->NextSiblingElement();
+    eng::XmlElement test = xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "resX" );
+
+  
+   /*  ATTRIBUTES BEIIIIIIISPIEL
+   eng::XmlElement test1 = xml.mDoc.FirstChildElement( "options" )->FirstChildElement("note");
+    std::cout << test1.getNodeName() <<   test1.mNode->FirstAttribute()->Name() <<std::endl;
+    */
+  
+    sf::RenderWindow window(sf::VideoMode(std::stod(test.getValue()) , 900), "SFML works!");
+    
+    
+    
+    
+    lua_getglobal(gLuaState.mState, "update"); // or get 'banana' from person:Eat()
+    //lua_getfield(gLuaState.mState, -1, "chew");
+    
+    if(!lua_isfunction(gLuaState.mState,-1))
+    {
+        std::cout << "WHY" << std::endl;
+    }
+    
+    lua_pcall(gLuaState.mState, 0, 0, 0);
+    
+    //std::cout << xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "note" )->Value() << std::endl;
+    //test.getValue();
+    
+    //std::cout << test.getText()<< std::endl;
+    //std::cout << test.getNodeName() << std::endl;
+    //++test;
+    //std::cout << test.getText()<< std::endl;
+ // std::cout << test.getNodeName() << std::endl;
+    //std::cout << test.getText()<< std::endl;
+   // --test;
+   //  std::cout << test.getText()<< std::endl;
+    // doc.LoadFile( std::string{"dream.xml"}.c_str() );
+    
+//    tinyxml2::XMLDocument doc;
+    
+        //xml.print();
+//    
     while (window.isOpen())
     {
-
+//         auto frame_start_time = std::chrono::high_resolution_clock::now();
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -71,10 +164,11 @@ int main(int argc, char** argv)
             }
             if (event.type == sf::Event::Resized) 
             {
+                gLuaState.runFile();
                  gEventQueue.addEvent(onWindowClicked);
             }
         }
-        auto start_time = std::chrono::high_resolution_clock::now();
+//        auto start_time = std::chrono::high_resolution_clock::now();
         for(const auto& it : gEventQueue.mEvents)
         {
             if(it->mEventName == eng::util::toHash("onWindowClicked"))
@@ -83,29 +177,87 @@ int main(int argc, char** argv)
             }
             //HIER WERDEN EVENTS UEBERGEBEN
         }
-        auto end_time = std::chrono::high_resolution_clock::now();
-        //std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << std::endl;
+//        auto end_time = std::chrono::high_resolution_clock::now();
+//        std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << std::endl;
 
         gEventQueue.mEvents.clear();
         
+        
+        //LUA UPDATE CALL
+        lua_getglobal(gLuaState.mState, "update"); // or get 'banana' from person:Eat()
+        //lua_getfield(gLuaState.mState, -1, "chew");
+        
+        if(!lua_isfunction(gLuaState.mState,-1))
+        {
+            //std::cout << "WHY" << std::endl;
+        }
+        
+        lua_pcall(gLuaState.mState, 0, 0, 0);
+        
+        
+        
+        //LUA RENDER CALL
+        lua_getglobal(gLuaState.mState, "render"); // or get 'banana' from person:Eat()
+        //lua_getfield(gLuaState.mState, -1, "chew");
+        
+        if(!lua_isfunction(gLuaState.mState,-1))
+        {
+           // std::cout << "WHY" << std::endl;
+        }
+        
+        lua_pcall(gLuaState.mState, 0, 0, 0);
 
 
    
         window.clear();
 
         window.display();
+//        auto frame_end_time = std::chrono::high_resolution_clock::now();
+//        std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::milliseconds>(frame_end_time - frame_start_time).count() << std::endl;
 
     }
         
-
-
-   
+//
+//    std::cout << VAR(gLuaState) << std::endl;
+//   
     
-    gLuaState.push(1,2,3);
-    gLuaState.runFile();
-
-
-   
+   // gLuaState.push(1,2,3);
+    //gLuaState.runFile();
+  
+    
+   // gLuaState.openLibs();
+    
+//    lua_getglobal(gLuaState.mState,"Main");
+    
+//    lua_getfield(gLuaState.mState, -1, "update");
+//  if (lua_pcall(gLuaState.mState, 0, 0, 0))
+//        bail(gLuaState.mState, "lua_pcall() failed");
+//    lua_pcall(gLuaState.mState, 0, 0, 0);
+    
+    
+//    lua_getglobal(gLuaState.mState, "update"); // or get 'banana' from person:Eat()
+//    //lua_getfield(gLuaState.mState, -1, "chew");
+//    
+//    if(!lua_isfunction(gLuaState.mState,-1))
+//    {
+//        std::cout << "WHY" << std::endl;
+//    }
+//    
+//    gLuaState.push(5);
+//    gLuaState.push(1);
+//    
+//    /* do the call (2 arguments, 1 result) */
+//    if (lua_pcall(gLuaState.mState, 2, 1, 0) != 0) {
+//        printf("error running function `f': %s\n",lua_tostring(gLuaState.mState, -1));
+//        return -1;
+//    }
+//    lua_pcall(gLuaState.mState, 1, 0, 0);
+// 
+//
+//    lua_getglobal(gLuaState.mState, "tellme");
+//    lua_pushinteger(gLuaState.mState, 22);
+//    lua_pcall(gLuaState.mState, 1, 0, 0);
+  
 
     /*
 

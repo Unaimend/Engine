@@ -26,6 +26,8 @@ namespace lua
 			mState(luaL_newstate()), mFilePath(filepath)
 		{
 			openLibs();
+            loadFile();
+            runFile();
 			
 
 		}
@@ -49,7 +51,10 @@ namespace lua
 		}
 		void runFile()
 		{
-  		 luaL_dofile(mState, mFilePath.c_str());
+  		 if(luaL_dofile(mState, mFilePath.c_str()) != 0)
+         {
+             std::cerr << "Fehler beim Ausfuehren der Lua Datei " << mFilePath << std::endl;
+         }
 
 		}
 

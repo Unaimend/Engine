@@ -1,10 +1,6 @@
-<?xml version="1.0"?>
-<!DOCTYPE WAS SYSTEM "was.dtd">
-<optionen>
-	<resX>1400</resX>
+<?xml version="1.0" encoding="UTF-8"?>
+<options>
+	<resX>1440</resX>
 	<resY>900</resY>
-</optionen>
-<PLAYER2>
-    <posX2>0</posX2>
-    <posY2>0</posY2>
-</PLAYER2>
+	<tree_01 path="c:\.." size="16x16"> </tree_01>
+</options>
