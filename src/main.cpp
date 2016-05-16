@@ -24,6 +24,28 @@ void bail(lua_State *L, char *msg){
             msg, lua_tostring(L, -1));
     exit(1);
 }
+
+namespace eng {
+    Rectangle& createRectangle(int x, int y)
+    {
+        return *(new Rectangle{x,y});
+    }
+    
+    static int myRect( lua_State *L, int x, int y)
+    {
+        printf ("Roses are Red\n");
+    }
+}
+std::vector<eng::Rectangle> rects;
+static int HI(lua_State *L)
+{
+    int n = lua_gettop(L);
+    int x = lua_tonumber(L, 1);
+    int y = lua_tonumber(L,2);
+    rects.emplace_back(x, y);
+}
+
+
 //
 //namespace eng
 //{
@@ -79,6 +101,11 @@ lua::LuaState gLuaState("/Users/thomasdost/Documents/dev/Engine/data/main.lua");
 
 int main(int argc, char** argv)
 {
+    
+    
+    
+  
+    
     
     eng::Event* onWindowClicked = new eng::Event
     {   "onWindowClicked",
@@ -151,7 +178,8 @@ int main(int argc, char** argv)
 //    tinyxml2::XMLDocument doc;
     
         //xml.print();
-//    
+//
+    eng::Rectangle rect = eng::createRectangle(20, 20);
     while (window.isOpen())
     {
 //         auto frame_start_time = std::chrono::high_resolution_clock::now();
@@ -205,12 +233,20 @@ int main(int argc, char** argv)
            // std::cout << "WHY" << std::endl;
         }
         
+        lua_register(gLuaState.mState, "hi", HI);
+
+        
         lua_pcall(gLuaState.mState, 0, 0, 0);
 
-
+        
    
         window.clear();
-
+        
+        for(auto it : rects)
+        {
+            it.draw(window);
+        }
+       
         window.display();
 //        auto frame_end_time = std::chrono::high_resolution_clock::now();
 //        std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::milliseconds>(frame_end_time - frame_start_time).count() << std::endl;
