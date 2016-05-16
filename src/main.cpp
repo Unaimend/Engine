@@ -37,13 +37,15 @@ namespace eng {
     }
 }
 std::vector<eng::Rectangle> rects;
-static int HI(lua_State *L)
+static int createRectangle(lua_State *L)
 {
     int n = lua_gettop(L);
     int x = lua_tonumber(L, 1);
     int y = lua_tonumber(L,2);
     rects.emplace_back(x, y);
 }
+
+
 
 
 //
@@ -152,14 +154,18 @@ int main(int argc, char** argv)
     
     
     
-    lua_getglobal(gLuaState.mState, "update"); // or get 'banana' from person:Eat()
-    //lua_getfield(gLuaState.mState, -1, "chew");
+
     
+    gLuaState.runFile();
+    lua_register(gLuaState.mState, "createRectangle", createRectangle);
+    
+    
+    lua_getglobal(gLuaState.mState, "startUp"); // or get 'banana' from person:Eat()
+    //lua_getfield(gLuaState.mState, -1, "chew");
     if(!lua_isfunction(gLuaState.mState,-1))
     {
-        std::cout << "WHY" << std::endl;
+        std::cout << "Keine Lua StartUp Funktion" << std::endl;
     }
-    
     lua_pcall(gLuaState.mState, 0, 0, 0);
     
     //std::cout << xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "note" )->Value() << std::endl;
@@ -179,7 +185,13 @@ int main(int argc, char** argv)
     
         //xml.print();
 //
-    eng::Rectangle rect = eng::createRectangle(20, 20);
+    
+    
+//    gLuaState.runFile();
+
+     gLuaState.runFile();
+    
+    
     while (window.isOpen())
     {
 //         auto frame_start_time = std::chrono::high_resolution_clock::now();
@@ -192,6 +204,7 @@ int main(int argc, char** argv)
             }
             if (event.type == sf::Event::Resized) 
             {
+                std::cout << rects.size() << std::endl;
                 gLuaState.runFile();
                  gEventQueue.addEvent(onWindowClicked);
             }
@@ -209,6 +222,11 @@ int main(int argc, char** argv)
 //        std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << std::endl;
 
         gEventQueue.mEvents.clear();
+        
+        
+        
+        
+     
         
         
         //LUA UPDATE CALL
@@ -232,14 +250,14 @@ int main(int argc, char** argv)
         {
            // std::cout << "WHY" << std::endl;
         }
-        
-        lua_register(gLuaState.mState, "hi", HI);
-
-        
         lua_pcall(gLuaState.mState, 0, 0, 0);
+
 
         
    
+
+        
+//        std::cout << rects.size() << std::endl;
         window.clear();
         
         for(auto it : rects)
@@ -395,8 +413,13 @@ int main(int argc, char** argv)
          }
        
 
-*/
-       
+  */
+    lua_getglobal(gLuaState.mState, "shutDown");
+    if(!lua_isfunction(gLuaState.mState,-1))
+    {
+        std::cout << "Keine Lua StartUp Funktion" << std::endl;
+    }
+    lua_pcall(gLuaState.mState, 0, 0, 0);
 
 
 
