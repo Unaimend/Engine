@@ -19,6 +19,9 @@
 #include <stdlib.h>                             /* For function exit() */
 #include <stdio.h>
 
+
+
+
 void bail(lua_State *L, char *msg){
     fprintf(stderr, "\nFATAL ERROR:\n  %s: %s\n\n",
             msg, lua_tostring(L, -1));
@@ -166,7 +169,7 @@ int main(int argc, char** argv)
     {
         std::cout << "Keine Lua StartUp Funktion" << std::endl;
     }
-    lua_pcall(gLuaState.mState, 0, 0, 0);
+    gLuaState.callFunction(); 
     
     //std::cout << xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "note" )->Value() << std::endl;
     //test.getValue();
@@ -191,10 +194,11 @@ int main(int argc, char** argv)
 
      gLuaState.runFile();
     
-    
     while (window.isOpen())
     {
-//         auto frame_start_time = std::chrono::high_resolution_clock::now();
+//
+        auto frame_start_time = std::chrono::high_resolution_clock::now();
+
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -204,7 +208,6 @@ int main(int argc, char** argv)
             }
             if (event.type == sf::Event::Resized) 
             {
-                std::cout << rects.size() << std::endl;
                 gLuaState.runFile();
                  gEventQueue.addEvent(onWindowClicked);
             }
@@ -230,9 +233,7 @@ int main(int argc, char** argv)
         
         
         //LUA UPDATE CALL
-        lua_getglobal(gLuaState.mState, "update"); // or get 'banana' from person:Eat()
-        //lua_getfield(gLuaState.mState, -1, "chew");
-        
+        lua_getglobal(gLuaState.mState, "update");
         if(!lua_isfunction(gLuaState.mState,-1))
         {
             //std::cout << "WHY" << std::endl;
@@ -266,8 +267,8 @@ int main(int argc, char** argv)
         }
        
         window.display();
-//        auto frame_end_time = std::chrono::high_resolution_clock::now();
-//        std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::milliseconds>(frame_end_time - frame_start_time).count() << std::endl;
+        auto frame_end_time = std::chrono::high_resolution_clock::now();
+//        std::cout << ":FRAMETIME:"<<std::chrono::duration_cast<std::chrono::milliseconds >(frame_end_time - frame_start_time).count() << std::endl;
 
     }
         
@@ -351,12 +352,6 @@ int main(int argc, char** argv)
  
 
 
-
-
-
-
-
-
     /******************TEST AREA**********************************/
     eng::Variant a{"Error: Dateipfad konnte nicht ermittelt werden"};
     // std::cout << a.mValue.mAsStringId << std::endl;
@@ -411,13 +406,16 @@ int main(int argc, char** argv)
 
            
          }
-       
+  
 
   */
+    
+
+    
     lua_getglobal(gLuaState.mState, "shutDown");
     if(!lua_isfunction(gLuaState.mState,-1))
     {
-        std::cout << "Keine Lua StartUp Funktion" << std::endl;
+        std::cout << "Keine Lua shutDown Funktion" << std::endl;
     }
     lua_pcall(gLuaState.mState, 0, 0, 0);
 

@@ -46,17 +46,16 @@ end
 
 
 function shutDown( )
-
 	print("Tchuess aus Lua")
 end
 
 
 function update( )
-	 print("Lua update")
+	 -- print("Lua update")
 end
 
 function render(  )
-	print("Lua update")
+	-- print("Lua render")
 end
 
 
