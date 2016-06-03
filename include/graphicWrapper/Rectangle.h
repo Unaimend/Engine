@@ -9,6 +9,8 @@
 //			eng::Graphics.hpp hinzufuegen
 //***************************************************************
 //#include <SFML/
+
+#include "Vector.h"
 namespace eng
 {
 	class Rectangle
@@ -23,11 +25,13 @@ namespace eng
         {
             window.draw(mRectangle);
         }
+        void move(const eng::Vector2f vec)
+        {
+            mRectangle.move(vec.x, vec.y);
+        }
     
     private:
         sf::RectangleShape mRectangle;
-       
-    
 	};
     
     

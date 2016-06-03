@@ -4,9 +4,13 @@
 //Beschr.	Wrapper fuer Vectors
 //Changelog	: Erstellt
 //			  22.01.2016
+//            03.06.2016
+//            Pragma once geaddet
 //TODO:
 //			eng::Graphics.hpp hinzufuegen
 //***************************************************************
+#pragma once
+
 #include "../EngineTypes.h"
 
 namespace eng

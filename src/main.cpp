@@ -51,6 +51,8 @@ static int createRectangle(lua_State *L)
 
 
 
+
+
 //
 //namespace eng
 //{
@@ -162,37 +164,12 @@ int main(int argc, char** argv)
     gLuaState.runFile();
     lua_register(gLuaState.mState, "createRectangle", createRectangle);
     
-    
-    lua_getglobal(gLuaState.mState, "startUp"); // or get 'banana' from person:Eat()
-    //lua_getfield(gLuaState.mState, -1, "chew");
-    if(!lua_isfunction(gLuaState.mState,-1))
-    {
-        std::cout << "Keine Lua StartUp Funktion" << std::endl;
-    }
-    gLuaState.callFunction(); 
-    
-    //std::cout << xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "note" )->Value() << std::endl;
-    //test.getValue();
-    
-    //std::cout << test.getText()<< std::endl;
-    //std::cout << test.getNodeName() << std::endl;
-    //++test;
-    //std::cout << test.getText()<< std::endl;
- // std::cout << test.getNodeName() << std::endl;
-    //std::cout << test.getText()<< std::endl;
-   // --test;
-   //  std::cout << test.getText()<< std::endl;
-    // doc.LoadFile( std::string{"dream.xml"}.c_str() );
-    
-//    tinyxml2::XMLDocument doc;
-    
-        //xml.print();
-//
-    
-    
-//    gLuaState.runFile();
+    lua_getglobal(gLuaState.mState, "startUp");
+    gLuaState.stackDump();
+    gLuaState.callFunction();
+    std::cout << gLuaState["x"] << std::endl;
+    gLuaState.stackDump();
 
-     gLuaState.runFile();
     
     while (window.isOpen())
     {
@@ -234,11 +211,7 @@ int main(int argc, char** argv)
         
         //LUA UPDATE CALL
         lua_getglobal(gLuaState.mState, "update");
-        if(!lua_isfunction(gLuaState.mState,-1))
-        {
-            //std::cout << "WHY" << std::endl;
-        }
-        
+   
         lua_pcall(gLuaState.mState, 0, 0, 0);
         
         
@@ -246,11 +219,7 @@ int main(int argc, char** argv)
         //LUA RENDER CALL
         lua_getglobal(gLuaState.mState, "render"); // or get 'banana' from person:Eat()
         //lua_getfield(gLuaState.mState, -1, "chew");
-        
-        if(!lua_isfunction(gLuaState.mState,-1))
-        {
-           // std::cout << "WHY" << std::endl;
-        }
+ 
         lua_pcall(gLuaState.mState, 0, 0, 0);
 
 
@@ -434,6 +403,25 @@ int main(int argc, char** argv)
 *TODO:
 *************************************/
 
+
+
+//std::cout << xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "note" )->Value() << std::endl;
+//test.getValue();
+
+//std::cout << test.getText()<< std::endl;
+//std::cout << test.getNodeName() << std::endl;
+//++test;
+//std::cout << test.getText()<< std::endl;
+// std::cout << test.getNodeName() << std::endl;
+//std::cout << test.getText()<< std::endl;
+// --test;
+//  std::cout << test.getText()<< std::endl;
+// doc.LoadFile( std::string{"dream.xml"}.c_str() );
+
+//    tinyxml2::XMLDocument doc;
+
+//xml.print();
+//
 
 
 

@@ -9,6 +9,7 @@
 //***************************************************************
 
 #include <memory>
+#include "LuaValue.h"
 extern "C"
 {
 #include "lua.h"
@@ -87,16 +88,7 @@ namespace lua
 
 
 #ifdef FAST
-		
-		void callFunction(int paramcount, int returncount)
-		{
-			lua_pcall(mState, paramcount, returncount, 0);
-		}
-#else 
-		inline void addParams()
-		{
-			
-		}
+#else
 		template<typename T, typename... Rest>
 		inline void addParams( const T& obj, const Rest&... rest)
 		{	
@@ -106,10 +98,48 @@ namespace lua
 		}
 		void callFunction(int returncount = 1)
 		{
+            if(!lua_isfunction(this->mState,-1))
+            {
+                std::cerr << "Auf dem Stack befindet sich keine Funktion" << std::endl;
+            }
 			lua_pcall(mState, mFuncParaCount, returncount, 0);
 			mFuncParaCount = 0;
 		}
 #endif
+        
+        
+//        unsigned int operator [](const std::string& varname) const
+//        {
+//            lua_pushlightuserdata(L, (void *)&Key);  /* push address */
+//            lua_pushnumber(L, myNumber);  /* push value */
+//            /* registry[&Key] = myNumber */
+//            lua_settable(L, LUA_REGISTRYINDEX);
+//            
+//            return
+//        
+//        }
+        
+        //GETTER
+        lua::Variant operator [](std::string&& varname)
+        {
+            lua_getglobal(this->mState, varname.c_str());
+            if (lua_isinteger(mState, -1))
+            {
+                return lua::Variant(lua::Variant::Type::INTEGER,lua_tointeger(mState, -1) );
+            }
+            else if (lua_isnumber(mState, -1))
+            {
+                return lua::Variant(lua::Variant::Type::DOUBLE,lua_tonumber(mState, -1) );
+            }
+        }
+        
+        lua::Variant & operator [](const std::string& varname)
+        {
+            lua_getglobal(this->mState, varname.c_str());
+            
+        }
+        
+        
 		
 		int getInt(int stackpos)
 		{
@@ -134,28 +164,37 @@ namespace lua
 			}
 
 		}
+        
+        void error (const char *fmt, ...) {
+            va_list argp;
+            va_start(argp, fmt);
+            vfprintf(stderr, fmt, argp);
+            va_end(argp);
+            lua_close(this->mState);
+            exit(EXIT_FAILURE);
+        }
 
-		void stackDump(lua::LuaState& state) {
+		void stackDump() {
 			int i;
-			int top = lua_gettop(state.mState);
+			int top = lua_gettop(this->mState);
 			for (i = 1; i <= top; i++) {  /* repeat for each level */
-				int t = lua_type(state.mState, i);
+				int t = lua_type(this->mState, i);
 				switch (t) {
 
 				case LUA_TSTRING:  /* strings */
-					printf("`%s'", lua_tostring(state.mState, i));
+					printf("`%s'", lua_tostring(this->mState, i));
 					break;
 
 				case LUA_TBOOLEAN:  /* booleans */
-					printf(lua_toboolean(state.mState, i) ? "true" : "false");
+					printf(lua_toboolean(this->mState, i) ? "true" : "false");
 					break;
 
 				case LUA_TNUMBER:  /* numbers */
-					printf("%g", lua_tonumber(state.mState, i));
+					printf("%g", lua_tonumber(this->mState, i));
 					break;
 
 				default:  /* other values */
-					printf("%s", lua_typename(state.mState, t));
+					printf("%s", lua_typename(this->mState, t));
 					break;
 
 				}

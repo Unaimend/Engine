@@ -1,5 +1,5 @@
 
-
+x = 234.5;
 local mt = {}
 -- Namepsaces lernen
  Rectangle = {}
@@ -15,6 +15,8 @@ function Rectangle.new(rrectangle)
 	local rectangle = {}
 	setmetatable(rectangle, mt)
 end
+
+
 -- -- Rectangle Konstuktor fuer benannte Parameter
 -- function Rectangle.new(rrectangle)
 -- 	if type(rrectangle.xPos) ~= "number" then
@@ -38,9 +40,9 @@ end
 -- end
 
 function startUp( )
-	r4 = Rectangle.new{xPos=5,yPos=10,width=22,height=19}
-	r5 = Rectangle.new{xPos=20,yPos=100}
-	createRectangle(50,50)
+	-- r4 = Rectangle.new{xPos=5,yPos=10,width=22,height=19}
+	-- r5 = Rectangle.new{xPos=20,yPos=100}
+	-- createRectangle(50,50)
 	print("Hallo aus Lua")
 end
 
