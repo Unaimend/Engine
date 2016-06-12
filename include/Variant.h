@@ -51,6 +51,7 @@ namespace eng
 		} Value ;
 		
 		Variant() = default;
+        
 
 		Variant(Type type, double value)
 		{

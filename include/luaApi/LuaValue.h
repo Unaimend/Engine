@@ -14,20 +14,6 @@
 namespace lua {
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     class Variant
     {
     public:

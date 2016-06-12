@@ -165,11 +165,18 @@ int main(int argc, char** argv)
     lua_register(gLuaState.mState, "createRectangle", createRectangle);
     
     lua_getglobal(gLuaState.mState, "startUp");
-    gLuaState.stackDump();
-    gLuaState.callFunction();
-    std::cout << gLuaState["x"] << std::endl;
-    gLuaState.stackDump();
-
+//    gLuaState.stackDump();
+//    gLuaState.callFunction();
+//    std::cout << gLuaState["x"] << std::endl;
+//    gLuaState.stackDump();
+//    
+    int ab = 4;
+    
+    std::cout << typeid(bool).name() << std::endl;
+    
+    typedef std::integral_constant<bool, true> t_true;
+    typedef std::integral_constant<bool, false> t_false;
+    
     
     while (window.isOpen())
     {
