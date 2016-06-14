@@ -11,10 +11,51 @@
 #ifndef LuaValue_h
 #define LuaValue_h
 
-#include <typeinfo>
-
-namespace lua {
+namespace lua
+{
     
+    
+    class LuaRef
+    {
+    public:
+        //Damit die Funktion zugriff aus das Type Enum erhaelt
+        friend std::ostream& operator<<(std::ostream& out, const LuaRef& f);
+        //Haellt alle moeglichen Typen um sind Variable zu identifizieren
+        enum class Type : int
+        {
+            INTEGER,
+            FLOAT,
+            BOOL,
+            STRING,
+            COUNT
+        };
+        Type mType;
+        int32 ref;
+        std::string identifier;
+        lua_State* mState;
+        
+        LuaRef(int32 key, const std::string& ident, lua_State* state)
+        : ref(key), identifier(ident), mState(state)
+        {
+            
+        }
+        
+        LuaRef& operator=(int32 value)
+        {
+            lua_pushnumber(mState, value);
+            lua_setglobal(mState, identifier.c_str());
+        }
+        
+        LuaRef& operator=(const char* value)
+        {
+            lua_pushstring(mState, value);
+            lua_setglobal(mState, identifier.c_str());
+        }
+        
+        
+        
+        
+    };
     
     class LuaValue
     {
@@ -41,41 +82,6 @@ namespace lua {
         
         LuaValue() = default;
        
-       
-//        Variant(Type type, double value)
-//        {
-//            switch(type)
-//            {
-//                case 	Type::INTEGER:
-//                    mType = Type::INTEGER;
-//                    mValue.mAsInteger = value;
-//                    break;
-//                    
-//                case	Type::DOUBLE:
-//                    mType = Type::DOUBLE;
-//                    mValue.mAsDouble = value;
-//                    break;
-//                case	Type::BOOL:
-//                    mType = Type::BOOL;
-//                    mValue.mAsBool = value;
-//                    break;
-//                case	Type::STRING_ID:
-//                    mType = Type::STRING_ID;
-//                    mValue.mAsStringId = value;
-//                    break;
-//                default:
-//                    std::cout << "Unknown Type in eng::Variant::Variant" << std::endl;
-//            }
-//            
-//        }
-        
-        
-        
-//        Variant(const std::string& value)
-//        {
-//            mType = Type::STRING_ID;
-//            mValue.mAsStringId = eng::util::toHash(value);
-//        }
         
         LuaValue(int32&& rhs)
         {
@@ -167,11 +173,12 @@ namespace lua {
                 return out << f.mValue.mAsString ;
                 break;
             default:				
-                return out << "Unknown in eng::Variant::operator<<" ;
+                return out << "Unknown in lua::ValueType::operator<<" ;
         }
         
     }
-};
+}
+
 
 
 

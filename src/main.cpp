@@ -106,12 +106,9 @@ lua::LuaState gLuaState("/Users/thomasdost/Documents/dev/Engine/data/main.lua");
 
 
 
+
 int main(int argc, char** argv)
 {
-    
-    
-    
-  
     
     
     eng::Event* onWindowClicked = new eng::Event
@@ -155,11 +152,13 @@ int main(int argc, char** argv)
     */
     
     
-    lua::LuaValue aaa(0);
     
-    std::cout << aaa << std::endl;
+    lua::LuaValue aaa("HALLO");
+ 
     
-    return 0;
+    gLuaState["max"] = 5;
+  
+    
     sf::RenderWindow window(sf::VideoMode(std::stod(test.getValue()) , 900), "SFML works!");
     
     
@@ -168,6 +167,12 @@ int main(int argc, char** argv)
 
     
     gLuaState.runFile();
+//    
+//   lua::LuaValue aba = gLuaState["x"];
+//    std::cout << aba << std::endl;
+    
+    
+    
     lua_register(gLuaState.mState, "createRectangle", createRectangle);
     
     lua_getglobal(gLuaState.mState, "startUp");
@@ -208,6 +213,7 @@ int main(int argc, char** argv)
             if(it->mEventName == eng::util::toHash("onWindowClicked"))
             {
                 std::cout << it->mArgs["Text"].mValue.mAsInteger << std::endl;
+               
             }
             //HIER WERDEN EVENTS UEBERGEBEN
         }

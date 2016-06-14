@@ -6,10 +6,12 @@
 //			:
 //TODO:
 //		Funktor durch Lambada austauschen
+//      Unique Pointer in Operator[] verweden.
 //***************************************************************
 
 #include <memory>
 #include "LuaValue.h"
+#include "LuaState.h"
 extern "C"
 {
 #include "lua.h"
@@ -107,38 +109,43 @@ namespace lua
 		}
 #endif
         
+    //SHARED
+        lua::LuaRef& operator[](const std::string& varname)
+        {
+            LuaRef* temp = new LuaRef(0, varname, mState);
+            return *temp;
+        }
         
-//        unsigned int operator [](const std::string& varname) const
-//        {
-//            lua_pushlightuserdata(L, (void *)&Key);  /* push address */
-//            lua_pushnumber(L, myNumber);  /* push value */
-//            /* registry[&Key] = myNumber */
-//            lua_settable(L, LUA_REGISTRYINDEX);
-//            
-//            return
-//        
-//        }
+        //GETTER
+        lua::LuaValue operator [](const std::string& varname) const
+        {
+            lua_getglobal(this->mState, varname.c_str());
+            if (lua_isinteger(mState, -1))
+            {
+                return lua::LuaValue((int)lua_tointeger(mState, -1));
+            }
+            else if (lua_isnumber(mState, -1))
+            {
+                return lua::LuaValue((float)lua_tonumber(mState, -1));
+            }
+            else if (lua_isboolean(mState, -1))
+            {
+                return lua::LuaValue((bool)lua_toboolean(mState, -1));
+            }
+            else if(lua_isstring(mState, -1))
+            {
+                return lua::LuaValue(strdup(lua_tostring(mState, -1)));
+            }
+            else
+            {
+                std::cerr << "Kein Passender Typ aufm Stack" << std::endl;
+                return LuaValue();
+            }
+                
+        }
         
-//        //GETTER
-//        lua::Variant operator [](std::string&& varname)
-//        {
-//            lua_getglobal(this->mState, varname.c_str());
-//            if (lua_isinteger(mState, -1))
-//            {
-//                return lua::Variant(lua::Variant::Type::INTEGER,lua_tointeger(mState, -1) );
-//            }
-//            else if (lua_isnumber(mState, -1))
-//            {
-//                return lua::Variant(lua::Variant::Type::DOUBLE,lua_tonumber(mState, -1) );
-//            }
-//        }
-//        
-//        lua::Variant & operator [](const std::string& varname)
-//        {
-//            lua_getglobal(this->mState, varname.c_str());
-//            
-//        }
-//        
+     
+//
 //        
 		
 		int getInt(int stackpos)
