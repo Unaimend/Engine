@@ -153,7 +153,13 @@ int main(int argc, char** argv)
    eng::XmlElement test1 = xml.mDoc.FirstChildElement( "options" )->FirstChildElement("note");
     std::cout << test1.getNodeName() <<   test1.mNode->FirstAttribute()->Name() <<std::endl;
     */
-  
+    
+    
+    lua::LuaValue aaa(0);
+    
+    std::cout << aaa << std::endl;
+    
+    return 0;
     sf::RenderWindow window(sf::VideoMode(std::stod(test.getValue()) , 900), "SFML works!");
     
     

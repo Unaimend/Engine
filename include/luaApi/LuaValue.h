@@ -1,7 +1,7 @@
 
 /************************************
  *Author:    Thomas Dost
- *Datum:     03.06.2016
+ *Datum:     13.06.2016
  *Beschr.
  *Changelog:
             NEUSCHREIBEN
@@ -11,93 +11,94 @@
 #ifndef LuaValue_h
 #define LuaValue_h
 
+#include <typeinfo>
+
 namespace lua {
     
     
-    class Variant
+    class LuaValue
     {
     public:
         //Damit die Funktion zugriff aus das Type Enum erhaelt
-        friend std::ostream& operator<<(std::ostream& out, const Variant& f);
+        friend std::ostream& operator<<(std::ostream& out, const LuaValue& f);
         //Haellt alle moeglichen Typen um sind Variable zu identifizieren
         enum class Type : int
         {
             INTEGER,
-            DOUBLE,
+            FLOAT,
             BOOL,
-            STRING_ID,
+            STRING,
             COUNT
         };
         //Union um die Variale zu speichern
         typedef union
         {
             int32 mAsInteger;
-            long double mAsDouble;
+            float mAsFloat;
             bool  mAsBool;
-            eng::hash   mAsStringId;
+            char*  mAsString;
         } Value ;
         
-        Variant() = default;
+        LuaValue() = default;
+       
+       
+//        Variant(Type type, double value)
+//        {
+//            switch(type)
+//            {
+//                case 	Type::INTEGER:
+//                    mType = Type::INTEGER;
+//                    mValue.mAsInteger = value;
+//                    break;
+//                    
+//                case	Type::DOUBLE:
+//                    mType = Type::DOUBLE;
+//                    mValue.mAsDouble = value;
+//                    break;
+//                case	Type::BOOL:
+//                    mType = Type::BOOL;
+//                    mValue.mAsBool = value;
+//                    break;
+//                case	Type::STRING_ID:
+//                    mType = Type::STRING_ID;
+//                    mValue.mAsStringId = value;
+//                    break;
+//                default:
+//                    std::cout << "Unknown Type in eng::Variant::Variant" << std::endl;
+//            }
+//            
+//        }
         
-        Variant(Type type, double value)
+        
+        
+//        Variant(const std::string& value)
+//        {
+//            mType = Type::STRING_ID;
+//            mValue.mAsStringId = eng::util::toHash(value);
+//        }
+        
+        LuaValue(int32&& rhs)
         {
-            switch(type)
-            {
-                case 	Type::INTEGER:
-                    mType = Type::INTEGER;
-                    mValue.mAsInteger = value;
-                    break;
-                    
-                case	Type::DOUBLE:
-                    mType = Type::DOUBLE;
-                    mValue.mAsDouble = value;
-                    break;
-                case	Type::BOOL:
-                    mType = Type::BOOL;
-                    mValue.mAsBool = value;
-                    break;
-                case	Type::STRING_ID:
-                    mType = Type::STRING_ID;
-                    mValue.mAsStringId = value;
-                    break;
-                default:
-                    std::cout << "Unknown Type in eng::Variant::Variant" << std::endl;
-            }
-            
+            this->mType = Type::INTEGER;
+            this->mValue.mAsInteger = rhs;
         }
         
-        Variant(const std::string& value)
+        LuaValue(float&& rhs)
         {
-            mType = Type::STRING_ID;
-            mValue.mAsStringId = eng::util::toHash(value);
+            this->mType = Type::FLOAT;
+            this->mValue.mAsFloat = rhs;
         }
         
-        
-        inline void initAsInt(int32 value)
+        LuaValue(bool&& rhs)
         {
-            mType = Type::INTEGER;
-            mValue.mAsInteger = value;
+            this->mType = Type::BOOL;
+            this->mValue.mAsBool = rhs;
         }
         
-        
-        inline void initAsDouble(double value)
+        LuaValue(const char* rhs)
         {
-            mType = Type::DOUBLE;
-            mValue.mAsDouble = value;
-        }
-        
-        
-        inline void initAsBool(bool value)
-        {
-            mType = Type::BOOL;
-            mValue.mAsBool = value;
-        }
-        
-        
-        inline void initAsHash(eng::hash value)
-        {
-            mType = Type::STRING_ID;
-            mValue.mAsStringId = value;
+            this->mType = Type::STRING;
+            this->mValue.mAsString = strdup(rhs);
         }
         
         //Typ des Variants
@@ -105,55 +106,65 @@ namespace lua {
         //Wert des Variants
         Value mValue;
         
-        Variant(const Variant& rhs)
+        LuaValue(const LuaValue& rhs)
         {
             mType = rhs.mType;
             mValue = rhs.mValue;
-            //std::cout <<"VARAINT COPPY" << std::endl;
+            return this;
+            std::cerr <<"Gefaehrlich  durch char* im Uniun"<< std::endl;
         }
         
-        Variant& operator=(const Variant& rhs)
+        LuaValue& operator=(const LuaValue& rhs)
         {
             mType = rhs.mType;
             mValue = rhs.mValue;
+            return *this;
             //std::cout <<"VARAINT ASSIGN" << std::endl;
         }
         
-        Variant operator=(int&& rhs)
+        LuaValue& operator=(int32&& rhs)
         {
-            return Variant(Type::INTEGER, rhs);
-            //std::cout <<"VARAINT ASSIGN" << std::endl;
+            this->mType = Type::INTEGER;
+            this->mValue.mAsInteger = rhs;
+            return *this;
         }
-        
-        Variant operator=(float&& rhs)
+
+        LuaValue& operator=(float&& rhs)
         {
-            return Variant(Type::DOUBLE, rhs);
-            //std::cout <<"VARAINT ASSIGN" << std::endl;
+            this->mType = Type::FLOAT;
+            this->mValue.mAsFloat = rhs;
+            return *this;
         }
-        
-        Variant operator=(double&& rhs)
+        LuaValue& operator=(bool&& rhs)
         {
-            return Variant(Type::DOUBLE, rhs);
-            //std::cout <<"VARAINT ASSIGN" << std::endl;
+            this->mType = Type::FLOAT;
+            this->mValue.mAsBool = rhs;
+            return *this;
+        }
+        LuaValue& operator=(const char* rhs)
+        {
+            this->mType = Type::STRING;
+            this->mValue.mAsString = strdup(rhs);
+            return *this;
         }
     };
     
-    std::ostream& operator<<(std::ostream& out, const Variant& f)
+    std::ostream& operator<<(std::ostream& out, const LuaValue& f)
     {
         switch(f.mType)
         {
-            case 	Variant::Type::INTEGER:
+            case 	LuaValue::Type::INTEGER:
                 return out << f.mValue.mAsInteger ;
                 break;
                 
-            case	Variant::Type::DOUBLE:
-                return out << f.mValue.mAsDouble ;
+            case	LuaValue::Type::FLOAT:
+                return out << f.mValue.mAsFloat ;
                 break;
-            case	Variant::Type::BOOL:
+            case	LuaValue::Type::BOOL:
                 return out << f.mValue.mAsBool ;
                 break;
-            case	Variant::Type::STRING_ID:
-                return out << f.mValue.mAsStringId ;
+            case	LuaValue::Type::STRING:
+                return out << f.mValue.mAsString ;
                 break;
             default:				
                 return out << "Unknown in eng::Variant::operator<<" ;

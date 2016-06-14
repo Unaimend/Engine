@@ -119,27 +119,27 @@ namespace lua
 //        
 //        }
         
-        //GETTER
-        lua::Variant operator [](std::string&& varname)
-        {
-            lua_getglobal(this->mState, varname.c_str());
-            if (lua_isinteger(mState, -1))
-            {
-                return lua::Variant(lua::Variant::Type::INTEGER,lua_tointeger(mState, -1) );
-            }
-            else if (lua_isnumber(mState, -1))
-            {
-                return lua::Variant(lua::Variant::Type::DOUBLE,lua_tonumber(mState, -1) );
-            }
-        }
-        
-        lua::Variant & operator [](const std::string& varname)
-        {
-            lua_getglobal(this->mState, varname.c_str());
-            
-        }
-        
-        
+//        //GETTER
+//        lua::Variant operator [](std::string&& varname)
+//        {
+//            lua_getglobal(this->mState, varname.c_str());
+//            if (lua_isinteger(mState, -1))
+//            {
+//                return lua::Variant(lua::Variant::Type::INTEGER,lua_tointeger(mState, -1) );
+//            }
+//            else if (lua_isnumber(mState, -1))
+//            {
+//                return lua::Variant(lua::Variant::Type::DOUBLE,lua_tonumber(mState, -1) );
+//            }
+//        }
+//        
+//        lua::Variant & operator [](const std::string& varname)
+//        {
+//            lua_getglobal(this->mState, varname.c_str());
+//            
+//        }
+//        
+//        
 		
 		int getInt(int stackpos)
 		{
