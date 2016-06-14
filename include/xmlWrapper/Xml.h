@@ -12,6 +12,7 @@
             isNull hinzugefuegt
             Code auskommentiert
             getNodeName hinzugefuegt.
+            Programm beendet sich nun falls Datei nicht geladen werden kann.    
  
  *TODO:
             Warum funktioniert der Parse Check nicht?
@@ -60,6 +61,8 @@ namespace eng
             else
             {
                 std::cerr << "Die Datei:" << filepath << " konnte nicht GELADEN werden" << std::endl;
+                //Programm beenden
+                exit(-1);
             }
         }
         
