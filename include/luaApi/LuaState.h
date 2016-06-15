@@ -40,14 +40,15 @@ namespace lua
 		}
 		void openLibs()
 		{
-			luaopen_base(mState);             /* opens the basic library */
-     		luaopen_table(mState);            /* opens the table library */
-      		luaopen_io(mState);               /* opens the I/O library */
-     		luaopen_string(mState);           /* opens the string lib. */
-      		luaopen_math(mState);             /* opens the math lib. */
+//			luaopen_base(mState);             /* opens the basic library */
+//     		luaopen_table(mState);            /* opens the table library */
+//      		luaopen_io(mState);               /* opens the I/O library */
+//     		luaopen_string(mState);           /* opens the string lib. */
+//      		luaopen_math(mState);             /* opens the math lib. */
+            luaL_openlibs(mState);
 			
 		}
-		void runFile(const filepath& filepath)
+		void runFile(filepath filepath)
 		{
   		 luaL_dofile(mState, filepath.c_str());
 
@@ -56,6 +57,7 @@ namespace lua
 		{
   		 if(luaL_dofile(mState, mFilePath.c_str()) != 0)
          {
+             fprintf(stderr, "Couldn't load file: %s\n", lua_tostring(mState, -1));
              std::cerr << "Fehler beim Ausfuehren der Lua Datei " << mFilePath << std::endl;
          }
 

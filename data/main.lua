@@ -1,38 +1,27 @@
+-- package.path = package.path .. ";/Users/thomasdost/Documents/dev/Engine/data/?.lua"
+-- test = require("testfile")
 
-x = "TCHUESS";
-local mt = {}
--- Namepsaces lernen
- Rectangle = {}
-
-
-function Rectangle.new(rrectangle)
-	if type(rrectangle.xPos) ~= "number" then
-        error("no xPos")
-    elseif type(rrectangle.yPos) ~= "number" then
-     	error("no yPos")
-    end
-    createRectangle(rrectangle.xPos, rrectangle.yPos)
-	local rectangle = {}
-	setmetatable(rectangle, mt)
-end
-
-
+hallo = 5
+x = "HALLO"
 
 function startUp( )
-	-- r4 = Rectangle.new{xPos=5,yPos=10,width=22,height=19}
-	-- r5 = Rectangle.new{xPos=20,yPos=100}
-	-- createRectangle(50,50)
-	print("Hallo aus Lua")
+	io.write("Pfad zur Engine:", filepath, "\n")
+	io.write("resX:", resX,"\n" )
+	io.write("resY:", resY,"\n" )
+
+	-- test.testFunction()	
 end
 
 
 function shutDown( )
-	-- print("Tchuess aus Lua")
+
+	io.write("Lua shutdown")
 end
 
 
 function update( )
-	 -- print(max)
+	
+	 -- print(resX)
 end
 
 function render(  )
@@ -40,7 +29,5 @@ function render(  )
 end
 
 
-
--- print(r4.width)
 
 
