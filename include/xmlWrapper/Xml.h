@@ -12,7 +12,11 @@
             isNull hinzugefuegt
             Code auskommentiert
             getNodeName hinzugefuegt.
-            Programm beendet sich nun falls Datei nicht geladen werden kann.    
+ 14.06.2016
+            Programm beendet sich nun falls Datei nicht geladen werden kann.
+            XmlElement operator[] hinzugefuegt
+            XmlElement firstChildElelemt hinzugefuegt
+            Xml rootElement hiznugefuegt
  
  *TODO:
             Warum funktioniert der Parse Check nicht?
@@ -36,49 +40,6 @@
 namespace eng
 {
     using namespace tinyxml2;
-    class Xml
-    {
-    public:
-        /**********************************************
-         *Descr:   Konstruktor um ein Xml Dokument zu laden
-         ***********************************************/
-        Xml(filepath filepath)
-        {
-            //Checkt ob das Dokument geladen werden konnte
-            if(mDoc.LoadFile(filepath.c_str()) == XML_NO_ERROR)
-            {
-//                if(mDoc.Parse(filepath.c_str()) == XML_NO_ERROR)
-//                {
-//                    
-//                }
-//                else
-//                {
-//                    std::cerr << "Die Datei:" << filepath << " konnte nicht GEPARSED werden" << std::endl;
-//                    std::cerr << mDoc.GetErrorStr1() << std::endl;
-//                    std::cerr << mDoc.GetErrorStr2() << std::endl;
-//                }
-            }
-            else
-            {
-                std::cerr << "Die Datei:" << filepath << " konnte nicht GELADEN werden" << std::endl;
-                //Programm beenden
-                exit(-1);
-            }
-        }
-        
-        
-        /**********************************************
-         *Descr:    Gibt das ganze Xml Dokument aus
-         ***********************************************/
-        void print()
-        {
-            mDoc.Print();
-        }
-        
-    public:
-        XMLDocument mDoc;
-    };
-    
     
     class XmlElement
     {
@@ -112,15 +73,7 @@ namespace eng
         {
             setValue(std::to_string(value));
         }
-        void setValue(const float value)
-        {
-            setValue(std::to_string(value));
-        }
-        void setValue(const int8 value)
-        {
-             setValue(std::to_string(value));
-        }
-        void setValue(const uint32 value)
+        void setValue(const int32 value)
         {
              setValue(std::to_string(value));
         }
@@ -201,8 +154,77 @@ namespace eng
             }
             return true;
         }
+        
+        XmlElement firstChildElement(const std::string& ident = "")
+        {
+            return mNode->FirstChildElement(ident.c_str());
+        }
+        
+        XmlElement operator[](const std::string& ident)
+        {
+            return mNode->FirstChildElement(ident.c_str());
+        }
     public:
         XMLElement* mNode;
        
+    };
+    
+    
+    
+    class Xml
+    {
+    public:
+        /**********************************************
+         *Descr:   Konstruktor um ein Xml Dokument zu laden
+         ***********************************************/
+        Xml(filepath filepath) : mPath(filepath)
+        {
+            //Checkt ob das Dokument geladen werden konnte
+            if(mDoc.LoadFile(filepath.c_str()) == XML_NO_ERROR)
+            {
+                //                if(mDoc.Parse(filepath.c_str()) == XML_NO_ERROR)
+                //                {
+                //
+                //                }
+                //                else
+                //                {
+                //                    std::cerr << "Die Datei:" << filepath << " konnte nicht GEPARSED werden" << std::endl;
+                //                    std::cerr << mDoc.GetErrorStr1() << std::endl;
+                //                    std::cerr << mDoc.GetErrorStr2() << std::endl;
+                //                }
+            }
+            else
+            {
+                std::cerr << "Die Datei:" << filepath << " konnte nicht GELADEN werden" << std::endl;
+                //Programm beenden
+                exit(-1);
+            }
+        }
+        
+        
+        /**********************************************
+         *Descr:    Gibt das ganze Xml Dokument aus
+         ***********************************************/
+        void print()
+        {
+            mDoc.Print();
+        }
+        /**********************************************
+         *Descr:    Speichert das XmlDokument
+         ***********************************************/
+        bool saveFile()
+        {
+            mDoc.SaveFile(mPath.c_str());
+        }
+       
+        
+        XmlElement rootElement()
+        {
+            XmlElement temp = mDoc.RootElement();
+            return temp.mNode;
+        }
+    public:
+        XMLDocument mDoc;
+        filepath mPath;
     };
 }
