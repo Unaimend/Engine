@@ -17,6 +17,9 @@
             XmlElement operator[] hinzugefuegt
             XmlElement firstChildElelemt hinzugefuegt
             Xml rootElement hiznugefuegt
+ 15.06.2016
+            Vermeindlichen CopyCtor hinzugeufuegt
+            print() -> print() const
  
  *TODO:
             Warum funktioniert der Parse Check nicht?
@@ -200,12 +203,21 @@ namespace eng
                 exit(-1);
             }
         }
+        /**********************************************
+        *Descr:    Copy Konstruktor
+        ***********************************************/
+//        Xml(const Xml& rhs) :
+//        mPath(rhs.mPath)
+//        {
+//            mDoc.s   rhs.mDoc.GetDocument();
+//            print();
+//        }
         
         
         /**********************************************
          *Descr:    Gibt das ganze Xml Dokument aus
          ***********************************************/
-        void print()
+        void print() const
         {
             mDoc.Print();
         }
