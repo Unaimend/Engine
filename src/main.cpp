@@ -108,16 +108,26 @@ lua::LuaState gLuaState("/Users/thomasdost/Documents/dev/Engine/data/main.lua");
 
 
 
+eng::Event* onWindowClicked = new eng::Event
+{   "onWindowClicked",
+    {"Text"},
+    { {eng::Variant::Type::INTEGER, 55} }
+};
+
+
 
 int main(int argc, char** argv)
 {
+#ifdef LINUX
+    std::cout << "Engine runs on Linux" << std::endl;
+#elif defined WINDOWS
+     std::cout << "Engine runs on Windows" << std::endl;
+#elif defined MAC
+     std::cout << "Engine runs on Mac" << std::endl;
+#endif
     
     
-    eng::Event* onWindowClicked = new eng::Event
-    {   "onWindowClicked",
-        {"Text"}, 
-        { {eng::Variant::Type::INTEGER, 55} } 
-    };
+ 
   
 
  
@@ -184,12 +194,6 @@ int main(int argc, char** argv)
 //    std::cout << gLuaState["x"] << std::endl;
 //    gLuaState.stackDump();
 //    
-    int ab = 4;
-    
-    std::cout << typeid(bool).name() << std::endl;
-    
-    typedef std::integral_constant<bool, true> t_true;
-    typedef std::integral_constant<bool, false> t_false;
     
     
     while (window.isOpen())
@@ -210,7 +214,7 @@ int main(int argc, char** argv)
                 gEventQueue.addEvent(onWindowClicked);
             }
         }
-//        auto start_time = std::chrono::high_resolution_clock::now();
+//        auto event_start_time = std::chrono::high_resolution_clock::now();
         for(const auto& it : gEventQueue.mEvents)
         {
             if(it->mEventName == eng::util::toHash("onWindowClicked"))
@@ -220,36 +224,32 @@ int main(int argc, char** argv)
             }
             //HIER WERDEN EVENTS UEBERGEBEN
         }
-//        auto end_time = std::chrono::high_resolution_clock::now();
-//        std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << std::endl;
+//        auto event_end_time = std::chrono::high_resolution_clock::now();
+//        std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(event_end_time - event_start_time).count() << std::endl;
 
         gEventQueue.mEvents.clear();
         
         
-        
-        
-     
-        
-        
         //LUA UPDATE CALL
         lua_getglobal(gLuaState.mState, "update");
-   
+        if(!lua_isfunction(gLuaState.mState,-1))
+        {
+            std::cout << "Keine Lua update Funktion" << std::endl;
+        }
         lua_pcall(gLuaState.mState, 0, 0, 0);
         
         
         
         //LUA RENDER CALL
-        lua_getglobal(gLuaState.mState, "render"); // or get 'banana' from person:Eat()
-        //lua_getfield(gLuaState.mState, -1, "chew");
- 
+        lua_getglobal(gLuaState.mState, "render");
+        if(!lua_isfunction(gLuaState.mState,-1))
+        {
+            std::cout << "Keine Lua render Funktion" << std::endl;
+        }
         lua_pcall(gLuaState.mState, 0, 0, 0);
 
 
         
-   
-
-        
-//        std::cout << rects.size() << std::endl;
         window.clear();
         
         for(auto it : rects)
@@ -259,88 +259,8 @@ int main(int argc, char** argv)
        
         window.display();
         auto frame_end_time = std::chrono::high_resolution_clock::now();
-//        std::cout << ":FRAMETIME:"<<std::chrono::duration_cast<std::chrono::milliseconds >(frame_end_time - frame_start_time).count() << std::endl;
-
     }
-        
-//
-//    std::cout << VAR(gLuaState) << std::endl;
-//   
     
-   // gLuaState.push(1,2,3);
-    //gLuaState.runFile();
-  
-    
-   // gLuaState.openLibs();
-    
-//    lua_getglobal(gLuaState.mState,"Main");
-    
-//    lua_getfield(gLuaState.mState, -1, "update");
-//  if (lua_pcall(gLuaState.mState, 0, 0, 0))
-//        bail(gLuaState.mState, "lua_pcall() failed");
-//    lua_pcall(gLuaState.mState, 0, 0, 0);
-    
-    
-//    lua_getglobal(gLuaState.mState, "update"); // or get 'banana' from person:Eat()
-//    //lua_getfield(gLuaState.mState, -1, "chew");
-//    
-//    if(!lua_isfunction(gLuaState.mState,-1))
-//    {
-//        std::cout << "WHY" << std::endl;
-//    }
-//    
-//    gLuaState.push(5);
-//    gLuaState.push(1);
-//    
-//    /* do the call (2 arguments, 1 result) */
-//    if (lua_pcall(gLuaState.mState, 2, 1, 0) != 0) {
-//        printf("error running function `f': %s\n",lua_tostring(gLuaState.mState, -1));
-//        return -1;
-//    }
-//    lua_pcall(gLuaState.mState, 1, 0, 0);
-// 
-//
-//    lua_getglobal(gLuaState.mState, "tellme");
-//    lua_pushinteger(gLuaState.mState, 22);
-//    lua_pcall(gLuaState.mState, 1, 0, 0);
-  
-
-    /*
-
-
-     // create new Lua state
-    lua_State *lua_state;
-    lua_state = luaL_newstate();
-
-    // load Lua libraries
-    static const luaL_Reg lualibs[] =
-    {
-        { "base", luaopen_base },
-        { NULL, NULL}
-    };
-
-    const luaL_Reg *lib = lualibs;
-    for(; lib->func != NULL; lib++)
-    {
-        lib->func(lua_state);
-        lua_settop(lua_state, 0);
-    }
-
-    // run the Lua script
-    luaL_dofile(lua_state, "hello.lua");
-
-    // close the Lua state
-    lua_close(lua_state);
-    */
-
-#ifdef LINUX
-   std::cout << "Engine runs on Linux" << std::endl;
-#elif defined WINDOWS
-   // std::cout << "IGIT" << std::endl;
-#elif defined MAC
-    //std::cout << "NAJA" << std::endl;
-#endif
- 
 
 
     /******************TEST AREA**********************************/
@@ -427,23 +347,79 @@ int main(int argc, char** argv)
 
 
 
-//std::cout << xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "note" )->Value() << std::endl;
-//test.getValue();
 
-//std::cout << test.getText()<< std::endl;
-//std::cout << test.getNodeName() << std::endl;
-//++test;
-//std::cout << test.getText()<< std::endl;
-// std::cout << test.getNodeName() << std::endl;
-//std::cout << test.getText()<< std::endl;
-// --test;
-//  std::cout << test.getText()<< std::endl;
-// doc.LoadFile( std::string{"dream.xml"}.c_str() );
 
-//    tinyxml2::XMLDocument doc;
-
-//xml.print();
+//    std::cout << VAR(gLuaState) << std::endl;
 //
+
+// gLuaState.push(1,2,3);
+//gLuaState.runFile();
+
+
+// gLuaState.openLibs();
+
+//    lua_getglobal(gLuaState.mState,"Main");
+
+//    lua_getfield(gLuaState.mState, -1, "update");
+//  if (lua_pcall(gLuaState.mState, 0, 0, 0))
+//        bail(gLuaState.mState, "lua_pcall() failed");
+//    lua_pcall(gLuaState.mState, 0, 0, 0);
+
+
+//    lua_getglobal(gLuaState.mState, "update"); // or get 'banana' from person:Eat()
+//    //lua_getfield(gLuaState.mState, -1, "chew");
+//
+//    if(!lua_isfunction(gLuaState.mState,-1))
+//    {
+//        std::cout << "WHY" << std::endl;
+//    }
+//
+//    gLuaState.push(5);
+//    gLuaState.push(1);
+//
+//    /* do the call (2 arguments, 1 result) */
+//    if (lua_pcall(gLuaState.mState, 2, 1, 0) != 0) {
+//        printf("error running function `f': %s\n",lua_tostring(gLuaState.mState, -1));
+//        return -1;
+//    }
+//    lua_pcall(gLuaState.mState, 1, 0, 0);
+//
+//
+//    lua_getglobal(gLuaState.mState, "tellme");
+//    lua_pushinteger(gLuaState.mState, 22);
+//    lua_pcall(gLuaState.mState, 1, 0, 0);
+
+
+/*
+ 
+ 
+ // create new Lua state
+ lua_State *lua_state;
+ lua_state = luaL_newstate();
+ 
+ // load Lua libraries
+ static const luaL_Reg lualibs[] =
+ {
+ { "base", luaopen_base },
+ { NULL, NULL}
+ };
+ 
+ const luaL_Reg *lib = lualibs;
+ for(; lib->func != NULL; lib++)
+ {
+ lib->func(lua_state);
+ lua_settop(lua_state, 0);
+ }
+ 
+ // run the Lua script
+ luaL_dofile(lua_state, "hello.lua");
+ 
+ // close the Lua state
+ lua_close(lua_state);
+ */
+
+
+
 
 
 
