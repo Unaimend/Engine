@@ -5,6 +5,9 @@
 //Changelog	: Erstellt
 //			  22.01.2016
 //           Grundfunktionalitaet hinzugefuegt
+//15.06.2016
+//           Rectangle(const eng::Vector2f& pos) hinzugefuegt
+//
 //TODO:
 //			eng::Graphics.hpp hinzufuegen
 //***************************************************************
@@ -21,11 +24,16 @@ namespace eng
             mRectangle.setPosition(x, y);
             mRectangle.setSize(sf::Vector2f(20,20));
         }
-        void draw(sf::RenderWindow& window)
+        Rectangle(const eng::Vector2f& pos)
+        {
+            mRectangle.setPosition(pos.x, pos.y);
+            mRectangle.setSize(sf::Vector2f(20,20));
+        }
+        void draw(sf::RenderWindow& window) const
         {
             window.draw(mRectangle);
         }
-        void move(const eng::Vector2f vec)
+        void move(const eng::Vector2f& vec)
         {
             mRectangle.move(vec.x, vec.y);
         }
