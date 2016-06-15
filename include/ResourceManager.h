@@ -27,7 +27,7 @@ public:
 	*Param1: Pfad zum Asset
 	*Param2: Pfad zum Asset als Hash.
 	*/
-	Resource(const filepath& pathToRessource ) 
+	Resource(filepath pathToRessource ) 
 		: mPathToRessource(pathToRessource), mFileHandle(  std::hash<std::string>()(pathToRessource)), mRefCount(1)
 	{
 		

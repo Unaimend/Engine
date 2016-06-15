@@ -5,6 +5,7 @@
 *Changelog:
 			21.01.2016
 *			Erstellt
+            Varname Makro
 *TODO:
 			std::hash ersetzen
 			bool ListenToGameEvent(std::string)
@@ -21,7 +22,10 @@
 #pragma once
 #include <functional> //std::hash
 #include <string>
-	
+
+#define VAR(var) (#var)//(var,"Q")
+//#define VX(var) (#var)(var,"X")
+
 namespace eng
 {
 	namespace util
@@ -40,6 +44,8 @@ namespace eng
 		{
 			;
 		}
+        
+        
 	}
 }
 	

@@ -13,10 +13,11 @@
 #include <stdint.h>
 #include <string>
 #include "EngineTypes.h"
-#include "EventQueue.h"
-#include "LuaState.h"
+#include "eventSystem/EventQueue.h"
+#include "luaApi/LuaState.h"
 //Gloable Variable fuer den Pfad zur ausfuehrbaren Datei
 extern char gFilePath[100];
+
 namespace eng
 {
 	using namespace lua;
