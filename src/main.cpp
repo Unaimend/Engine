@@ -180,9 +180,9 @@ int main(int argc, char** argv)
 //    
     auto aba = gLuaState["x"];
     
-    auto cons = (const char*)aba;
     
-    std::cout << cons << std::endl;
+    
+    std::cout << aba << std::endl;
     
     
     
