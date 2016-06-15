@@ -145,7 +145,7 @@ int main(int argc, char** argv)
         
 #elif defined MAC
     strcpy(gFilePath, "/Users/thomasdost/Documents/dev/Engine");
-    std::cout << "Pfad zur Engine:" << gFilePath << std::endl;
+//    std::cout << "Pfad zur Engine:" << gFilePath << std::endl;
     
 #endif
    
@@ -159,18 +159,15 @@ int main(int argc, char** argv)
     eng::XmlElement resX = xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "resX" );
     eng::XmlElement resY = xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "resY" );
   
-    cout << xml.rootElement()["resX"].getValue() << endl;
+
    /*  ATTRIBUTES BEIIIIIIISPIEL
    eng::XmlElement test1 = xml.mDoc.FirstChildElement( "options" )->FirstChildElement("note");
     std::cout << test1.getNodeName() <<   test1.mNode->FirstAttribute()->Name() <<std::endl;
     */
     
-    
-  
- 
-    
-    gLuaState["max"] = 5;
-  
+    gLuaState["resX"] = resX.getValue().c_str();
+    gLuaState["resY"] = resY.getValue().c_str();
+    gLuaState["filepath"] = gFilePath;
     
     sf::RenderWindow window(sf::VideoMode(std::stoi(resX.getValue()) , std::stoi(resY.getValue())), "SFML works!");
     
@@ -181,19 +178,19 @@ int main(int argc, char** argv)
     
     gLuaState.runFile();
 //    
-//   lua::LuaValue aba = gLuaState["x"];
-//    std::cout << aba << std::endl;
+    auto aba = gLuaState["x"];
+    
+    auto cons = (const char*)aba;
+    
+    std::cout << cons << std::endl;
     
     
     
     lua_register(gLuaState.mState, "createRectangle", createRectangle);
     
     lua_getglobal(gLuaState.mState, "startUp");
-//    gLuaState.stackDump();
-//    gLuaState.callFunction();
-//    std::cout << gLuaState["x"] << std::endl;
-//    gLuaState.stackDump();
-//    
+    gLuaState.callFunction();
+
     
     
     while (window.isOpen())
@@ -220,6 +217,7 @@ int main(int argc, char** argv)
             if(it->mEventName == eng::util::toHash("onWindowClicked"))
             {
                 std::cout << it->mArgs["Text"].mValue.mAsInteger << std::endl;
+                gLuaState.runFile();
                
             }
             //HIER WERDEN EVENTS UEBERGEBEN
@@ -235,6 +233,7 @@ int main(int argc, char** argv)
         if(!lua_isfunction(gLuaState.mState,-1))
         {
             std::cout << "Keine Lua update Funktion" << std::endl;
+            exit(-1);
         }
         lua_pcall(gLuaState.mState, 0, 0, 0);
         
@@ -242,11 +241,7 @@ int main(int argc, char** argv)
         
         //LUA RENDER CALL
         lua_getglobal(gLuaState.mState, "render");
-        if(!lua_isfunction(gLuaState.mState,-1))
-        {
-            std::cout << "Keine Lua render Funktion" << std::endl;
-        }
-        lua_pcall(gLuaState.mState, 0, 0, 0);
+        gLuaState.callFunction();
 
 
         
@@ -324,11 +319,7 @@ int main(int argc, char** argv)
 
     
     lua_getglobal(gLuaState.mState, "shutDown");
-    if(!lua_isfunction(gLuaState.mState,-1))
-    {
-        std::cout << "Keine Lua shutDown Funktion" << std::endl;
-    }
-    lua_pcall(gLuaState.mState, 0, 0, 0);
+    gLuaState.callFunction();
 
 
 

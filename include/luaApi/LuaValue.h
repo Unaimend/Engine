@@ -11,6 +11,8 @@
 #ifndef LuaValue_h
 #define LuaValue_h
 
+
+#include <memory>
 namespace lua
 {
     
@@ -42,37 +44,67 @@ namespace lua
         
         LuaRef& operator=(int32 value)
         {
-            lua_pushnumber(mState, value);
+            mType = Type::INTEGER;
+            lua_pushinteger(mState, value);
             lua_setglobal(mState, identifier.c_str());
         }
         
+        LuaRef& operator=(float value)
+        {
+            mType = Type::FLOAT;
+            lua_pushnumber(mState, value);
+            lua_setglobal(mState, identifier.c_str());
+        }
         LuaRef& operator=(const char* value)
         {
+            mType = Type::STRING;
             lua_pushstring(mState, value);
             lua_setglobal(mState, identifier.c_str());
         }
+        
+        
+        
+        explicit operator int32() const
+        {
+            
+            lua_getglobal(mState, identifier.c_str());
+             lua_tointeger(mState, -1);
+            
+           
+        }
+        
+        explicit operator float() const
+        {
+            lua_getglobal(mState, identifier.c_str());
+            lua_tonumber(mState, -1);
+            
+            
+        }
+        explicit operator const char*() const
+        {
+             lua_getglobal(mState, identifier.c_str());
+              auto temp = std::make_shared<const char*>(strdup(lua_tostring(mState, -1)));
+              return *temp;
+        }
     };
-    
     
     std::ostream& operator<<(std::ostream& out, const LuaRef& f)
     {
-        switch(f.mType)
+        lua_getglobal(f.mState, f.identifier.c_str());
+        if(lua_isinteger(f.mState, -1))
         {
-            lua_getglobal(f.mState, f.identifier.c_str());
-            case 	LuaRef::Type::INTEGER:
-                return out <<  lua_tointeger(f.mState, -1);
-                break;
-            case	LuaRef::Type::FLOAT:
-                return out <<  lua_tonumber(f.mState, -1);
-                break;
-            case	LuaRef::Type::BOOL:
-                return out <<  lua_toboolean(f.mState, -1);
-                break;
-            case	LuaRef::Type::STRING:
-                return out <<  lua_tostring(f.mState, -1);
-                break;
-            default:
-                return out << "Unknown in lua::ValueType::operator<<" ;
+            out << lua_tointeger(f.mState, -1);
+            return out;
+        }
+        else if(lua_isnumber(f.mState, -1))
+        {
+            out << lua_tonumber(f.mState, -1);
+            return out;
+        }
+        else if(lua_isstring(f.mState, -1))
+        {
+            out << lua_tostring(f.mState, -1);
+            return out;
         }
         
     }
