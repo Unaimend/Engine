@@ -27,4 +27,3 @@ function Rectangle.new(rrectangle)
 	return rectangle
 end
 
-
