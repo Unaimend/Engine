@@ -16,6 +16,8 @@
 #include "Vector.h"
 namespace eng
 {
+    
+    
 	class Rectangle
 	{
     public:
@@ -38,7 +40,7 @@ namespace eng
             mRectangle.move(vec.x, vec.y);
         }
     
-    private:
+    public:
         sf::RectangleShape mRectangle;
 	};
     

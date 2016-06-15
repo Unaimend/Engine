@@ -39,6 +39,12 @@ namespace eng
 		{
 			mEvents.push_back(event);
 		}
+        
+        void addEvent(eng::Event& event)
+        {
+            mEvents.push_back(&event);
+        }
+
 	public:
 		std::vector<eng::Event*> mEvents;
 		

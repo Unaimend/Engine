@@ -14,6 +14,8 @@
 #include "../include/graphicWrapper/Vector.h"
 #include "../include/tinyXML/tinyxml2.h"
 #include "../include/xmlWrapper/Xml.h"
+
+#include "../include/enteties/Entity.h"
 #define MAC
 
 #include <stdlib.h>                             /* For function exit() */
@@ -169,6 +171,10 @@ int main(int argc, char** argv)
     gLuaState["resY"] = resY.getValue().c_str();
     gLuaState["filepath"] = gFilePath;
     
+
+     eng::RecEntity* ent = new eng::RecEntity({50,50}, gLuaState, xml);
+
+    
     sf::RenderWindow window(sf::VideoMode(std::stoi(resX.getValue()) , std::stoi(resY.getValue())), "SFML works!");
     
     
@@ -214,7 +220,7 @@ int main(int argc, char** argv)
             if(it->mEventName == eng::util::toHash("onWindowClicked"))
             {
                 std::cout << it->mArgs["Text"].mValue.mAsInteger << std::endl;
-                gLuaState.runFile();
+                
                
             }
             //HIER WERDEN EVENTS UEBERGEBEN
@@ -242,7 +248,15 @@ int main(int argc, char** argv)
 
 
         
+        
+        
+        
+
+        
         window.clear();
+        
+        ent->update(20);
+        ent->render(window);
         
         for(auto it : rects)
         {
