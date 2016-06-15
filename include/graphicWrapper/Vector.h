@@ -36,9 +36,9 @@ namespace eng
 	using Vector2i = Vector2<int32>;
 	using Vector2f = Vector2<float>;
     
-    template<typename T>
-    std::ostream& operator<<(std::ostream& out, const Vector2<T>& vec)
-    {
-        std::cout << "xValue:" << vec.x << "yValue" << vec.y << std::endl;
-    }
+//    template<typename T>
+//    std::ostream& operator<<(std::ostream& out, const Vector2<T>& vec)
+//    {
+//        std::cout << "xValue:" << vec.x << "yValue" << vec.y << std::endl;
+//    }
 }

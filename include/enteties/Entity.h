@@ -12,10 +12,11 @@
 #define Entity_h
 #include "../luaApi/LuaState.h"
 #include "../graphicWrapper/Vector.h"
+#include "../graphicWrapper/Rectangle.h"
 #include "../xmlWrapper/Xml.h"
 #include "../globals.h"
 
-
+#include <SFML/Graphics.hpp>
 namespace eng
 {
     class Entity
@@ -57,7 +58,7 @@ namespace eng
             
         }
         
-        eng::Rectangle mRec;
+        Rectangle mRec;
         virtual void render(sf::RenderWindow& window) const override
         {
             mRec.draw(window);

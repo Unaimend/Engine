@@ -11,14 +11,14 @@
 //TODO:
 //			eng::Graphics.hpp hinzufuegen
 //***************************************************************
-//#include <SFML/
+#include <SFML/Graphics.hpp>
 
 #include "Vector.h"
+
+#pragma once
 namespace eng
 {
-    
-    
-	class Rectangle
+    class Rectangle
 	{
     public:
         Rectangle(int x, int y)
@@ -35,11 +35,7 @@ namespace eng
         {
             window.draw(mRectangle);
         }
-        void move(const eng::Vector2f& vec)
-        {
-            mRectangle.move(vec.x, vec.y);
-        }
-    
+        void move(const eng::Vector2f& vec);
     public:
         sf::RectangleShape mRectangle;
 	};

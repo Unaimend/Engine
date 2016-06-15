@@ -13,6 +13,8 @@
 
 
 #include <memory>
+#include "../EngineTypes.h"
+#include "../lua/lua.hpp"
 namespace lua
 {
     
@@ -87,27 +89,27 @@ namespace lua
               return *temp;
         }
     };
-    
-    std::ostream& operator<<(std::ostream& out, const LuaRef& f)
-    {
-        lua_getglobal(f.mState, f.identifier.c_str());
-        if(lua_isinteger(f.mState, -1))
-        {
-            out << lua_tointeger(f.mState, -1);
-            return out;
-        }
-        else if(lua_isnumber(f.mState, -1))
-        {
-            out << lua_tonumber(f.mState, -1);
-            return out;
-        }
-        else if(lua_isstring(f.mState, -1))
-        {
-            out << lua_tostring(f.mState, -1);
-            return out;
-        }
-        
-    }
+//    
+//    std::ostream& operator<<(std::ostream& out, const LuaRef& f)
+//    {
+//        lua_getglobal(f.mState, f.identifier.c_str());
+//        if(lua_isinteger(f.mState, -1))
+//        {
+//            out << lua_tointeger(f.mState, -1);
+//            return out;
+//        }
+//        else if(lua_isnumber(f.mState, -1))
+//        {
+//            out << lua_tonumber(f.mState, -1);
+//            return out;
+//        }
+//        else if(lua_isstring(f.mState, -1))
+//        {
+//            out << lua_tostring(f.mState, -1);
+//            return out;
+//        }
+//        
+//    }
 
 }
 

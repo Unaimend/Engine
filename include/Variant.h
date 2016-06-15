@@ -134,27 +134,27 @@ namespace eng
 		}
 	};
 	
-	std::ostream& operator<<(std::ostream& out, const Variant& f)
-	{
-		switch(f.mType)
-			{
-				case 	Variant::Type::INTEGER:
-						return out << f.mValue.mAsInteger ;
-						break;
-
-				case	Variant::Type::DOUBLE:
-						return out << f.mValue.mAsDouble ;
-						break;
-				case	Variant::Type::BOOL:
-						return out << f.mValue.mAsBool ;
-						break;
-				case	Variant::Type::STRING_ID:
-						return out << f.mValue.mAsStringId ;
-						break;
-				default:				
-					return out << "Unknown in eng::Variant::operator<<" ;
-			}
-	   
-	}
+//	std::ostream& operator<<(std::ostream& out, const Variant& f)
+//	{
+//		switch(f.mType)
+//			{
+//				case 	Variant::Type::INTEGER:
+//						return out << f.mValue.mAsInteger ;
+//						break;
+//
+//				case	Variant::Type::DOUBLE:
+//						return out << f.mValue.mAsDouble ;
+//						break;
+//				case	Variant::Type::BOOL:
+//						return out << f.mValue.mAsBool ;
+//						break;
+//				case	Variant::Type::STRING_ID:
+//						return out << f.mValue.mAsStringId ;
+//						break;
+//				default:				
+//					return out << "Unknown in eng::Variant::operator<<" ;
+//			}
+//	   
+//	}
 
 }

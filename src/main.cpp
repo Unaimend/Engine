@@ -184,9 +184,9 @@ int main(int argc, char** argv)
     
     gLuaState.runFile();
 //    
-    auto aba = gLuaState["x"];
-    std::cout << aba << std::endl;
-      std::cout << gLuaState["x"] << std::endl;
+//    auto aba = gLuaState["x"];
+//    std::cout << aba << std::endl;
+//      std::cout << gLuaState["x"] << std::endl;
     
     
     lua_register(gLuaState.mState, "createRectangle", createRectangle);

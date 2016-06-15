@@ -12,6 +12,7 @@
 #include <memory>
 #include "LuaValue.h"
 #include "LuaState.h"
+#include <iostream>
 extern "C"
 {
 #include "lua.h"
