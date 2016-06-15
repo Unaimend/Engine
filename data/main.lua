@@ -27,12 +27,12 @@ end
 
 
 function shutDown( )
-	print("Tchuess aus Lua")
+	-- print("Tchuess aus Lua")
 end
 
 
 function update( )
-	 print(max)
+	 -- print(max)
 end
 
 function render(  )

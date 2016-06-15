@@ -48,6 +48,8 @@ static int createRectangle(lua_State *L)
     rects.emplace_back(x, y);
 }
 
+using std::endl;
+using std::cout;
 
 
 
@@ -133,33 +135,34 @@ int main(int argc, char** argv)
         
 #elif defined MAC
     strcpy(gFilePath, "/Users/thomasdost/Documents/dev/Engine");
-    std::cout << "Pfad zur Datei:" << gFilePath << std::endl;
+    std::cout << "Pfad zur Engine:" << gFilePath << std::endl;
     
 #endif
    
-    //char* t = "/Users/thomasdost/Documents/dev/Engine/data/options.xml";
-   
-    eng::Xml xml{"/Users/thomasdost/Documents/dev/Engine/data/options.xml"};
+    //Options Xml laden, hier steht alles wichtige drinnen.
+    eng::Xml xml{std::string(gFilePath) + "/data/options.xml"};
+    
+    
     
    //t//inyxml2::XMLElement* title = xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "resX" );
     //title = title->NextSiblingElement();
-    eng::XmlElement test = xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "resX" );
-
+    eng::XmlElement resX = xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "resX" );
+    eng::XmlElement resY = xml.mDoc.FirstChildElement( "options" )->FirstChildElement( "resY" );
   
+    cout << xml.rootElement()["resX"].getValue() << endl;
    /*  ATTRIBUTES BEIIIIIIISPIEL
    eng::XmlElement test1 = xml.mDoc.FirstChildElement( "options" )->FirstChildElement("note");
     std::cout << test1.getNodeName() <<   test1.mNode->FirstAttribute()->Name() <<std::endl;
     */
     
     
-    
-    lua::LuaValue aaa("HALLO");
+  
  
     
     gLuaState["max"] = 5;
   
     
-    sf::RenderWindow window(sf::VideoMode(std::stod(test.getValue()) , 900), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(std::stoi(resX.getValue()) , std::stoi(resY.getValue())), "SFML works!");
     
     
     
@@ -201,10 +204,10 @@ int main(int argc, char** argv)
             {
                 window.close();
             }
-            if (event.type == sf::Event::Resized) 
+            if (event.type == sf::Event::GainedFocus)
             {
-                gLuaState.runFile();
-                 gEventQueue.addEvent(onWindowClicked);
+               // gLuaState.runFile();
+                gEventQueue.addEvent(onWindowClicked);
             }
         }
 //        auto start_time = std::chrono::high_resolution_clock::now();
