@@ -14,7 +14,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Vector.h"
-
+#include <iostream>
 #pragma once
 namespace eng
 {
@@ -28,6 +28,7 @@ namespace eng
         }
         Rectangle(const eng::Vector2f& pos)
         {
+//           std::cout << "RECTAGLE CONSTRUKTOR"<< pos.x << " " << pos.y<<std::endl;
             mRectangle.setPosition(pos.x, pos.y);
             mRectangle.setSize(sf::Vector2f(20,20));
         }

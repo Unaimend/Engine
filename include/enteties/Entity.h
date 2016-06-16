@@ -52,9 +52,9 @@ namespace eng
         
     public:
         RecEntity(const eng::Vector2f& vec, lua::LuaState& state, const eng::Xml& data)
-        : Entity(vec,state,data), mRec(vec.x, vec.y)
+        : Entity(vec,state,data), mRec(vec)
         {
-              std::cout << vec.x << std::endl;
+//              std::cout << vec.x << std::endl;
             
         }
         
@@ -65,12 +65,12 @@ namespace eng
         }
         virtual void update(float frametime) override
         {
-            static eng::Event ev1{"Bigger300", {"TEXT"}, { {eng::Variant::Type::INTEGER, 55} }};
-            if(mRec.mRectangle.getPosition().x > 300)
-            {
+//            static eng::Event ev1{"Bigger300", {"TEXT"}, { {eng::Variant::Type::INTEGER, 55} }};
+//            if(mRec.mRectangle.getPosition().x > 300)
+//            {
 //                gEventQueue.addEvent(ev1);
-              
-            }
+//              
+//            }
         }
         virtual void eng_update(const eng::Event& event) override
         {

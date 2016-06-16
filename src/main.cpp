@@ -98,7 +98,10 @@ using std::cout;
 //}
 
 char gFilePath[100];
-eng::EventQueue gEventQueue;
+namespace eng {
+    EventQueue gEventQueue;
+}
+
 lua::LuaState gLuaState("/Users/thomasdost/Documents/dev/Engine/data/main.lua");
 
 
@@ -131,7 +134,7 @@ int main(int argc, char** argv)
     
  
   
-
+    std::vector<eng::RecEntity*> mRec;
  
 #ifdef LINUX
     if(readlink("/proc/self/exe", gFilePath, 100) == -1)
@@ -177,11 +180,11 @@ int main(int argc, char** argv)
     
     sf::RenderWindow window(sf::VideoMode(std::stoi(resX.getValue()) , std::stoi(resY.getValue())), "SFML works!");
     
-    
-    
+    window.setFramerateLimit(60);
     
 
     
+  
     gLuaState.runFile();
 //    
 //    auto aba = gLuaState["x"];
@@ -193,33 +196,61 @@ int main(int argc, char** argv)
     
     lua_getglobal(gLuaState.mState, "startUp");
     gLuaState.callFunction();
-
-    
-    
-    while (window.isOpen())
+ time_t t;
+     srand((unsigned) time(&t));
+      while (window.isOpen())
     {
+        for(int i = 0; i < 200; ++i)
+        {
+            auto varX =  std::rand() % 1920;
+//                      std::cout << varX << std::endl;
+            auto test = new eng::RecEntity({(float)varX, 50}, gLuaState, xml);
+            mRec.push_back(test);
+        }
+        
+
+   
+        
 //
         auto frame_start_time = std::chrono::high_resolution_clock::now();
 
         sf::Event event;
+        
+        eng::util::KeyChecker KeyChecker(event);
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
             {
                 window.close();
             }
+            if (KeyChecker.keyPressed(sf::Keyboard::D))
+            {
+                ent->mRec.move({20,0});
+            }
+            if (KeyChecker.keyPressed(sf::Keyboard::A))
+            {
+                ent->mRec.move({-20,0});
+            }
+            if (KeyChecker.keyPressed(sf::Keyboard::W))
+            {
+                ent->mRec.move({0,-20});
+            }
+            if (KeyChecker.keyPressed(sf::Keyboard::S))
+            {
+                ent->mRec.move({0,20});
+            }
             if (event.type == sf::Event::GainedFocus)
             {
                // gLuaState.runFile();
-                gEventQueue.addEvent(onWindowClicked);
+                eng::gEventQueue.addEvent(onWindowClicked);
             }
         }
 //        auto event_start_time = std::chrono::high_resolution_clock::now();
-        for(const auto& it : gEventQueue.mEvents)
+        for(const auto& it : eng::gEventQueue.mEvents)
         {
-            if(it->mEventName == eng::util::toHash("onWindowClicked"))
+            if(it->mEventName == eng::util::toHash("Bigger300"))
             {
-                std::cout << it->mArgs["Text"].mValue.mAsInteger << std::endl;
+                std::cout << "WAHR" << std::endl;
                 
                
             }
@@ -228,7 +259,7 @@ int main(int argc, char** argv)
 //        auto event_end_time = std::chrono::high_resolution_clock::now();
 //        std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(event_end_time - event_start_time).count() << std::endl;
 
-        gEventQueue.mEvents.clear();
+        eng::gEventQueue.mEvents.clear();
         
         
         //LUA UPDATE CALL
@@ -251,18 +282,35 @@ int main(int argc, char** argv)
         
         
         
-
+        for(auto it = mRec.begin(); it != mRec.end();)
+        {
+            
+            (*it)->mRec.mRectangle.move(0, 20);
+            if ((*it)->mRec.mRectangle.getPosition().y > 500)
+            {
+                delete *it;
+                
+                it = mRec.erase(it);
+            }
+            else{it++;}
+        
+            
+        }
         
         window.clear();
         
         ent->update(20);
         ent->render(window);
         
-        for(auto it : rects)
+     
+        for(auto& it : mRec)
         {
-            it.draw(window);
+            
+            it->render(window);
+            //            std::cout << it.mRec.mRectangle.getPosition().y;
+            
         }
-       
+        std::cout << mRec.size() << std::endl;
         window.display();
         auto frame_end_time = std::chrono::high_resolution_clock::now();
     }
