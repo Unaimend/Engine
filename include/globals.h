@@ -22,6 +22,8 @@ namespace eng
 {
 	using namespace lua;
 
-	extern LuaState gLuaState;
-	extern eng::EventQueue gEventQueue;
+
+	
 }
+extern eng::LuaState gLuaState;
+extern eng::EventQueue gEventQueue;
