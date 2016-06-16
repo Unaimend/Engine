@@ -20,10 +20,6 @@ extern char gFilePath[100];
 
 namespace eng
 {
-	using namespace lua;
-
-
-	
+	extern EventQueue gEventQueue;
 }
-extern eng::LuaState gLuaState;
-extern eng::EventQueue gEventQueue;
+extern lua::LuaState gLuaState;
