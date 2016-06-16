@@ -6,6 +6,8 @@
 			21.01.2016
 *			Erstellt
             Varname Makro
+16.06.2016
+            KeyChecker erstellt
 *TODO:
 			std::hash ersetzen
 			bool ListenToGameEvent(std::string)
@@ -18,6 +20,7 @@
  					function Activate ()
     					 ListenToGameEvent("dota_player_gained_level", LevelUpMessage, nil)
  					end
+            Static version
 *************************************/
 #pragma once
 #include <functional> //std::hash
@@ -46,6 +49,30 @@ namespace eng
 		}
         
         
+        
+        class KeyChecker
+        {
+        public:
+            KeyChecker(const sf::Event& event)
+            : mEvent(event)
+            {
+//                mEvent = event;
+            }
+           /* static*/ const sf::Event& mEvent;
+            
+            
+            /*static*/ bool keyPressed(const sf::Keyboard::Key& key)
+            {
+                if((mEvent.type == sf::Event::KeyPressed) && mEvent.key.code == key)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        };
 	}
 }
 	
