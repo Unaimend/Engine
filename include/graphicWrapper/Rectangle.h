@@ -26,8 +26,6 @@ namespace eng
     class Rectangle
 	{
     public:
-        
-        
         /**********************************************
          *Descr:    Default-Konstruktor
          ***********************************************/
