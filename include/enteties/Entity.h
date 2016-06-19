@@ -13,6 +13,7 @@
 
 
 #include <SFML/Graphics.hpp> //sf::<kram>
+#include <iostream> //std::cerr
 
 #include "../luaApi/LuaState.h"     // lua::LuaState
 #include "../graphicWrapper/Vector.h"   //eng::Vector
@@ -20,7 +21,7 @@
 #include "../xmlWrapper/Xml.h"          //eng::Xml
 #include "../globals.h"             //gLuastate, gEventQueue
 
-#include <iostream>
+
 #pragma once
 namespace eng
 {
