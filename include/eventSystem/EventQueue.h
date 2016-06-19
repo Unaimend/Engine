@@ -3,11 +3,16 @@
 *Datum:         16.01.2016
 *Beschr.        Klasse fuer die globale Engine EventQueue
 *Changelog:
-                        16.01.2016
-*                       Erstellt
-						21.012016
-						Beginn der Arbeit
+*16.01.2016
+*           Erstellt
+*21.01.2016
+*		Beginn der Arbeit
+*19.06.2016 
+        ---
 *TODO:
+        Copy und Assignment loeschen
+        Ausgabe funktion
+        Custom Iterator
 *************************************/
 
 
@@ -33,7 +38,6 @@ namespace eng
 		/***********************************
 		*Descri:	Funktion zum hinzufuegen von Events
 		*Param1:	event welches geaddet werden soll
-		*Return:
 		************************************/
 		void addEvent(eng::Event* event)
 		{
