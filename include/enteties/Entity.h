@@ -1,22 +1,27 @@
 /************************************
- *Author:    Thomas Dost
- *Datum:     1506.2016
- *Beschr.    Oberklasse fuer alle Entities
- *Changelog:
- *TODO:
- *************************************/
+*Author:    Thomas Dost
+*Datum:     15.06.2016
+*Beschr.    Oberklasse fuer alle Entities
+*Changelog:
+19.06:2016
+            Include Guards -> pragma once
+            Auskommentiert
+*TODO:
+            Xml mData wird nicht kopiert im Assignment Operator
+*************************************/
 
 
 
-#ifndef Entity_h
-#define Entity_h
-#include "../luaApi/LuaState.h"
-#include "../graphicWrapper/Vector.h"
-#include "../graphicWrapper/Rectangle.h"
-#include "../xmlWrapper/Xml.h"
-#include "../globals.h"
+#include <SFML/Graphics.hpp> //sf::<kram>
 
-#include <SFML/Graphics.hpp>
+#include "../luaApi/LuaState.h"     // lua::LuaState
+#include "../graphicWrapper/Vector.h"   //eng::Vector
+#include "../graphicWrapper/Rectangle.h"   //eng::Rectangle
+#include "../xmlWrapper/Xml.h"          //eng::Xml
+#include "../globals.h"             //gLuastate, gEventQueue
+
+#include <iostream>
+#pragma once
 namespace eng
 {
     class Entity
@@ -26,12 +31,34 @@ namespace eng
     public:
         /**********************************************
          *Descr:   Konstruktor um Entity zu initialisieren
+         *Param1:   Position der Entity
+         *Param2:   LuaState indem die Entity ablaeuft
+         *Param3:   XmlState fuers Laden und Speichern der Entity
          ***********************************************/
-        Entity(const eng::Vector2f& vec, lua::LuaState& state, const eng::Xml& data)
-        : mPos(vec), mState(state), mData(data)
-        {
-          
-        }
+        Entity(const eng::Vector2f& vec, lua::LuaState& state, const eng::Xml& data);
+        
+        
+        /**********************************************
+         *Descr:   Copy-Konstruktor
+        ***********************************************/
+        Entity(const Entity& rhs);
+        
+        
+        /**********************************************
+         *Descr:    Copy-Assignment-Operator
+         *Param1:   Zu kopierendes Objekt
+         *Return:   Referenz aus *this;
+         ***********************************************/
+        Entity& operator=(const Entity& rhs);
+        
+        
+        //Virtuelle Funktion fuer Vererbungsbaum
+        virtual void render(sf::RenderWindow& window) const = 0;
+        virtual void update(float framtime) = 0;
+        virtual void eng_update(const eng::Event& event) = 0;
+        virtual void sf_update(const sf::Event& event) = 0;
+
+    private:
         //Position der Entity
         eng::Vector2f mPos{0,0};
         //Verweis auf den LuaState der jweiligen Entity
@@ -39,14 +66,10 @@ namespace eng
         //Daten der Entity
         const eng::Xml& mData;
     
-        virtual void render(sf::RenderWindow& window) const = 0;
-        virtual void update(float framtime) = 0;
-        virtual void eng_update(const eng::Event& event) = 0;
-        virtual void sf_update(const sf::Event& event) = 0;
-    
     };
     
     
+//Wird NICHT Refactored da Test Entity
     class RecEntity : public Entity
     {
         
@@ -85,4 +108,4 @@ namespace eng
 }
 
 
-#endif /* Entity_h */
+
