@@ -14,10 +14,11 @@
             In Cpp ausgelagert
             toHash hinzugefuegt
 *TODO:			
-				Variant in EvenArgs Kapsel
 				Konstruktoren loeschen fuer EventArg, Event
 				Kommentieren
 				Lua Event Api
+                Copy und Assignment schreiben
+                Ausgabe funktion hinzufuegen
 *************************************/
 
 
