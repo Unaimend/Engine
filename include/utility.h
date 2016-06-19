@@ -26,6 +26,8 @@
 #include <functional> //std::hash
 #include <string>
 
+#include <SFML/Graphics.hpp>
+
 #define VAR(var) (#var)//(var,"Q")
 //#define VX(var) (#var)(var,"X")
 
