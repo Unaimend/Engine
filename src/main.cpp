@@ -12,7 +12,8 @@
 #include "../include/LuaApi/LuaState.h"
 #include "../include/graphicWrapper/Rectangle.h"
 #include "../include/graphicWrapper/Vector.h"
-#include "../include/tinyXML/tinyxml2.h"
+#include "/Users/thomasdost/Documents/dev/Engine/include/tinyXML/tinyxml2.h"
+
 #include "../include/xmlWrapper/Xml.h"
 
 #include "../include/enteties/Entity.h"
@@ -33,7 +34,7 @@ void bail(lua_State *L, char *msg){
 namespace eng {
     Rectangle& createRectangle(int x, int y)
     {
-        return *(new Rectangle{x,y});
+        return *(new Rectangle{static_cast<float>(x),static_cast<float>(y)});
     }
     
     static int myRect( lua_State *L, int x, int y)
@@ -182,6 +183,7 @@ int main(int argc, char** argv)
     
     window.setFramerateLimit(60);
     
+   
 
     
   
@@ -248,9 +250,9 @@ int main(int argc, char** argv)
 //        auto event_start_time = std::chrono::high_resolution_clock::now();
         for(const auto& it : eng::gEventQueue.mEvents)
         {
-            if(it->mEventName == eng::util::toHash("Bigger300"))
+            if(it->getHash() == eng::util::toHash("Bigger300"))
             {
-                std::cout << "WAHR" << std::endl;
+                std::cout << eng::util::toHash("Bigger300") << std::endl;
                 
                
             }
@@ -285,8 +287,8 @@ int main(int argc, char** argv)
         for(auto it = mRec.begin(); it != mRec.end();)
         {
             
-            (*it)->mRec.mRectangle.move(0, 20);
-            if ((*it)->mRec.mRectangle.getPosition().y > 500)
+            (*it)->mRec.move({0,20});
+            if ((*it)->mRec.getPosition().y > 500)
             {
                 delete *it;
                 
@@ -310,7 +312,7 @@ int main(int argc, char** argv)
             //            std::cout << it.mRec.mRectangle.getPosition().y;
             
         }
-        std::cout << mRec.size() << std::endl;
+//        std::cout << mRec.size() << std::endl;
         window.display();
         auto frame_end_time = std::chrono::high_resolution_clock::now();
     }

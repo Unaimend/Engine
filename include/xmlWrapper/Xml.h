@@ -36,7 +36,8 @@
 #include <string>
 #include <iostream>
 
-#include "../tinyXML/tinyxml2.h"
+#include "/Users/thomasdost/Documents/dev/Engine/include/tinyXML/tinyxml2.h"
+
 #include "../EngineTypes.h"
 
 

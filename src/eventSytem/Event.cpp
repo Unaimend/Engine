@@ -24,4 +24,5 @@ eng::Event::Event(const std::string& EventName, std::initializer_list<std::strin
 eng::hash eng::Event::getHash()
 {
     return mEventName;
+    
 }
