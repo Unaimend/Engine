@@ -1,22 +1,25 @@
-//***************************************************************
-//Author: Thomas Dost
-//Version: 1.0.0
-//Beschr.	Wrapper fuer Rectangles
-//Changelog	: Erstellt
-//			  22.01.2016
-//           Grundfunktionalitaet hinzugefuegt
-//15.06.2016
-//           Rectangle(const eng::Vector2f& pos) hinzugefuegt
-//19.06.2016
-//           Funktionen in cpp ausgelagert
-//           Alles auskommentiert
-//TODO:
-//
-//***************************************************************
+/***************************************************************
+*Author: Thomas Dost
+*Version: 1.0.0
+*Beschr.	Wrapper fuer Rectangles
+*Changelog	: Erstellt
+*			  22.01.2016
+*           Grundfunktionalitaet hinzugefuegt
+*15.06.2016
+*           Rectangle(const eng::Vector2f& pos) hinzugefuegt
+*19.06.2016
+*           Funktionen in cpp ausgelagert
+*           Alles auskommentiert
+*           getPosition, getSfRectangle hinzugefuegt
+*TODO:
+*           Conversion Operator fuer SFML mit gloablen define
+*           ob SFML genutzt wird.
+***************************************************************/
 #include <SFML/Graphics.hpp> //sf::Rectangle
 
 #include "Vector.h" //eng::Vector
 
+#define SFML
 #pragma once
 namespace eng
 {
@@ -62,6 +65,7 @@ namespace eng
         /**********************************************
          *Descr:    Copy-Assignment-Operator
          *Param1:   Zu kopierendes Objekt
+         *Return:   Referenz aus *this;
          ***********************************************/
         Rectangle& operator=(const Rectangle& rhs);
     
@@ -77,9 +81,26 @@ namespace eng
          *Param1:   X und Y-Richtung in die bewegt werden soll
          ***********************************************/
         void move(const eng::Vector2f& vec);
-    public:
+        
+#ifdef SFML
+        /**********************************************
+         *Descr:    Getter-Funktion
+         *Return:   sf::Rectangle dieser Klasse
+         ***********************************************/
+        const sf::RectangleShape& getSfRectangle() const;
+#endif
+        /**********************************************
+         *Descr:   Getter-Funktion
+         *Return:  Position des sf::Rectangles
+         ***********************************************/
+        const eng::Vector2f getPosition() const;
+        
+        
+    private:
+#ifdef SFML
         //Das eigentliche Rechteck
         sf::RectangleShape mRectangle;
+#endif
         //Standardbreite
         const float DEFAULT_WIDTH = 20;
         //Standardhoehe

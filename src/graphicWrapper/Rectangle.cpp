@@ -23,6 +23,7 @@ eng::Rectangle::Rectangle(const Rectangle& rhs) : mRectangle(rhs.mRectangle){};
 eng::Rectangle& eng::Rectangle::operator=(const eng::Rectangle& rhs)
 {
     mRectangle = rhs.mRectangle;
+    return *this;
 }
 
 
@@ -36,4 +37,19 @@ void eng::Rectangle::move(const eng::Vector2f& vec)
 {
         mRectangle.move(vec.x, vec.y);
 }
+
+#ifdef SFML
+const sf::RectangleShape& eng::Rectangle::getSfRectangle() const
+{
+    return mRectangle;
+}
+#endif
+
+const eng::Vector2f eng::Rectangle::getPosition() const
+{
+#ifdef SFML
+    return {mRectangle.getPosition().x, mRectangle.getPosition().y};
+#endif
+}
+
 
