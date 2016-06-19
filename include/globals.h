@@ -8,6 +8,7 @@
 16.06.2016  
             ALles wieder im namespace, hat vergessen das erstellen auch in eng:: zu machen :)
 *TODO:
+            Auskommentieren
 *************************************/
 
 #pragma once
