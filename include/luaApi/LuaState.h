@@ -3,13 +3,16 @@
 //Author: Thomas Dost
 //Version: 1.0.0
 //Changelog	: Erstellt
-//			25.01.2016
-//			T read() hinzugefuegt
+//			:
 //TODO:
 //		Funktor durch Lambada austauschen
+//      Unique Pointer in Operator[] verweden.
 //***************************************************************
 
 #include <memory>
+#include "LuaValue.h"
+#include "LuaState.h"
+#include <iostream>
 extern "C"
 {
 #include "lua.h"
@@ -27,6 +30,8 @@ namespace lua
 			mState(luaL_newstate()), mFilePath(filepath)
 		{
 			openLibs();
+            loadFile();
+            runFile();
 			
 
 		}
@@ -36,21 +41,26 @@ namespace lua
 		}
 		void openLibs()
 		{
-			luaopen_base(mState);             /* opens the basic library */
-     		luaopen_table(mState);            /* opens the table library */
-      		luaopen_io(mState);               /* opens the I/O library */
-     		luaopen_string(mState);           /* opens the string lib. */
-      		luaopen_math(mState);             /* opens the math lib. */
+//			luaopen_base(mState);             /* opens the basic library */
+//     		luaopen_table(mState);            /* opens the table library */
+//      		luaopen_io(mState);               /* opens the I/O library */
+//     		luaopen_string(mState);           /* opens the string lib. */
+//      		luaopen_math(mState);             /* opens the math lib. */
+            luaL_openlibs(mState);
 			
 		}
-		void runFile(const filepath& filepath)
+		void runFile(filepath filepath)
 		{
   		 luaL_dofile(mState, filepath.c_str());
 
 		}
 		void runFile()
 		{
-  		 luaL_dofile(mState, mFilePath.c_str());
+  		 if(luaL_dofile(mState, mFilePath.c_str()) != 0)
+         {
+             fprintf(stderr, "Couldn't load file: %s\n", lua_tostring(mState, -1));
+             std::cerr << "Fehler beim Ausfuehren der Lua Datei " << mFilePath << std::endl;
+         }
 
 		}
 
@@ -76,84 +86,125 @@ namespace lua
 		}
 
 		template <typename T, typename... Ts>
-		void push(const T value, const Ts... values) 
-		{
+		void push(const T value, const Ts... values) {
     	push(value);
     	push(values...);
-		}
+}
 
-		template<typename T>
-		void setGlobal(const std::string& name,const T value)
-		{
-			push(value);
-			lua_setglobal(mState, name.c_str());
-		}
-
-
-		template<typename T>
-		T getGlobal(const std::string& name)
-		{
-			lua_getglobal(mState ,name.c_str());
-			read<T>(lua_gettop(mState));
-		}
-
-
-		
-		template<typename T>
-		T read(const int index) const
-		{
-			std::cout << "Template Specialization for this Type doesnt exist." << std::endl;
-		}
-		
-		/*
-		int& LuaState::operator[] (const std::string& ident)
-		{
-		    
-		}
-		*/
-		/*
-		int& LuaState::operator[] (const std::string&& ident)
-		{
-			std::cout << "RVALUE STATE" << std::endl;
-		    return m_anList[nIndex];
-		}*/
 
 #ifdef FAST
-		
-		void callFunction(int paramcount, int returncount)
-		{
-			lua_pcall(mState, paramcount, returncount, 0);
+#else
+		template<typename T, typename... Rest>
+		inline void addParams( const T& obj, const Rest&... rest)
+		{	
+			pushGlobal(obj);
+			++mFuncParaCount;
+			addParams(rest...);
 		}
-#else 
 		void callFunction(int returncount = 1)
 		{
+            if(!lua_isfunction(this->mState,-1))
+            {
+                std::cerr << "Auf dem Stack befindet sich keine Funktion" << std::endl;
+            }
 			lua_pcall(mState, mFuncParaCount, returncount, 0);
 			mFuncParaCount = 0;
 		}
 #endif
+        
+    //SHARED
+        LuaRef& operator[](const std::string& varname)
+        {
+            LuaRef* temp = new LuaRef(0, varname, mState);
+            return *temp;
+        }
+//        
+//        //GETTER
+//        lua::LuaValue operator [](const std::string& varname) const
+//        {
+//            lua_getglobal(this->mState, varname.c_str());
+//            if (lua_isinteger(mState, -1))
+//            {
+//                return lua::LuaValue((int)lua_tointeger(mState, -1));
+//            }
+//            else if (lua_isnumber(mState, -1))
+//            {
+//                return lua::LuaValue((float)lua_tonumber(mState, -1));
+//            }
+//            else if (lua_isboolean(mState, -1))
+//            {
+//                return lua::LuaValue((bool)lua_toboolean(mState, -1));
+//            }
+//            else if(lua_isstring(mState, -1))
+//            {
+//                return lua::LuaValue(strdup(lua_tostring(mState, -1)));
+//            }
+//            else
+//            {
+//                std::cerr << "Kein Passender Typ aufm Stack" << std::endl;
+//                return LuaValue();
+//            }
+//                
+//        }
+        
+     
+//
+//        
 		
+		int getInt(int stackpos)
+		{
+			return lua_tointeger(mState, stackpos);
+		}
+		template<class T>
+		T getSingleValue()
+		{
+			if (lua_isinteger(mState, -1))
+			{
+				return lua_tointeger(mState, -1);
+			}
+			else if (lua_isnumber(mState, -1))
+			{
+				return lua_tonumber(mState, -1);
 
-		void stackDump(lua::LuaState& state ) {
+			}
+			else
+			{
+				return lua_tonumber(mState, -1);
+				std::cout << ("getSingleReturn : lua, richtig implementieren\n");
+			}
+
+		}
+        
+        void error (const char *fmt, ...) {
+            va_list argp;
+            va_start(argp, fmt);
+            vfprintf(stderr, fmt, argp);
+            va_end(argp);
+            lua_close(this->mState);
+            exit(EXIT_FAILURE);
+        }
+
+		void stackDump() {
 			int i;
-			int top = lua_gettop(state.mState);
+			int top = lua_gettop(this->mState);
 			for (i = 1; i <= top; i++) {  /* repeat for each level */
-				int t = lua_type(state.mState, i);
+				int t = lua_type(this->mState, i);
 				switch (t) {
 
 				case LUA_TSTRING:  /* strings */
-					printf("`%s'", lua_tostring(state.mState, i));
+					printf("`%s'", lua_tostring(this->mState, i));
 					break;
 
 				case LUA_TBOOLEAN:  /* booleans */
-					printf(lua_toboolean(state.mState, i) ? "true" : "false");
+					printf(lua_toboolean(this->mState, i) ? "true" : "false");
 					break;
 
 				case LUA_TNUMBER:  /* numbers */
-					printf("%g", lua_tonumber(state.mState, i));
+					printf("%g", lua_tonumber(this->mState, i));
 					break;
 
 				default:  /* other values */
-					printf("%s", lua_typename(state.mState, t));
+					printf("%s", lua_typename(this->mState, t));
 					break;
 
 				}
@@ -180,27 +231,7 @@ namespace lua
 			}
 		}
 	};
-
-	template<>
-	float lua::LuaState::read(const int index) const
-	{
-		lua_tonumber(mState, index);
-	}
-
-	template<>
-	int32 lua::LuaState::read(const int index) const
-	{
-		lua_tointeger(mState, index);
-	}
-
-	template<>
-	const char* lua::LuaState::read(const int index) const
-	{
-		lua_tostring(mState, index);
-	}
 }
-
-
 
 //inline void DBG()
 //{
