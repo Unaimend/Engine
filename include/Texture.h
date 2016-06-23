@@ -15,8 +15,6 @@
 #include <iostream>
 #include "EngineTypes.h"	//Typedefs
 
-
-
 namespace eng
 {
 	class Texture
@@ -26,7 +24,7 @@ namespace eng
 		*Descr:	 Konstruktor fuer das initilisieren der Klasse.
 		*Param1: Pfad zur Textur
 		***********************************************/
-		Texture(const filepath& path);
+		Texture(filepath path);
 	private: 
 		//Textur
 		sf::Texture mTexture;
