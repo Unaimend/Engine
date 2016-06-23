@@ -317,7 +317,7 @@ int main(int argc, char** argv)
         auto frame_end_time = std::chrono::high_resolution_clock::now();
     }
     
-<<<<<<< HEAD
+
     gLuaState.push(1,2,3, "HI");
     gLuaState.runFile();
 
@@ -366,8 +366,6 @@ int main(int argc, char** argv)
 
 
 
-=======
->>>>>>> 23f03035b5c57bc49340bfe9c97da890bb6b5160
 
 
     /******************TEST AREA**********************************/
