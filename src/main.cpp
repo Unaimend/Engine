@@ -317,6 +317,57 @@ int main(int argc, char** argv)
         auto frame_end_time = std::chrono::high_resolution_clock::now();
     }
     
+<<<<<<< HEAD
+    gLuaState.push(1,2,3, "HI");
+    gLuaState.runFile();
+
+
+   
+
+    /*
+
+
+     // create new Lua state
+    lua_State *lua_state;
+    lua_state = luaL_newstate();
+
+    // load Lua libraries
+    static const luaL_Reg lualibs[] =
+    {
+        { "base", luaopen_base },
+        { NULL, NULL}
+    };
+
+    const luaL_Reg *lib = lualibs;
+    for(; lib->func != NULL; lib++)
+    {
+        lib->func(lua_state);
+        lua_settop(lua_state, 0);
+    }
+
+    // run the Lua script
+    luaL_dofile(lua_state, "hello.lua");
+
+    // close the Lua state
+    lua_close(lua_state);
+    */
+
+#ifdef LINUX
+   std::cout << "Engine runs on Linux" << std::endl;
+#elif defined WINDOWS
+   // std::cout << "IGIT" << std::endl;
+#elif defined MAC
+    //std::cout << "NAJA" << std::endl;
+#endif
+ 
+
+
+
+
+
+
+=======
+>>>>>>> 23f03035b5c57bc49340bfe9c97da890bb6b5160
 
 
     /******************TEST AREA**********************************/
