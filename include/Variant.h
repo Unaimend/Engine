@@ -17,6 +17,8 @@
 				true soll im opreator<< als "true" nichht "1" ausgegeben werden
 				Overhead durch map Sortierung vermeiden
 				Klasse refactoren
+                Anschauen fuer Typen bestimmung:
+                    https://www.youtube.com/watch?v=qHgM5UdzPQU
 				
 *************************************/
 

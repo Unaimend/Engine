@@ -6,6 +6,8 @@
  *Changelog:
             NEUSCHREIBEN
  *TODO:
+            Anschauen fuer Typen bestimmung:
+                https://www.youtube.com/watch?v=qHgM5UdzPQU
  *************************************/
 
 #ifndef LuaValue_h
