@@ -198,9 +198,9 @@ int main(int argc, char** argv)
     
     lua_getglobal(gLuaState.mState, "startUp");
     gLuaState.callFunction();
- time_t t;
-     srand((unsigned) time(&t));
-      while (window.isOpen())
+    time_t t;
+    srand((unsigned) time(&t));
+    while (window.isOpen())
     {
         for(int i = 0; i < 200; ++i)
         {
@@ -211,7 +211,7 @@ int main(int argc, char** argv)
         }
         
 
-   
+                       
         
 //
         auto frame_start_time = std::chrono::high_resolution_clock::now();
@@ -250,12 +250,12 @@ int main(int argc, char** argv)
 //        auto event_start_time = std::chrono::high_resolution_clock::now();
         for(const auto& it : eng::gEventQueue.mEvents)
         {
-            if(it->getHash() == eng::util::toHash("Bigger300"))
-            {
-                std::cout << eng::util::toHash("Bigger300") << std::endl;
-                
-               
-            }
+//            if(it->getHash() == eng::util::toHash("Bigger300"))
+//            {
+//                std::cout << eng::util::toHash("Bigger300") << std::endl;
+//                
+//               
+//            }
             //HIER WERDEN EVENTS UEBERGEBEN
         }
 //        auto event_end_time = std::chrono::high_resolution_clock::now();
