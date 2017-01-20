@@ -13,6 +13,8 @@
             Alles auskommentiert
             In Cpp ausgelagert
             toHash hinzugefuegt
+20.01.2017
+ 			Member Variablen public gemacht
 *TODO:			
 				Konstruktoren loeschen fuer EventArg, Event
 				Kommentieren
@@ -59,7 +61,7 @@ namespace eng
          ************************************/
         hash getHash();
 
-	private:
+	public:
 	
 		//Event Name als Hash
 		eng::hash mEventName;
