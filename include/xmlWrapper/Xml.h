@@ -22,7 +22,6 @@
             print() -> print() const
  20.01.2017
             saveFiles gibt jetzt einen Statuswert zurueck ob das Speichern erfolgreich war.
-            getName return jetzt const std::string statt const std::string& da dies aus Gruenden zu Fehlern fuehrte
             XmlElement operator[] benutzt jetzt XmlElement::firstChildNode stat tinyxml2::firstChildNote
             const XMLDocument& getTmxDoc() const hinzugefuegt
 
@@ -91,7 +90,7 @@ namespace eng
          *Descr:    Funktion um auf Elementinhalt zu zugreifen
          *Ret:      Falls mNode == nullptr -> leerer String, sonst Inhalt des Elements
          ***********************************************/
-        const std::string& getValue() const
+        const std::string getValue() const
         {
             if(mNode != nullptr)
             {
@@ -234,7 +233,7 @@ namespace eng
         *     <resX>1920</resX>
         *     <resY>1200</resY>
         *</options>
-        *Returnwert were options
+        *Returnwert waere options
         ***********************************************/
         const XmlElement rootElement()
         {
@@ -253,3 +252,9 @@ namespace eng
         filepath mPath;
     };
 }
+
+
+/*  ATTRIBUTES BEIIIIIIISPIEL
+eng::XmlElement test1 = xml.mDoc.FirstChildElement( "options" )->FirstChildElement("note");
+ std::cout << test1.getNodeName() <<   test1.mNode->FirstAttribute()->Name() <<std::endl;
+ */
