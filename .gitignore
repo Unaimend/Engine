@@ -1,2 +1,10 @@
 Xcode_Project_Files
-Debug/Engine
+Debug/*
+.idea/*
+CMakeFiles/*
+cmake_install.cmake
+CMakeCache.txt
+cmake-build-debug
+Makefile
+Engine
+data/*

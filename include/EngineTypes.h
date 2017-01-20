@@ -15,7 +15,7 @@
 #pragma once
 #include <string>
 
-
+//Typedefs
 typedef int_fast8_t int8;
 typedef int_fast32_t int32;
 typedef uint_fast32_t uint32;

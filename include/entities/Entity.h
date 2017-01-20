@@ -1,12 +1,14 @@
 /************************************
-*Author:    Thomas Dost
-*Datum:     15.06.2016
-*Beschr.    Oberklasse fuer alle Entities
-*Changelog:
+Author:    Thomas Dost
+Datum:     15.06.2016
+Beschr.    Oberklasse fuer alle Entities
+Changelog:
 19.06:2016
             Include Guards -> pragma once
             Auskommentiert
-*TODO:
+20.01.2016
+            copy-assignment geloescht da er nicht korrekt funktioniert
+TODO:
             Xml mData wird nicht kopiert im Assignment Operator
 *************************************/
 
@@ -20,7 +22,7 @@
 #include "../graphicWrapper/Rectangle.h"   //eng::Rectangle
 #include "../xmlWrapper/Xml.h"          //eng::Xml
 #include "../globals.h"             //gLuastate, gEventQueue
-
+#include "../eventSystem/Event.h"
 
 #pragma once
 namespace eng
@@ -50,7 +52,7 @@ namespace eng
          *Param1:   Zu kopierendes Objekt
          *Return:   Referenz aus *this;
          ***********************************************/
-        Entity& operator=(const Entity& rhs);
+        Entity& operator=(const Entity& rhs) = delete;
         
         
         //Virtuelle Funktion fuer Vererbungsbaum
@@ -68,28 +70,36 @@ namespace eng
         const eng::Xml& mData;
     
     };
-    
+    static eng::Event ev1{"EntitiyDead",{"TEXT"},{ {eng::Variant::Type::INTEGER, 300} }};
     
 //Wird NICHT Refactored da Test Entity
     class RecEntity : public Entity
     {
-        
+
     public:
         RecEntity(const eng::Vector2f& vec, lua::LuaState& state, const eng::Xml& data)
         : Entity(vec,state,data), mRec(vec)
         {
 //              std::cout << vec.x << std::endl;
-            
+
         }
-        
+
         Rectangle mRec;
+
+
+        ~RecEntity()
+        {
+            gEventQueue.addEvent(ev1);
+        }
         virtual void render(sf::RenderWindow& window) const override
         {
             mRec.draw(window);
         }
+
+
         virtual void update(float frametime) override
         {
-//            static eng::Event ev1{"Bigger300", {"TEXT"}, { {eng::Variant::Type::INTEGER, 55} }};
+//
 //            if(mRec.mRectangle.getPosition().x > 300)
 //            {
 //                gEventQueue.addEvent(ev1);

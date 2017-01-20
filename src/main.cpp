@@ -12,8 +12,11 @@
 #include "../include/LuaApi/LuaState.h"
 #include "../include/graphicWrapper/Rectangle.h"
 #include "../include/graphicWrapper/Vector.h"
-#include "../include/tinyXML/tinyxml2.h"
+#include "/Users/thomasdost/Documents/dev/Engine/include/tinyXML/tinyxml2.h"
+
 #include "../include/xmlWrapper/Xml.h"
+
+#include "../include/enteties/Entity.h"
 #define MAC
 
 #include <stdlib.h>                             /* For function exit() */
@@ -31,7 +34,7 @@ void bail(lua_State *L, char *msg){
 namespace eng {
     Rectangle& createRectangle(int x, int y)
     {
-        return *(new Rectangle{x,y});
+        return *(new Rectangle{static_cast<float>(x),static_cast<float>(y)});
     }
     
     static int myRect( lua_State *L, int x, int y)
@@ -96,7 +99,10 @@ using std::cout;
 //}
 
 char gFilePath[100];
-eng::EventQueue gEventQueue;
+namespace eng {
+    EventQueue gEventQueue;
+}
+
 lua::LuaState gLuaState("/Users/thomasdost/Documents/dev/Engine/data/main.lua");
 
 
@@ -129,7 +135,7 @@ int main(int argc, char** argv)
     
  
   
-
+    std::vector<eng::RecEntity*> mRec;
  
 #ifdef LINUX
     if(readlink("/proc/self/exe", gFilePath, 100) == -1)
@@ -169,60 +175,93 @@ int main(int argc, char** argv)
     gLuaState["resY"] = resY.getValue().c_str();
     gLuaState["filepath"] = gFilePath;
     
-    sf::RenderWindow window(sf::VideoMode(std::stoi(resX.getValue()) , std::stoi(resY.getValue())), "SFML works!");
-    
-    
-    
-    
+
+     eng::RecEntity* ent = new eng::RecEntity({50,50}, gLuaState, xml);
 
     
+    sf::RenderWindow window(sf::VideoMode(std::stoi(resX.getValue()) , std::stoi(resY.getValue())), "SFML works!");
+    
+    window.setFramerateLimit(60);
+    
+   
+
+    
+  
     gLuaState.runFile();
 //    
-    auto aba = gLuaState["x"];
-    std::cout << aba << std::endl;
-      std::cout << gLuaState["x"] << std::endl;
+//    auto aba = gLuaState["x"];
+//    std::cout << aba << std::endl;
+//      std::cout << gLuaState["x"] << std::endl;
     
     
     lua_register(gLuaState.mState, "createRectangle", createRectangle);
     
     lua_getglobal(gLuaState.mState, "startUp");
     gLuaState.callFunction();
-
-    
-    
+    time_t t;
+    srand((unsigned) time(&t));
     while (window.isOpen())
     {
+        for(int i = 0; i < 200; ++i)
+        {
+            auto varX =  std::rand() % 1920;
+//                      std::cout << varX << std::endl;
+            auto test = new eng::RecEntity({(float)varX, 50}, gLuaState, xml);
+            mRec.push_back(test);
+        }
+        
+
+                       
+        
 //
         auto frame_start_time = std::chrono::high_resolution_clock::now();
 
         sf::Event event;
+        
+        eng::util::KeyChecker KeyChecker(event);
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
             {
                 window.close();
             }
+            if (KeyChecker.keyPressed(sf::Keyboard::D))
+            {
+                ent->mRec.move({20,0});
+            }
+            if (KeyChecker.keyPressed(sf::Keyboard::A))
+            {
+                ent->mRec.move({-20,0});
+            }
+            if (KeyChecker.keyPressed(sf::Keyboard::W))
+            {
+                ent->mRec.move({0,-20});
+            }
+            if (KeyChecker.keyPressed(sf::Keyboard::S))
+            {
+                ent->mRec.move({0,20});
+            }
             if (event.type == sf::Event::GainedFocus)
             {
                // gLuaState.runFile();
-                gEventQueue.addEvent(onWindowClicked);
+                eng::gEventQueue.addEvent(onWindowClicked);
             }
         }
 //        auto event_start_time = std::chrono::high_resolution_clock::now();
-        for(const auto& it : gEventQueue.mEvents)
+        for(const auto& it : eng::gEventQueue.mEvents)
         {
-            if(it->mEventName == eng::util::toHash("onWindowClicked"))
-            {
-                std::cout << it->mArgs["Text"].mValue.mAsInteger << std::endl;
-                gLuaState.runFile();
-               
-            }
+//            if(it->getHash() == eng::util::toHash("Bigger300"))
+//            {
+//                std::cout << eng::util::toHash("Bigger300") << std::endl;
+//                
+//               
+//            }
             //HIER WERDEN EVENTS UEBERGEBEN
         }
 //        auto event_end_time = std::chrono::high_resolution_clock::now();
 //        std::cout << ":EventQueueTime:"<<std::chrono::duration_cast<std::chrono::microseconds>(event_end_time - event_start_time).count() << std::endl;
 
-        gEventQueue.mEvents.clear();
+        eng::gEventQueue.mEvents.clear();
         
         
         //LUA UPDATE CALL
@@ -242,17 +281,91 @@ int main(int argc, char** argv)
 
 
         
+        
+        
+        
+        for(auto it = mRec.begin(); it != mRec.end();)
+        {
+            
+            (*it)->mRec.move({0,20});
+            if ((*it)->mRec.getPosition().y > 500)
+            {
+                delete *it;
+                
+                it = mRec.erase(it);
+            }
+            else{it++;}
+        
+            
+        }
+        
         window.clear();
         
-        for(auto it : rects)
+        ent->update(20);
+        ent->render(window);
+        
+     
+        for(auto& it : mRec)
         {
-            it.draw(window);
+            
+            it->render(window);
+            //            std::cout << it.mRec.mRectangle.getPosition().y;
+            
         }
-       
+//        std::cout << mRec.size() << std::endl;
         window.display();
         auto frame_end_time = std::chrono::high_resolution_clock::now();
     }
     
+
+    gLuaState.push(1,2,3, "HI");
+    gLuaState.runFile();
+
+
+   
+
+    /*
+
+
+     // create new Lua state
+    lua_State *lua_state;
+    lua_state = luaL_newstate();
+
+    // load Lua libraries
+    static const luaL_Reg lualibs[] =
+    {
+        { "base", luaopen_base },
+        { NULL, NULL}
+    };
+
+    const luaL_Reg *lib = lualibs;
+    for(; lib->func != NULL; lib++)
+    {
+        lib->func(lua_state);
+        lua_settop(lua_state, 0);
+    }
+
+    // run the Lua script
+    luaL_dofile(lua_state, "hello.lua");
+
+    // close the Lua state
+    lua_close(lua_state);
+    */
+
+#ifdef LINUX
+   std::cout << "Engine runs on Linux" << std::endl;
+#elif defined WINDOWS
+   // std::cout << "IGIT" << std::endl;
+#elif defined MAC
+    //std::cout << "NAJA" << std::endl;
+#endif
+ 
+
+
+
+
+
+
 
 
     /******************TEST AREA**********************************/

@@ -3,17 +3,22 @@
 *Datum:         16.01.2016
 *Beschr.        Klasse fuer Standard Events
 *Changelog:
-                        16.01.2016
-*                       Erstellt
-						20.01.2016
-						std::string mEventName hinzugefuegt um Events zu identifizieren
-						21.01.2016
-						utility.h included
+            16.01.2016
+*           Erstellt
+			20.01.2016
+			std::string mEventName hinzugefuegt um Events zu identifizieren
+			21.01.2016
+			utility.h included
+19.06.2016      
+            Alles auskommentiert
+            In Cpp ausgelagert
+            toHash hinzugefuegt
 *TODO:			
-				Variant in EvenArgs Kapsel
 				Konstruktoren loeschen fuer EventArg, Event
 				Kommentieren
 				Lua Event Api
+                Copy und Assignment schreiben
+                Ausgabe funktion hinzufuegen
 *************************************/
 
 
@@ -26,21 +31,17 @@ Lua Api erstmal komplett ingnogieren
 */
 
 #pragma once
+#include <map>          //std::map
+#include <string>       //std::string
+#include <initializer_list> //std::initiliaziler_list
+#include <iostream> //std::cerr
 
-#include "../Variant.h"
-#include <map>
-#include <string>
-#include <initializer_list>
-#include <iostream>
-#include "../EngineTypes.h"
-#include "../utility.h"
+
+#include "../Variant.h" //eng::Variant
+#include "../EngineTypes.h" //in-Engine Types
+#include "../utility.h" //eng::hash
 namespace eng
 {
-	struct EventArg
-	{
-		Variant mArg;
-	};
-
 	class Event
 	{
 	public:
@@ -48,28 +49,17 @@ namespace eng
 		*Descri:	Konstruktor fuer Events
 		*Param1:	Identifier fuer die Argumente
 		*Param2:	Werte der Argumente
-		*Return:
 		************************************/
-		Event(std::string EventName, std::initializer_list<std::string> identifiers, std::initializer_list<Variant> args)
-		{
-			mEventName = eng::util::toHash(EventName);
-			if(identifiers.size() != args.size())
-			{
-				std::cout << "initializer_list do need to have the same size" << std::endl;
-			}
+        Event(const std::string& EventName, std::initializer_list<std::string> identifiers, std::initializer_list<Variant> args);
+        
+        
+        /***********************************
+         *Descri:	Konstruktor fuer Events
+         *Return:	Event Name als Hash
+         ************************************/
+        hash getHash();
 
-			auto it = identifiers.begin();
-			auto it2 = args.begin();
-			
-			for(; it < identifiers.end(); ++it, ++it2)
-			{
-				mArgs[*it] = *it2;
-			}
-
-		}
 	private:
-
-	public:
 	
 		//Event Name als Hash
 		eng::hash mEventName;

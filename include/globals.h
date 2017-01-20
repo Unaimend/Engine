@@ -5,7 +5,10 @@
 *Changelog:
 			22.12.205
 *			int8 gFilePath hinzugefuegt
+16.06.2016  
+            ALles wieder im namespace, hat vergessen das erstellen auch in eng:: zu machen :)
 *TODO:
+            Auskommentieren
 *************************************/
 
 #pragma once
@@ -15,13 +18,14 @@
 #include "EngineTypes.h"
 #include "eventSystem/EventQueue.h"
 #include "luaApi/LuaState.h"
+
+#define SFML
+
 //Gloable Variable fuer den Pfad zur ausfuehrbaren Datei
 extern char gFilePath[100];
 
 namespace eng
 {
-	using namespace lua;
-
-	extern LuaState gLuaState;
-	extern eng::EventQueue gEventQueue;
+	extern EventQueue gEventQueue;
 }
+extern lua::LuaState gLuaState;
