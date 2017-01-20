@@ -19,7 +19,9 @@
 
 #include "Vector.h" //eng::Vector
 
-#define SFML
+#include "../globals.h"
+
+
 #pragma once
 namespace eng
 {
