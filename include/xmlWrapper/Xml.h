@@ -20,9 +20,13 @@
  15.06.2016
             Vermeindlichen CopyCtor hinzugeufuegt
             print() -> print() const
- 
+ 20.01.2017
+            saveFiles gibt jetzt einen Statuswert zurueck ob das Speichern erfolgreich war.
+            getName return jetzt const std::string statt const std::string& da dies aus Gruenden zu Fehlern fuehrte
+            XmlElement operator[] benutzt jetzt XmlElement::firstChildNode stat tinyxml2::firstChildNote
+            const XMLDocument& getTmxDoc() const hinzugefuegt
+
  *TODO:
-            Warum funktioniert der Parse Check nicht?
             Methoden der tinyxml XMLElement Klasse implementieren
                 http://www.grinninglizard.com/tinyxml2docs/classtinyxml2_1_1_x_m_l_element.html
             Sichbarkeit anpassen
@@ -87,7 +91,7 @@ namespace eng
          *Descr:    Funktion um auf Elementinhalt zu zugreifen
          *Ret:      Falls mNode == nullptr -> leerer String, sonst Inhalt des Elements
          ***********************************************/
-        std::string getValue() const
+        const std::string& getValue() const
         {
             if(mNode != nullptr)
             {
@@ -114,11 +118,11 @@ namespace eng
          *Descr:    Funktion um auf Nodename zu zugreifen
          *Ret:      Falls mNode == nullptr -> leerer String, sonst Name der Node auf die gezeigt wird
          ***********************************************/
-        std::string getNodeName() const
+        const std::string getNodeName() const
         {
             if(mNode != nullptr)
             {
-                return mNode->Value();
+                return mNode->Name();
             }
             return "";
         }
@@ -159,16 +163,16 @@ namespace eng
             return true;
         }
         
-        XmlElement firstChildElement(const std::string& ident = "")
+        const XmlElement firstChildElement(const std::string& ident = "") const
         {
             return mNode->FirstChildElement(ident.c_str());
         }
         
-        XmlElement operator[](const std::string& ident)
+        const XmlElement operator[](const std::string& ident) const
         {
-            return mNode->FirstChildElement(ident.c_str());
+            return firstChildElement(ident);
         }
-    public:
+    private:
         XMLElement* mNode;
        
     };
@@ -186,7 +190,7 @@ namespace eng
             //Checkt ob das Dokument geladen werden konnte
             if(mDoc.LoadFile(filepath.c_str()) == XML_NO_ERROR)
             {
-                std::cout << "Die Datei:" << filepath << " wurde ERFOLGREICH werden" << std::endl;
+                std::cout << "Die Datei:" << filepath << " ERFOLGREICH geladen werden" << std::endl;
             }
             else
             {
@@ -221,16 +225,30 @@ namespace eng
             return mDoc.SaveFile(mPath.c_str());
 
         }
-       
-        
-        XmlElement rootElement()
+
+        /**********************************************
+        *Descr:    Gibts das rootElement zurueck
+        *Return    RootElement aka das Element auf hoechster Ebene
+        *Beispiel
+        *<options>
+        *     <resX>1920</resX>
+        *     <resY>1200</resY>
+        *</options>
+        *Returnwert were options
+        ***********************************************/
+        const XmlElement rootElement()
         {
             XmlElement temp = mDoc.RootElement();
-            return temp.mNode;
+            return temp;
         }
 
 
-    public:
+        const XMLDocument& getTmxDoc() const
+        {
+            return mDoc;
+        }
+
+    private:
         XMLDocument mDoc;
         filepath mPath;
     };
