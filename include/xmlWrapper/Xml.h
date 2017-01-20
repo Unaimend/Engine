@@ -186,16 +186,7 @@ namespace eng
             //Checkt ob das Dokument geladen werden konnte
             if(mDoc.LoadFile(filepath.c_str()) == XML_NO_ERROR)
             {
-                //                if(mDoc.Parse(filepath.c_str()) == XML_NO_ERROR)
-                //                {
-                //
-                //                }
-                //                else
-                //                {
-                //                    std::cerr << "Die Datei:" << filepath << " konnte nicht GEPARSED werden" << std::endl;
-                //                    std::cerr << mDoc.GetErrorStr1() << std::endl;
-                //                    std::cerr << mDoc.GetErrorStr2() << std::endl;
-                //                }
+                std::cout << "Die Datei:" << filepath << " wurde ERFOLGREICH werden" << std::endl;
             }
             else
             {
@@ -227,7 +218,8 @@ namespace eng
          ***********************************************/
         bool saveFile()
         {
-            mDoc.SaveFile(mPath.c_str());
+            return mDoc.SaveFile(mPath.c_str());
+
         }
        
         
@@ -236,6 +228,8 @@ namespace eng
             XmlElement temp = mDoc.RootElement();
             return temp.mNode;
         }
+
+
     public:
         XMLDocument mDoc;
         filepath mPath;
