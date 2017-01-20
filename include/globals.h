@@ -18,6 +18,9 @@
 #include "EngineTypes.h"
 #include "eventSystem/EventQueue.h"
 #include "luaApi/LuaState.h"
+
+#define SFML
+
 //Gloable Variable fuer den Pfad zur ausfuehrbaren Datei
 extern char gFilePath[100];
 
