@@ -7,4 +7,7 @@ CMakeCache.txt
 cmake-build-debug
 Makefile
 Engine
+Engine.cbp
 data/*
+src/main.cpp
+data/main.lua
