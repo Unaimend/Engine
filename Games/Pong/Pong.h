@@ -8,6 +8,10 @@
 
 class Pong {
 
+    void init()
+    {
+
+    }
 };
 
 
