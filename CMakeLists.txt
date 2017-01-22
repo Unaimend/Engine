@@ -23,6 +23,6 @@ link_directories( ./lib/SFML/)
 #However, the file(GLOB...) allows for wildcard additions:
 file(GLOB SOURCES "src/*.cpp" "src/tinyXML/*.cpp"  "src/eventSytem/*.cpp" "src/luaApi/*.cpp" 
 "src/xmlWrapper/*.cpp" "src/graphicWrapper/*.cpp" "src/entities/*.cpp" )
-add_executable(Engine ${SOURCES} Games/Pong/Pong.cpp Games/Pong/Pong.h include/graphicWrapper/Window.h)
+add_executable(Engine ${SOURCES} Games/Pong/Pong.cpp Games/Pong/Pong.h include/graphicWrapper/Window.h Games/Game.h)
 
 target_link_libraries(Engine ${PROJECT_LINK_LIBS} )

@@ -6,15 +6,13 @@
 #include "../include/eventSystem/Event.h"
 #include "../include/globals.h"
 #include "../include/graphicWrapper/Rectangle.h"
-
 #include "../include/xmlWrapper/Xml.h"
-
 #include "../include/entities/Entity.h"
-
 #include "../include/graphicWrapper/Window.h"
 #define MAC
 
 
+#include "../Games/Pong/Pong.h"
 
 
 
@@ -70,6 +68,21 @@ int main(int argc, char** argv)
 #elif defined MAC
     strcpy(gFilePath, "/Users/thomasdost/Documents/dev/Engine");
 #endif
+
+
+
+
+
+
+    //TEST GAME AREA
+    Pong a{};
+    a.init();
+    a.start();
+
+
+
+
+
    
     //Options Xml laden, hier steht alles wichtige drinnen.
     eng::Xml xml{std::string(gFilePath) + "/data/options.xml"};
@@ -78,7 +91,9 @@ int main(int argc, char** argv)
 
 
 
-    
+
+
+
     gLuaState["resX"] = resX.getValue().c_str();
     gLuaState["resY"] = resY.getValue().c_str();
     gLuaState["filepath"] = gFilePath;
@@ -175,19 +190,9 @@ int main(int argc, char** argv)
          gLuaState.callFunction();
 
 
-
-
-
-
-
-//
         window.clear();
-        
         ent->update(20);
-        ent->render(window.getSfRenderWindw());
-        
-
-//        std::cout << mRec.size() << std::endl;
+        ent->render(window.getSfRenderWindow());
         window.display();
         auto frame_end_time = std::chrono::high_resolution_clock::now();
     }
@@ -196,71 +201,6 @@ int main(int argc, char** argv)
     gLuaState.push(1,2,3, "HI");
     gLuaState.runFile();
 
-
-
-
-
-
-
-
-
-    /******************TEST AREA**********************************/
-    eng::Variant a{"Error: Dateipfad konnte nicht ermittelt werden"};
-    // std::cout << a.mValue.mAsStringId << std::endl;
-
-     eng::Event* onExplode = new eng::Event
-    {   "onExplode",
-        {"radius", "damage", "explosiveType"}, 
-        { {eng::Variant::Type::INTEGER, 20},{eng::Variant::Type::DOUBLE, 2000},{"Grenade"} } 
-    };
-
-    /*   eng::Event onExplode2
-           {   "onExplode",
-               {"radius"},
-               { {eng::Variant::Type::INTEGER, 22} }
-           };
-
-
-             for(int i = 0; i < 100; ++i)
-             {
-
-
-             }
-
-        for(int i = 0; i < 100; ++i)
-            {
-               size_t& temp =gEventQueue.mEvents[i]->mEventName;
-
-               if(temp == 123243243)
-               {
-                       ;
-               }
-               else if (temp == 43532432)
-               {
-                   ;
-               }
-               else if (temp == 324234324324)
-               {
-                   ;
-               }
-               else if (temp == 234325)
-               {
-                   ;
-               }
-               else if (temp == 124432542532)
-               {
-                   ;
-               }
-               else
-               {
-                   ;
-               }
-
-
-            }
-
-
-     */
 
 
 
@@ -282,6 +222,74 @@ int main(int argc, char** argv)
 *Changelog:
 *TODO:
 *************************************/
+
+
+
+
+/******************TEST AREA**********************************/
+//eng::Variant a{"Error: Dateipfad konnte nicht ermittelt werden"};
+// std::cout << a.mValue.mAsStringId << std::endl;
+
+//eng::Event* onExplode = new eng::Event
+//        {   "onExplode",
+//            {"radius", "damage", "explosiveType"},
+//            { {eng::Variant::Type::INTEGER, 20},{eng::Variant::Type::DOUBLE, 2000},{"Grenade"} }
+//        };
+
+/*   eng::Event onExplode2
+       {   "onExplode",
+           {"radius"},
+           { {eng::Variant::Type::INTEGER, 22} }
+       };
+
+
+         for(int i = 0; i < 100; ++i)
+         {
+
+
+         }
+
+    for(int i = 0; i < 100; ++i)
+        {
+           size_t& temp =gEventQueue.mEvents[i]->mEventName;
+
+           if(temp == 123243243)
+           {
+                   ;
+           }
+           else if (temp == 43532432)
+           {
+               ;
+           }
+           else if (temp == 324234324324)
+           {
+               ;
+           }
+           else if (temp == 234325)
+           {
+               ;
+           }
+           else if (temp == 124432542532)
+           {
+               ;
+           }
+           else
+           {
+               ;
+           }
+
+
+        }
+
+
+ */
+
+
+
+
+
+
+
 
 
 
