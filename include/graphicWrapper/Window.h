@@ -56,19 +56,14 @@ namespace eng
         {
             mWindow->setSize(sf::Vector2u(size.x, size.y));
         }
+        sf::RenderWindow &getSfRenderWindow() {
+            return *mWindow;
+        }
+#endif
         eng::Vector2i getSize() const
         {
             return eng::Vector2i(mWidth, mHeight);
         }
-
-
-        sf::RenderWindow &getSfRenderWindow() {
-            return *mWindow;
-        }
-
-
-
-#endif
     private:
         std::string mTitle;
         int32 mWidth;
