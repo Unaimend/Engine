@@ -1,7 +1,13 @@
 #include "../../include/entities/Entity.h"
 
-eng::Entity::Entity(const eng::Vector2f& vec, lua::LuaState& state, const eng::Xml& data)
-: mPos(vec), mState(state), mData(data) {}
+eng::Entity::Entity(const eng::Vector2f& pos, lua::LuaState& state, const eng::Xml& data)
+: mPos(pos), mState(state), mData(data) {}
+
+
+
+
+eng::Entity::Entity(const eng::Vector2f const& pos)
+        : mPos(pos), mState(gLuaState), mData(std::string("")) {}
 
 
 eng::Entity::Entity(const Entity& rhs)
