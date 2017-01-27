@@ -16,8 +16,13 @@
 #include "../include/xmlWrapper/Xml.h"
 #include "../include/graphicWrapper/Window.h"
 
+#include <thread>
 
+enum class STATE {PAUSED, IN_GAME, IN_MENUE};
 class Game {
+
+
+
 public:
     Game()
     {
@@ -26,10 +31,20 @@ public:
 
     virtual bool init(){} ;
     virtual void start(){} ;
-//    virtual void update() ;
+protected:
+    virtual void event(){};
+    virtual void render(){};
+    virtual void update(){} ;
 
-
+public:
     eng::Window* mRenderWindow;
+    STATE mGameState = STATE::IN_MENUE;
+
+    std::thread mEventThread;
+    std::thread mRenderThread;
+    std::thread mUpdateThread();
+
+
 
 };
 
