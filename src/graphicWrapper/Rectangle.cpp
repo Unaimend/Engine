@@ -14,7 +14,7 @@ eng::Rectangle::Rectangle(const eng::Vector2f& pos) : Rectangle(pos,{DEFAULT_WID
 eng::Rectangle::Rectangle(const eng::Vector2f& pos, const eng::Vector2f& size)
 {
     mRectangle.setPosition(pos.x, pos.y);
-    mRectangle.setSize(sf::Vector2f(DEFAULT_WIDTH,DEFAULT_HEIGHT));
+    mRectangle.setSize(sf::Vector2f(size.x,size.y));
 }
 
 eng::Rectangle::Rectangle(const Rectangle& rhs) : mRectangle(rhs.mRectangle){};
