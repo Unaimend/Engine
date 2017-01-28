@@ -23,6 +23,8 @@ namespace eng
     {
 
     public:
+        Sprite() = default;
+
         Sprite(filepath pathToSprite)
         {
             if(mTexture.loadFromFile(pathToSprite))
@@ -32,6 +34,7 @@ namespace eng
             else
             {
                 std::cerr << "Texture aus " + pathToSprite + " konnte nicht geladen werden" << std::endl;
+                exit(-1);
             }
         }
 
@@ -42,7 +45,7 @@ namespace eng
         *Descr:     Bewegt das Sprite um offset
         *Param1:    offset um den bewwegt werden soll
         ***********************************************/
-        void move(const eng::Vector2f const& offset)
+        void move(const eng::Vector2f& offset)
         {
             mSprite.move(offset.x, offset.y);
         }
@@ -53,12 +56,27 @@ namespace eng
         **************************/
         void setPosition(const eng::Vector2f& pos)
         {
-            mSprite.setPosition(pos.x, pos.y)
+            mSprite.setPosition(pos.x, pos.y);
         }
 
         void setScale(const eng::Vector2f& scale)
         {
             mSprite.setScale(scale.x, scale.y);
+        }
+
+        void setSprite(filepath pathToSprite)
+        {
+            if(mTexture.loadFromFile(pathToSprite))
+            {
+                mSprite.setTexture(mTexture);
+                mSprite.setTexture(mTexture);
+            }
+            else
+            {
+                std::cerr << "Texture aus " + pathToSprite + " konnte nicht geladen werden" << std::endl;
+                exit(-1);
+            }
+
         }
 
 
@@ -79,7 +97,7 @@ namespace eng
         {
             return mTexture;
         }
-        
+
         const sf::Sprite& getSprite() const
         {
             return mSprite;
