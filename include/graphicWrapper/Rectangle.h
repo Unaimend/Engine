@@ -68,13 +68,15 @@ namespace eng
          *Return:   Referenz aus *this;
          ***********************************************/
         Rectangle& operator=(const Rectangle& rhs);
-    
+
+
+#ifdef SFML
         /**********************************************
          *Descr:    Funktion um Rectangle zu drawn
          *Param1:   Fenster in das gedrawed werden soll
          ***********************************************/
         void draw(sf::RenderWindow& window) const;
-        
+#endif
         
         /**********************************************
          *Descr:    Funktion um Rechteck zu bewegen
@@ -89,22 +91,24 @@ namespace eng
          ***********************************************/
         const sf::RectangleShape& getSfRectangle() const;
 #endif
+
         /**********************************************
          *Descr:   Getter-Funktion
          *Return:  Position des sf::Rectangles
          ***********************************************/
         const eng::Vector2f getPosition() const;
         
-        
+
     private:
-#ifdef SFML
-        //Das eigentliche Rechteck
-        sf::RectangleShape mRectangle;
-#endif
         //Standardbreite
         const float DEFAULT_WIDTH = 20;
         //Standardhoehe
         const float DEFAULT_HEIGHT = 20;
+#ifdef SFML
+        //Das eigentliche Rechteck
+        sf::RectangleShape mRectangle;
+#endif
+
 	};
     
     
