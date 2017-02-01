@@ -34,14 +34,16 @@
             und ob man die dazu passende Ladefunktion hinzufuegen sollte.
             PreviousElement failt falls mNode nullptr ist
             wie soll das behandelt werden?gar nichts tun? oder Fehlermeldung? Gute Behandlung ausdenken!
+
+            toInt(), toDouble(), to... implementieren.
  *************************************/
 #pragma once
 #include <string>
 #include <iostream>
 
-#include "/Users/thomasdost/Documents/dev/Engine/include/tinyXML/tinyxml2.h"
+#include "tinyxml2.h"
 
-#include "../EngineTypes.h"
+#include "EngineTypes.h"
 
 
 namespace eng
@@ -55,8 +57,8 @@ namespace eng
         {
             mNode = &rhs;
         }
-        
-        
+
+
         /**********************************************
          *Descr:    Conversion Constructor fuer XMLElement Ptr die von allen tinyxml2 funktionen zurueckgegeben werden,
                     die mit XMLElelemt arbeiten
@@ -66,7 +68,7 @@ namespace eng
         {
             mNode = rhs;
         }
-        
+
         
         /**********************************************
          *Descr:    Wert einer XML Node setzen
@@ -161,12 +163,21 @@ namespace eng
             }
             return true;
         }
-        
+
+        /**********************************************
+        *Descr:    Checkt ob mNode auf ein Xml Element zeigt
+        *Ret:      True falls auf ein Element gezeigt wird, sonst false.
+        ***********************************************/
         const XmlElement firstChildElement(const std::string& ident = "") const
         {
             return mNode->FirstChildElement(ident.c_str());
         }
-        
+
+
+        /**********************************************
+        *Descr:    Checkt ob mNode auf ein Xml Element zeigt
+        *Ret:      True falls auf ein Element gezeigt wird, sonst false.
+        ***********************************************/
         const XmlElement operator[](const std::string& ident) const
         {
             return firstChildElement(ident);
