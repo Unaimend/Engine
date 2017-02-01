@@ -24,6 +24,10 @@
             saveFiles gibt jetzt einen Statuswert zurueck ob das Speichern erfolgreich war.
             XmlElement operator[] benutzt jetzt XmlElement::firstChildNode stat tinyxml2::firstChildNote
             const XMLDocument& getTmxDoc() const hinzugefuegt
+01.02.2017
+            XmlElement(XMLElement& rhs) geloescht
+             using  filepath = const std::string&, using int32 = int_fast32_t hinzugefuegt damit die Header bis auf
+             tinyXml2 eigenstaendig ist.
 
  *TODO:
             Methoden der tinyxml XMLElement Klasse implementieren
@@ -34,8 +38,8 @@
             und ob man die dazu passende Ladefunktion hinzufuegen sollte.
             PreviousElement failt falls mNode nullptr ist
             wie soll das behandelt werden?gar nichts tun? oder Fehlermeldung? Gute Behandlung ausdenken!
-
             toInt(), toDouble(), to... implementieren.
+            CopyCtr, copy assign ctor fuer XmlElement. Xml schreiben falls moeglich, vielleicht auch den move ctor
  *************************************/
 #pragma once
 #include <string>
@@ -43,25 +47,20 @@
 
 #include "tinyxml2.h"
 
-#include "EngineTypes.h"
-
 
 namespace eng
 {
     using namespace tinyxml2;
     
+    using  filepath = const std::string&;
+    using int32 = int_fast32_t;
+
     class XmlElement
     {
     public:
-        XmlElement(XMLElement& rhs)
-        {
-            mNode = &rhs;
-        }
-
-
         /**********************************************
          *Descr:    Conversion Constructor fuer XMLElement Ptr die von allen tinyxml2 funktionen zurueckgegeben werden,
-                    die mit XMLElelemt arbeiten
+                    die mit XMLElelement arbeiten
          *Param1:   Pointer auf ein XMLElement
          ***********************************************/
         XmlElement(XMLElement* rhs)
