@@ -6,6 +6,8 @@ Beschr.
 Changelog:
 27.01.2017
             Erstelldatum
+04.03.2017
+            const& getSize zu const getSize geändert
 *TODO:
 *************************************/
 
@@ -27,9 +29,12 @@ namespace eng
 
         Sprite(filepath pathToSprite)
         {
-            if(mTexture.loadFromFile(pathToSprite))
+            //@TODO Hier setSprite benutzen
+            bool isLoaded = mTexture.loadFromFile(pathToSprite);
+            if(isLoaded)
             {
                 mSprite.setTexture(mTexture);
+                std::cout <<  "Texture aus " + pathToSprite + " konnte ERFOLGREICH geladen werden" << std::endl;
             }
             else
             {
@@ -51,6 +56,18 @@ namespace eng
         }
 
 
+        void draw(const sf::RenderWindow& window) const
+        {
+            //@TODO Herrausfinden ob das safe ist
+           const_cast<sf::RenderWindow&>(window).draw(mSprite);
+        }
+
+        void draw(const eng::Window& window) const
+        {
+            window.draw(mSprite);
+        }
+
+
         /************************
         *           SETTER
         **************************/
@@ -66,13 +83,14 @@ namespace eng
 
         void setSprite(filepath pathToSprite)
         {
-            if(mTexture.loadFromFile(pathToSprite))
+            bool isLoaded = mTexture.loadFromFile(pathToSprite);
+            if(isLoaded)
             {
-                mSprite.setTexture(mTexture);
                 mSprite.setTexture(mTexture);
             }
             else
             {
+                std::cout <<  "Texture aus " + pathToSprite + " konnte ERFOLGREICH geladen werden" << std::endl;
                 std::cerr << "Texture aus " + pathToSprite + " konnte nicht geladen werden" << std::endl;
                 exit(-1);
             }
@@ -83,6 +101,11 @@ namespace eng
         /************************
         *           GETTER
         **************************/
+        const sf::Vector2u getSize()
+        {
+            return mTexture.getSize();
+        }
+
         const sf::Vector2f& getPosition() const
         {
             return mSprite.getPosition();
@@ -98,7 +121,9 @@ namespace eng
             return mTexture;
         }
 
-        const sf::Sprite& getSprite() const
+
+        //@TODO Warum darf der Return keine Referenz sein
+        const sf::Sprite getSprite() const
         {
             return mSprite;
         }
