@@ -11,6 +11,9 @@ Changelog:
 27.01.2017
             Neuen Konstruktor hinzugefügt der nur eine Positon übernimmt
             #Ifdef SFML um void sf_event()
+01.02.2016
+            void move(distance x, distance y) hinzugefuegt
+            draw(sf::RenderWindow &window) - >  draw(eng::Window &window)
 
 TODO:
             Xml mData wird nicht kopiert im Assignment Operator
@@ -24,11 +27,14 @@ TODO:
 
 #include "../luaApi/LuaState.h"     // lua::LuaState
 #include "../graphicWrapper/Vector.h"   //eng::Vector
+#include "../graphicWrapper/Window.h"   //eng::Window
 #include "../graphicWrapper/Rectangle.h"   //eng::Rectangle
-#include "../xmlWrapper/Xml.h"          //eng::Xml
+#include "xmlWrapper/Xml.h"
 #include "../globals.h"             //gLuastate, gEventQueue, SFML
 #include "../eventSystem/Event.h"   //eng::Event
 #include "../graphicWrapper/Sprite.h" //eng::Sprite
+#include "../utility.h"   //eng::distance
+#include <string>
 
 #pragma once
 namespace eng
@@ -64,20 +70,49 @@ namespace eng
          *Return:   Referenz aus *this;
          ***********************************************/
         Entity& operator=(const Entity& rhs) = delete;
-        
-        
-        //Virtuelle Funktion fuer Vererbungsbaum
-        virtual void render(sf::RenderWindow& window) const = 0;
-        virtual void update(float framtime) = 0;
+
+        void draw(const eng::Window &window) const;
+
+        virtual void move(eng::distance x, eng::distance y) = 0;
+
+        virtual void update(float frametime) = 0;
         virtual void eng_event(const eng::Event &event) = 0;
 
 #ifdef SFML
-        virtual void sf_event(const sf::Event &event) = 0;
+//@TODO Warum darf der Returnwert nicht const& sein
+        const sf::Sprite getSprite() const
+        {
+            return mSprite.getSprite();
+        }
+
+        sf::Sprite getSprite()
+        {
+            return mSprite.getSprite();
+        }
+
+        void setScale(const eng::Vector2f& scale)
+        {
+            mSprite.setScale(scale);
+        }
 #endif
-    private:
+
+        void setPosition(const eng::Vector2f& pos)
+        {
+            mSprite.setPosition(pos);
+        }
+
+        const eng::Vector2f getPosition()
+        {
+            return mSprite.getPosition();
+        }
+
+
+    protected:
         eng::Sprite mSprite;
         //Position der Entity
-        eng::Vector2f mPos{mSprite.getPosition().x,mSprite.getPosition().y};
+        eng::Vector2f mPos{0,0};
+        eng::Vector2f mVelocity{5,5};
+
         //Verweis auf den LuaState der jweiligen Entity
         //TODO Die Referenzen durch Pointer oder "normale" Varaiblen austauschen
         lua::LuaState& mState;
@@ -90,57 +125,6 @@ namespace eng
 
 
     static eng::Event ev1{"EntitiyDead",{"TEXT"},{ {eng::Variant::Type::INTEGER, 300} }};
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Wird NICHT Refactored da Test Entity
-    class RecEntity : public Entity
-    {
-
-    public:
-        RecEntity(const eng::Vector2f& vec, lua::LuaState& state, const eng::Xml& data)
-        : Entity(vec,state,data), mRec(vec)
-        {
-//              std::cout << vec.x << std::endl;
-
-        }
-
-        Rectangle mRec;
-
-
-        ~RecEntity()
-        {
-            gEventQueue.addEvent(ev1);
-        }
-        virtual void render(sf::RenderWindow& window) const override
-        {
-            mRec.draw(window);
-        }
-
-
-        virtual void update(float frametime) override
-        {
-            ;
-        }
-        virtual void eng_event(const eng::Event &event) override
-        {
-            ;
-        }
-        virtual void sf_event(const sf::Event &event) override
-        {
-            ;
-        }
-    };
 
 }
 
