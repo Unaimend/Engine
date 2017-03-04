@@ -16,6 +16,7 @@
 #pragma once
 
 #include "../EngineTypes.h"
+#include "../globals.h"
 
 namespace eng
 {
@@ -28,6 +29,13 @@ namespace eng
 		Vector2(T x, T y)
 		: x(x), y(y) {};
 
+#ifdef SFML
+		Vector2(const sf::Vector2<T>& vec)
+		{
+			x = vec.x;
+			y = vec.y;
+		}
+#endif
 		//X-Koordinate
 		T x;
 		//Y-Koordinate
@@ -36,6 +44,8 @@ namespace eng
 
 	using Vector2i = Vector2<int32>;
 	using Vector2f = Vector2<float>;
+
+
     
 //    template<typename T>
 //    std::ostream& operator<<(std::ostream& out, const Vector2<T>& vec)
