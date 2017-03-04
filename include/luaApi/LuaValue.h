@@ -1,10 +1,12 @@
-
 /************************************
- *Author:    Thomas Dost
- *Datum:     13.06.2016
- *Beschr.
- *Changelog:
-            NEUSCHREIBEN
+Author:    Thomas Dost
+Datum:     13.06.2016
+Beschr.
+Changelog:
+27.01.2017
+            Fixed operator=
+            fixed operator() (Konversion Operator)
+
  *TODO:
             Anschauen fuer Typen bestimmung:
                 https://www.youtube.com/watch?v=qHgM5UdzPQU
@@ -51,6 +53,7 @@ namespace lua
             mType = Type::INTEGER;
             lua_pushinteger(mState, value);
             lua_setglobal(mState, identifier.c_str());
+            return *this;
         }
         
         LuaRef& operator=(float value)
@@ -58,12 +61,14 @@ namespace lua
             mType = Type::FLOAT;
             lua_pushnumber(mState, value);
             lua_setglobal(mState, identifier.c_str());
+            return *this;
         }
         LuaRef& operator=(const char* value)
         {
             mType = Type::STRING;
             lua_pushstring(mState, value);
             lua_setglobal(mState, identifier.c_str());
+            return *this;
         }
         
         
@@ -72,7 +77,7 @@ namespace lua
         {
             
             lua_getglobal(mState, identifier.c_str());
-             lua_tointeger(mState, -1);
+            return lua_tointeger(mState, -1);
             
            
         }
@@ -80,7 +85,7 @@ namespace lua
         explicit operator float() const
         {
             lua_getglobal(mState, identifier.c_str());
-            lua_tonumber(mState, -1);
+            return lua_tonumber(mState, -1);
             
             
         }
