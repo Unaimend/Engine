@@ -7,6 +7,9 @@
             Erstelldatum
  21.01.2017
            setSize(eng::Vector2i), und eng::Vector2i getSize() hinzugefuegt
+31.01.2017
+            setFullscreen(bool) addded
+            View
 
 *TODO:
 *************************************/
@@ -49,14 +52,22 @@ namespace eng
         void setFramerateLimit(int32 limit) { mWindow->setFramerateLimit(limit); }
         void clear() { mWindow->clear(); }
         void display() { mWindow->display(); }
-        void draw(const sf::Drawable &drawable) { mWindow->draw(drawable); }
+        void draw(const sf::Drawable &drawable) const
+        {
+            mWindow->draw(drawable);
+        }
         void close() { mWindow->close(); }
         bool pollEvent(sf::Event &event) { return mWindow->pollEvent(event); }
+        void setToFullscreen()
+        {
+            //2048x1536
+            mWindow->create(sf::VideoMode(2048,1536 ,32), "TEST", sf::Style::Fullscreen  );
+        }
         void setSize(const eng::Vector2i size)
         {
             mWindow->setSize(sf::Vector2u(size.x, size.y));
         }
-        sf::RenderWindow &getSfRenderWindow() {
+        const sf::RenderWindow &getSfRenderWindow() const {
             return *mWindow;
         }
 #endif
