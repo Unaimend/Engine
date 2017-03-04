@@ -1,0 +1,3 @@
+[submodule "submodules/tinyxml2_wrapper"]
+	path = submodules/tinyxml2_wrapper
+	url = https://Unaimend@bitbucket.org/Unaimend/tinyxml2_wrapper.git
