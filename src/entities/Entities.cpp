@@ -6,12 +6,16 @@ eng::Entity::Entity(const eng::Vector2f& pos, lua::LuaState& state, const eng::X
 
 
 
-eng::Entity::Entity(const eng::Vector2f const& pos)
-        : mPos(pos), mState(gLuaState), mData(std::string("")) {}
+eng::Entity::Entity(const eng::Vector2f& pos)
+        : mPos(pos), mState(gLuaState), mData(std::string("/Users/thomasdost/Documents/dev/Engine/data/options.xml")) {}
 
 
 eng::Entity::Entity(const Entity& rhs)
-: mPos(rhs.mPos), mState(rhs.mState), mData(rhs.mData) {};
+: mPos(rhs.mPos), mState(rhs.mState), mData(rhs.mData) {}
+
+void eng::Entity::draw(const eng::Window &window) const {
+    window.draw(mSprite.getSprite());
+};
 
 //eng::Entity& eng::Entity::operator=(const Entity& rhs)
 //{
