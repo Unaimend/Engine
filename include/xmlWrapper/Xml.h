@@ -12,15 +12,15 @@
             isNull hinzugefuegt
             Code auskommentiert
             getNodeName hinzugefuegt.
- 14.06.2016
-            Programm beendet sich nun falls Datei nicht geladen werden kann.
-            XmlElement operator[] hinzugefuegt
-            XmlElement firstChildElelemt hinzugefuegt
-            Xml rootElement hiznugefuegt
- 15.06.2016
-            Vermeindlichen CopyCtor hinzugeufuegt
-            print() -> print() const
- 20.01.2017
+14.06.2016
+           Programm beendet sich nun falls Datei nicht geladen werden kann.
+           XmlElement operator[] hinzugefuegt
+           XmlElement firstChildElelemt hinzugefuegt
+           Xml rootElement hiznugefuegt
+15.06.2016
+           Vermeindlichen CopyCtor hinzugeufuegt
+           print() -> print() const
+20.01.2017
             saveFiles gibt jetzt einen Statuswert zurueck ob das Speichern erfolgreich war.
             XmlElement operator[] benutzt jetzt XmlElement::firstChildNode stat tinyxml2::firstChildNote
             const XMLDocument& getTmxDoc() const hinzugefuegt
@@ -29,7 +29,7 @@
              using  filepath = const std::string&, using int32 = int_fast32_t hinzugefuegt damit die Header bis auf
              tinyXml2 eigenstaendig ist.
 
- *TODO:
+*TODO:
             Methoden der tinyxml XMLElement Klasse implementieren
                 http://www.grinninglizard.com/tinyxml2docs/classtinyxml2_1_1_x_m_l_element.html
             Sichbarkeit anpassen
@@ -51,7 +51,7 @@
 namespace eng
 {
     using namespace tinyxml2;
-    
+
     using  filepath = const std::string&;
     using int32 = int_fast32_t;
 
