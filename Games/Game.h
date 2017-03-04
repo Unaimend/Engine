@@ -7,18 +7,20 @@
             Erstelldatum
  21.01.2017
             setHeight(int32 height), setWidth(int32 width), int32 getHeigth(), int32 getWidth() hizugefuegt
+ 04.03.2017
+            IN_MENUE aus dem STATE-Enum geloescht da PAUSES genau das gleiche ist
 
 *TODO:
 *************************************/
 #ifndef ENGINE_GAME_H
 #define ENGINE_GAME_H
 
-#include "../include/xmlWrapper/Xml.h"
+#include "xmlWrapper/Xml.h"
 #include "../include/graphicWrapper/Window.h"
 
 #include <thread>
 
-enum class STATE {PAUSED, IN_GAME, IN_MENUE};
+enum class STATE {PAUSED, IN_GAME };
 class Game {
 
 
@@ -29,7 +31,7 @@ public:
         mRenderWindow = new eng::Window();
     }
 
-    virtual bool init(){} ;
+    virtual bool init(){return true;} ;
     virtual void start(){} ;
 protected:
     virtual void event(){};
@@ -38,11 +40,7 @@ protected:
 
 public:
     eng::Window* mRenderWindow;
-    STATE mGameState = STATE::IN_MENUE;
-
-    std::thread mEventThread;
-    std::thread mRenderThread;
-    std::thread mUpdateThread();
+    STATE mGameState = STATE::IN_GAME;
 
 
 
