@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.9)
 project (Engine)
-SET(CMAKE_CXX_FLAGS "-std=c++14 -O0 -Wall" )
+SET(CMAKE_CXX_FLAGS "-std=c++14 -O3 -Wall" )
 
 #Bring the headers, such as Student.h into the project
 include_directories(include/tinyXML/)
@@ -21,8 +21,8 @@ link_directories( ./lib/lua/osx/)
 link_directories( ./lib/SFML/)
 
 #However, the file(GLOB...) allows for wildcard additions:
-file(GLOB SOURCES "src/*.cpp" "src/tinyXML/*.cpp"  "src/eventSytem/*.cpp" "src/luaApi/*.cpp" 
-"src/xmlWrapper/*.cpp" "src/graphicWrapper/*.cpp" "src/entities/*.cpp" )
-add_executable(Engine ${SOURCES} Games/Pong/Pong.cpp Games/Pong/Pong.h include/graphicWrapper/Window.h Games/Game.h include/graphicWrapper/Sprite.h)
+file(GLOB SOURCES "src/*.cpp" "src/tinyXML/*.cpp"  "src/eventSytem/*.cpp" "src/luaApi/*.cpp"
+ "src/graphicWrapper/*.cpp" "src/entities/*.cpp" )
+add_executable(Engine ${SOURCES} Games/Pong/Pong.cpp Games/Pong/Pong.h include/graphicWrapper/Window.h Games/Game.h include/graphicWrapper/Sprite.h )
 
 target_link_libraries(Engine ${PROJECT_LINK_LIBS} )
