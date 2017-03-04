@@ -15,7 +15,7 @@
 #ifndef ENGINE_GAME_H
 #define ENGINE_GAME_H
 
-#include "xmlWrapper/Xml.h"
+#include "../submodules/tinyxml2_wrapper/Xml.h"
 #include "../include/graphicWrapper/Window.h"
 
 #include <thread>

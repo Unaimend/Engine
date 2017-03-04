@@ -29,7 +29,7 @@ TODO:
 #include "../graphicWrapper/Vector.h"   //eng::Vector
 #include "../graphicWrapper/Window.h"   //eng::Window
 #include "../graphicWrapper/Rectangle.h"   //eng::Rectangle
-#include "xmlWrapper/Xml.h"
+#include "../../submodules/tinyxml2_wrapper/Xml.h"
 #include "../globals.h"             //gLuastate, gEventQueue, SFML
 #include "../eventSystem/Event.h"   //eng::Event
 #include "../graphicWrapper/Sprite.h" //eng::Sprite

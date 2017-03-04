@@ -10,8 +10,8 @@ include_directories(include/eventSystem/)
 include_directories(include/luaApi)
 include_directories(include/graphicWrapper/)
 include_directories(include)
-
-
+include_directories(submodules/tinyxml2_wrapper/Xml.h)
+include_directories(submodules/tinyxml2_wrapper/tinyxml2/tinyxml2.h)
 
 #For the shared library:
 #set ( PROJECT_LINK_LIBS libsfml-graphics.so libsfml-window.so libsfml-system.so liblua.a)
@@ -21,7 +21,7 @@ link_directories( ./lib/lua/osx/)
 link_directories( ./lib/SFML/)
 
 #However, the file(GLOB...) allows for wildcard additions:
-file(GLOB SOURCES "src/*.cpp" "src/tinyXML/*.cpp"  "src/eventSytem/*.cpp" "src/luaApi/*.cpp"
+file(GLOB SOURCES "src/*.cpp" "submodules/tinyxml2_wrapper/tinyxml2/*.cpp"  "src/eventSytem/*.cpp" "src/luaApi/*.cpp"
  "src/graphicWrapper/*.cpp" "src/entities/*.cpp" )
 add_executable(Engine ${SOURCES} Games/Pong/Pong.cpp Games/Pong/Pong.h include/graphicWrapper/Window.h Games/Game.h include/graphicWrapper/Sprite.h )
 

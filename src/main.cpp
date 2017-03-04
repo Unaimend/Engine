@@ -6,7 +6,7 @@
 #include "../include/eventSystem/Event.h"
 #include "../include/globals.h"
 #include "../include/graphicWrapper/Rectangle.h"
-#include "xmlWrapper/Xml.h"
+#include "../submodules/tinyxml2_wrapper/Xml.h"
 #include "../include/entities/Entity.h"
 #include "../include/graphicWrapper/Window.h"
 #define MAC
