@@ -11,6 +11,13 @@
 *           Funktionen in cpp ausgelagert
 *           Alles auskommentiert
 *           getPosition, getSfRectangle hinzugefuegt
+*01.02.2017
+*            const float  DEFAULT_WIDTH  -> constexpr static float DEFAULT_WIDTH
+*            const float  DEFAULT_HEIGTH  -> constexpr static float DEFAULT_HEIGTH
+*             void draw(eng::Window& window) const hinzugefuegt
+*             removed void draw(sf::RenderWindow& window) const
+*
+*
 *TODO:
 *           Conversion Operator fuer SFML mit gloablen define
 *           ob SFML genutzt wird.
@@ -18,7 +25,7 @@
 #include <SFML/Graphics.hpp> //sf::Rectangle
 
 #include "Vector.h" //eng::Vector
-
+#include <Window.h>
 #include "../globals.h"
 
 
@@ -70,20 +77,18 @@ namespace eng
         Rectangle& operator=(const Rectangle& rhs);
 
 
-#ifdef SFML
         /**********************************************
          *Descr:    Funktion um Rectangle zu drawn
          *Param1:   Fenster in das gedrawed werden soll
          ***********************************************/
-        void draw(sf::RenderWindow& window) const;
-#endif
-        
+        void draw(eng::Window& window) const;
+
         /**********************************************
          *Descr:    Funktion um Rechteck zu bewegen
          *Param1:   X und Y-Richtung in die bewegt werden soll
          ***********************************************/
         void move(const eng::Vector2f& vec);
-        
+
 #ifdef SFML
         /**********************************************
          *Descr:    Getter-Funktion
@@ -101,9 +106,9 @@ namespace eng
 
     private:
         //Standardbreite
-        const float DEFAULT_WIDTH = 20;
+        constexpr static float DEFAULT_WIDTH = 20;
         //Standardhoehe
-        const float DEFAULT_HEIGHT = 20;
+        constexpr static float DEFAULT_HEIGHT = 20;
 #ifdef SFML
         //Das eigentliche Rechteck
         sf::RectangleShape mRectangle;
