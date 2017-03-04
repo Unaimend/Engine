@@ -27,7 +27,8 @@ eng::Rectangle& eng::Rectangle::operator=(const eng::Rectangle& rhs)
 }
 
 
-void eng::Rectangle::draw(sf::RenderWindow& window) const
+
+void eng::Rectangle::draw(eng::Window& window) const
 {
     window.draw(mRectangle);
 }
