@@ -18,6 +18,7 @@
 #include "../../include/globals.h"
 #include <iostream>
 
+
 typedef uint_fast32_t uint32;
 typedef const std::string& filepath;
 
@@ -55,8 +56,11 @@ public:
 
     virtual bool init() override
     {
+
+
         eng::Xml options(std::string(gFilePath) + "/Games/Pong/options.xml");
         mRenderWindow->setSize({std::stoi(options.rootElement()["resX"].getValue()), std::stoi(options.rootElement()["resY"].getValue())});
+        mRenderWindow->getSfRenderWindow().setTitle("Pong");
         mRenderWindow->setFramerateLimit(mFps);
 
 //        std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
@@ -93,7 +97,6 @@ public:
         float newPaddelHeight =  (mRenderWindow->getSize().y / 6)/paddleHeight;
         float newPaddelWidth =  (mRenderWindow->getSize().y / 6)/paddleWidth;
 
-        std::cout<< mRenderWindow->getSize().y - ((mRenderWindow->getSize().y/2)+(newPaddelHeight/2)) << std::endl;
 
 
         leftPaddle.setPosition({0,(float) mRenderWindow->getSize().y - ((mRenderWindow->getSize().y/2)+(newPaddelHeight/2))});
@@ -158,14 +161,13 @@ public:
         }
         if (KeyChecker::keyPressed(sf::Keyboard::S))
         {
-
             leftPaddle.move(0, 1 * leftPaddle.mSpeed.y);
         }
         if (KeyChecker::keyPressed(sf::Keyboard::Up))
         {
             rightPaddle.move(0, -20);
-            std::cout << "RightPaddel: move up " <<  rightPaddle.getSprite().getPosition().y << " : " <<  rightPaddle.getPosition().y <<   std::endl;
-            std::cout << "RightPaddel: move up " <<  rightPaddle.getSprite().getPosition().y << " : " <<  rightPaddle.getPosition().y <<   std::endl;
+//            std::cout << "RightPaddel: move up " <<  rightPaddle.getSprite().getPosition().y << " : " <<  rightPaddle.getPosition().y <<   std::endl;
+//            std::cout << "RightPaddel: move up " <<  rightPaddle.getSprite().getPosition().y << " : " <<  rightPaddle.getPosition().y <<   std::endl;
         }
         if (KeyChecker::keyPressed(sf::Keyboard::Down))
         {

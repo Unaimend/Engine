@@ -12,6 +12,7 @@
             View
 
 *TODO:
+ * Irgenwie werden 2 Fenster geoffnet WTF!!!
 *************************************/
 #ifndef ENGINE_WINDOW_H
 #define ENGINE_WINDOW_H
@@ -68,6 +69,10 @@ namespace eng
             mWindow->setSize(sf::Vector2u(size.x, size.y));
         }
         const sf::RenderWindow &getSfRenderWindow() const {
+            return *mWindow;
+        }
+
+         sf::RenderWindow &getSfRenderWindow() {
             return *mWindow;
         }
 #endif
