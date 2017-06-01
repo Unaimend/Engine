@@ -28,20 +28,22 @@ class Game {
 public:
     Game()
     {
-        mRenderWindow = new eng::Window();
+
     }
 
     virtual bool init(){return true;} ;
     virtual void start(){} ;
 protected:
-    virtual void event(){};
-    virtual void render(){};
-    virtual void update(){} ;
+    //Diese beide Methoden sind abstrakt da SFML sie benötigt um normal zu funktionieren
+    virtual void event() = 0;
+    virtual void render() = 0;
+    virtual void update() {} ;
 
 public:
     eng::Window* mRenderWindow;
     STATE mGameState = STATE::IN_GAME;
 
+    const static int DEFAULT_FPS = 60;
 
 
 };
