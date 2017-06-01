@@ -11,3 +11,14 @@ Engine.cbp
 data/*
 src/main.cpp
 data/main.lua
+Games/Labyrinth/
+
+\.projectile
+
+include/lua/\.DS_Store
+
+\.DS_Store
+
+Games/Pong/
+
+include/Selene/\.travis\.yml
