@@ -42,9 +42,7 @@ namespace eng
             mWindow = new sf::RenderWindow(sf::VideoMode(mWidth, mHeight), mTitle);
         }
 
-        Window() : Window("Default", {800,600}) {
 
-        }
 
         /******************************
         * SFML WRAPPER
