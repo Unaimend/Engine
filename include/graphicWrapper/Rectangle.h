@@ -60,7 +60,13 @@ namespace eng
          *Param1:   X und Y-Koordinate des Rechtecks
          ***********************************************/
         Rectangle(const eng::Vector2f& pos, const eng::Vector2f& size);
-
+#ifdef SFML
+        /**********************************************
+        *Descr:    4. Konstruktor
+        *Param1:   X und Y-Koordinate des Rechtecks, und die Fillcolor
+        ***********************************************/
+        Rectangle(const eng::Vector2f& pos, const eng::Vector2f& size, const sf::Color& fillcolor);
+#endif
         
         /**********************************************
          *Descr:    Copy-Konstuktor
@@ -95,6 +101,10 @@ namespace eng
          *Return:   sf::Rectangle dieser Klasse
          ***********************************************/
         const sf::RectangleShape& getSfRectangle() const;
+
+        /***********************************************
+         *
+         */
 #endif
 
         /**********************************************
@@ -112,6 +122,7 @@ namespace eng
 #ifdef SFML
         //Das eigentliche Rechteck
         sf::RectangleShape mRectangle;
+        //Die fillcolor des Rechtecks
 #endif
 
 	};

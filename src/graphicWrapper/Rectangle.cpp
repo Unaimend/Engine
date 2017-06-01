@@ -17,6 +17,15 @@ eng::Rectangle::Rectangle(const eng::Vector2f& pos, const eng::Vector2f& size)
     mRectangle.setSize(sf::Vector2f(size.x,size.y));
 }
 
+#ifdef SFML
+eng::Rectangle::Rectangle(const eng::Vector2f& pos, const eng::Vector2f& size, const sf::Color& fillcolor)
+{
+    mRectangle.setPosition(pos.x, pos.y);
+    mRectangle.setSize(sf::Vector2f(size.x, size.y));
+    mRectangle.setFillColor(fillcolor);
+}
+#endif
+
 eng::Rectangle::Rectangle(const Rectangle& rhs) : mRectangle(rhs.mRectangle){};
 
 
