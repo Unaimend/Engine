@@ -1,6 +1,7 @@
 #include "../include/lua/lua.hpp"
 #include <iostream>
 #include <Variant.h>
+#include <cassert>
 #include "../include/ResourceManager.h"
 #include "../include/Texture.h"
 #include "../include/eventSystem/Event.h"
@@ -15,8 +16,10 @@
 #include "../Games/Pong/Pong.h"
 
 
+#include "../include/entities/ComponentEntity.h"
+#include "../Games/Labyrinth/Labyrinth.h"
 
-
+#include "../include/Selene/selene.h"
 
 
 char gFilePath[100];
@@ -65,18 +68,42 @@ int main(int argc, char** argv) {
     strcpy(gFilePath, "/Users/thomasdost/Documents/dev/Engine");
 #endif
 
+    //ComponentEntity* test = new ComponentEntity(new PlayerInputComponent());
+
+    sel::State state;
+    state.Load("data/scripts/test.lua");
+
+// Call function with no arguments or returns
+    state["foo"]();
+
+// Call function with two arguments that returns an int
+// The type parameter can be one of int, lua_Number, std::string,
+// bool, or unsigned int
+    int result = state["add"](5, 2);
+    assert(result == 7);
+
+
+// Call function that returns multiple values
+    int sum, difference;
+    sel::tie(sum, difference) = state["sum_and_difference"](3, 1);
+    assert(sum == 4 && difference == 2);
+
+// Call function in table
+    result = state["mytable"]["foo"]();
+    assert(result == 4);
+
 
     {
         //TEST GAME AREA
-        Pong a{};
-        a.init();
-        a.start();
-        a.render();
+      Labyrinth pong{};
+      pong.init();
+      pong.start();
+      pong.render();
     }
 
 
-/*
-sf::Texture text;
+    return 0;
+    /*sf::Texture text;
 text.loadFromFile("/Users/thomasdost/Documents/dev/Engine/data/textures/test.png");
 sf::Sprite sprite1;
 sprite1.setTexture(text);
@@ -86,10 +113,7 @@ eng::Rectangle rect{50,50};
 eng::Sprite sprite{"/Users/thomasdost/Documents/dev/Engine/data/textures/test.png"};
 sprite.setPosition({60,60});
 
-
-
-
-sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+   eng::Window window("TEST", 500 ,500);
 
 // run the program as long as the window is open
 while (window.isOpen())
@@ -98,28 +122,32 @@ while (window.isOpen())
 sf::Event event;
 while (window.pollEvent(event))
 {
-// "close requested" event: we close the window
-if (event.type == sf::Event::Closed)
-window.close();
+    test->update();
+    // "close requested" event: we close the window
+    if (event.type == sf::Event::Closed)
+        window.close();
 }
 
 // clear the window with black color
-window.clear(sf::Color::Black);
+window.clear();
 
 // draw everything here...
 // window.draw(...);
-window.draw(sprite1);
+//window.draw(sprite1);
+//
+//window.draw(sprite.getSprite());
 
-window.draw(sprite.getSprite());
+//    test->render(window);
+//    window.draw(sprite.getSprite());
 
 // end the current frame
 window.display();
 }
 
+
+
+
 */
-
-
-
 
 
 //
