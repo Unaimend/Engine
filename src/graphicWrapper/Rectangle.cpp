@@ -14,8 +14,17 @@ eng::Rectangle::Rectangle(const eng::Vector2f& pos) : Rectangle(pos,{DEFAULT_WID
 eng::Rectangle::Rectangle(const eng::Vector2f& pos, const eng::Vector2f& size)
 {
     mRectangle.setPosition(pos.x, pos.y);
-    mRectangle.setSize(sf::Vector2f(DEFAULT_WIDTH,DEFAULT_HEIGHT));
+    mRectangle.setSize(sf::Vector2f(size.x,size.y));
 }
+
+#ifdef SFML
+eng::Rectangle::Rectangle(const eng::Vector2f& pos, const eng::Vector2f& size, const sf::Color& fillcolor)
+{
+    mRectangle.setPosition(pos.x, pos.y);
+    mRectangle.setSize(sf::Vector2f(size.x, size.y));
+    mRectangle.setFillColor(fillcolor);
+}
+#endif
 
 eng::Rectangle::Rectangle(const Rectangle& rhs) : mRectangle(rhs.mRectangle){};
 
@@ -27,7 +36,8 @@ eng::Rectangle& eng::Rectangle::operator=(const eng::Rectangle& rhs)
 }
 
 
-void eng::Rectangle::draw(sf::RenderWindow& window) const
+
+void eng::Rectangle::draw(eng::Window& window) const
 {
     window.draw(mRectangle);
 }

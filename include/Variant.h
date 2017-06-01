@@ -10,6 +10,8 @@
 				Ausgabe Operator hinzugefuegt, und als friend deklariert.
 				21.01.2016
 				utility.h included
+				04.03.2017
+				=operator returnt jetzt *this
 *TODO:
 				Testen ob long double alle hashes halten kann
 				Konstruktoren loeschen fuer EventArg, Event
@@ -19,6 +21,8 @@
 				Klasse refactoren
                 Anschauen fuer Typen bestimmung:
                     https://www.youtube.com/watch?v=qHgM5UdzPQU
+               	Ganz genau bedenken was in dieser klasse passiert und vielleicht alles überarbeiten
+               	std::any ?
 				
 *************************************/
 
@@ -132,6 +136,7 @@ namespace eng
 		{
 			mType = rhs.mType;
 			mValue = rhs.mValue;
+			return *this;
 			//std::cout <<"VARAINT ASSIGN" << std::endl;
 		}
 	};

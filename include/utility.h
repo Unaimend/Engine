@@ -45,27 +45,19 @@ namespace eng
 			return std::hash<std::string>()(string1);
 		}
 
-		inline bool listenToGameEvent(const std::string& eventName)
-		{
-			;
-		}
+//		inline bool listenToGameEvent(const std::string& eventName)
+//		{
+//			;
+//		}
         
         
         
         class KeyChecker
         {
         public:
-            KeyChecker(const sf::Event& event)
-            : mEvent(event)
+            static bool keyPressed(const sf::Keyboard::Key& key)
             {
-//                mEvent = event;
-            }
-           /* static*/ const sf::Event& mEvent;
-            
-            
-            /*static*/ bool keyPressed(const sf::Keyboard::Key& key)
-            {
-                if((mEvent.type == sf::Event::KeyPressed) && mEvent.key.code == key)
+                if(sf::Keyboard::isKeyPressed(key))
                 {
                     return true;
                 }
